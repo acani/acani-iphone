@@ -1,0 +1,10 @@
+Today:
+	- Return key makes newline
+	- Post timestamp to MessageView
+	- Create & use message objects
+	- Clicking on TableView minimizes keyboard
+
+Continuous Integration:
+	- Integrate our work into one repository
+Connect to Server:
+	- 

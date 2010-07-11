@@ -1,4 +1,5 @@
 #import "BubblesViewController.h"
+#import "message.h"
 
 @implementation BubblesViewController
 
@@ -11,11 +12,15 @@ CGPoint offset;
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	messages = [[NSMutableArray alloc] initWithObjects: @"Hey, How are you today?", 
-				@"I'm fine, thank you and you?" , 
-				@"I'm pretty well." , 
-				@"Cool.", 
-				nil];
+	
+	// release the msg1 later
+	message * msg1 = [[message alloc] init];
+	msg1.text = @"text 1";
+	msg1.timestamp = 399999;
+	
+	messages = [[NSMutableArray alloc] initWithObjects: msg1, nil];
+	
+	
 	tbl.backgroundColor = [UIColor colorWithRed:219.0/255.0 green:226.0/255.0 blue:237.0/255.0 alpha:1.0];
 }
 
@@ -47,7 +52,11 @@ CGPoint offset;
 -(IBAction) push:(id)sender {
 	if (textfield.text.length != 0) {
 		NSLog(@"push function");
-		[messages addObject: textfield.text];
+		message *mesg2 = [[message alloc] init];
+		mesg2.text = textfield.text;
+		mesg2.timestamp = time(NULL);
+		[messages addObject:mesg2];
+		[mesg2 release];
 		[tbl reloadData]; 
 		textfield.text = @""; // clear textfield after send
 
@@ -106,9 +115,21 @@ CGPoint offset;
 	
 	UIImageView *balloonView;
 	UILabel *label;
+	UILabel *label1;
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
+		
+		//
+		// Draw timestamp
+		//
+		// TODO:
+		// * decide which messages have timestamps
+		[[UIColor darkGrayColor] set];
+		
+		[@"Jul 10, 2010 11:55 AM" drawInRect:CGRectMake(0, 4, 320, 16) withFont:[UIFont boldSystemFontOfSize:12]
+							   lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];        
+		
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -123,9 +144,20 @@ CGPoint offset;
 		label.lineBreakMode = UILineBreakModeWordWrap;
 		label.font = [UIFont systemFontOfSize:14.0];
 		
+		
+	label1 = [[UILabel alloc] init];
+		
+		label1.tag = kLabel;
+		label1.backgroundColor = [UIColor clearColor];
+		label1.numberOfLines = 1;
+		label1.lineBreakMode = UILineBreakModeWordWrap;
+		label1.font = [UIFont systemFontOfSize:14.0];
+	
+		
+		
 		UIView *message = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
 	    message.tag = kMessage;
-		
+		[message addSubview:label1];
 		[message addSubview:balloonView];
 		[message addSubview:label];
 		
@@ -136,6 +168,7 @@ CGPoint offset;
 		[balloonView release];
 		[label release];
 		[message release];
+		[label1 release];
 	}
 
 	else {
@@ -143,7 +176,9 @@ CGPoint offset;
 		label = (UILabel *)[[cell.contentView viewWithTag:kMessage] viewWithTag:kLabel];
 	}
 
-	NSString *text = [messages objectAtIndex:indexPath.row];
+	message *msg = [messages objectAtIndex:indexPath.row];
+	NSString *text = msg.text;
+	[msg release];
 	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0]constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
 	UIImage *balloon;
 	if (indexPath.row%2 == 0) {
@@ -167,13 +202,17 @@ CGPoint offset;
 
 	balloonView.image = balloon;
 	label.text = text;
+	label1.text = @"this is sample";
 	
 	return cell;
 }
 
 -(CGFloat)tableView: (UITableView*) tableView hightForRowAtIndexPath :(NSIndexPath *)indexPath{
 	
-	NSString *text = [messages objectAtIndex:indexPath.row];
+	message *msg = [messages objectAtIndex:indexPath.row];
+	NSString *text = msg.text;
+	[msg release];
+	
 	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
 
 	return size.height + 15;
@@ -205,6 +244,7 @@ CGPoint offset;
 
 
 - (void)dealloc {
+	//[msg1 release];
 	[tbl release];
 	[messages release];
     [super dealloc];
