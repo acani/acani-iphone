@@ -57,7 +57,7 @@
 		9AF39D2611E4FD0600148C2D /* SearchBarRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AF39D0111E4FD0600148C2D /* SearchBarRight.png */; };
 		9AF39D2711E4FD0600148C2D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AF39D0211E4FD0600148C2D /* Icon.png */; };
 		9AF39D2811E4FD0600148C2D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AF39D0311E4FD0600148C2D /* Default.png */; };
-		9AF39E2E11E53F4800148C2D /* message.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF39E2D11E53F4800148C2D /* message.m */; };
+		9AF39E2E11E53F4800148C2D /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF39E2D11E53F4800148C2D /* Message.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,8 +116,8 @@
 		9AF39D0111E4FD0600148C2D /* SearchBarRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBarRight.png; path = Images/SearchBarRight.png; sourceTree = SOURCE_ROOT; };
 		9AF39D0211E4FD0600148C2D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = SOURCE_ROOT; };
 		9AF39D0311E4FD0600148C2D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Images/Default.png; sourceTree = SOURCE_ROOT; };
-		9AF39E2C11E53F4800148C2D /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
-		9AF39E2D11E53F4800148C2D /* message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = message.m; sourceTree = "<group>"; };
+		9AF39E2C11E53F4800148C2D /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		9AF39E2D11E53F4800148C2D /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,8 +141,8 @@
 				1D3623250D0F684500981E51 /* BubblesAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* BubblesViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* BubblesViewController.m */,
-				9AF39E2C11E53F4800148C2D /* message.h */,
-				9AF39E2D11E53F4800148C2D /* message.m */,
+				9AF39E2C11E53F4800148C2D /* Message.h */,
+				9AF39E2D11E53F4800148C2D /* Message.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -417,7 +417,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* BubblesAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* BubblesViewController.m in Sources */,
-				9AF39E2E11E53F4800148C2D /* message.m in Sources */,
+				9AF39E2E11E53F4800148C2D /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
-#import "message.h"
+#import "Message.h"
 
 
-@implementation message
+@implementation Message
 
 @synthesize text, timestamp;
 //@synthesize sender_id;

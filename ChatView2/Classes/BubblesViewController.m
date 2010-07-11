@@ -1,5 +1,5 @@
 #import "BubblesViewController.h"
-#import "message.h"
+#import "Message.h"
 
 @implementation BubblesViewController
 
@@ -12,7 +12,7 @@ CGPoint offset;
     [super viewDidLoad];
 	
 	// release the msg1 later
-	message * msg1 = [[message alloc] init];
+	Message * msg1 = [[Message alloc] init];
 	msg1.text = @"text 1";
 	msg1.timestamp = 399999;
 	
@@ -50,7 +50,7 @@ CGPoint offset;
 -(IBAction) push:(id)sender {
 	if (textfield.text.length != 0) {
 		NSLog(@"push function");
-		message *mesg2 = [[message alloc] init];
+		Message *mesg2 = [[Message alloc] init];
 		mesg2.text = textfield.text;
 		mesg2.timestamp = time(NULL);
 		[messages addObject: mesg2];
@@ -135,7 +135,7 @@ CGPoint offset;
 		text.numberOfLines = 0;
 		text.lineBreakMode = UILineBreakModeWordWrap;
 		text.font = [UIFont systemFontOfSize:14.0];
-		message *msg = [messages objectAtIndex:indexPath.row];
+		Message *msg = [messages objectAtIndex:indexPath.row];
 		text.text = msg.text;
 		
 
@@ -189,7 +189,7 @@ CGPoint offset;
 
 -(CGFloat)tableView: (UITableView*) tableView hightForRowAtIndexPath :(NSIndexPath *)indexPath{
 	
-	message *msg = [messages objectAtIndex:indexPath.row];
+	Message *msg = [messages objectAtIndex:indexPath.row];
 	NSString *text = msg.text;
 	
 	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
