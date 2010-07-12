@@ -1,0 +1,5 @@
+@interface LoversViewController : UIViewController {
+
+}
+
+@end
