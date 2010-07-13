@@ -3,23 +3,12 @@
 
 @implementation LoversAppDelegate
 
-@synthesize window;
-@synthesize viewController;
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-	viewController = [[LoversViewController alloc] init];
-	[window addSubview:viewController.view];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	UIWindow *window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[LoversViewController alloc] init]];
+	[window addSubview:nav.view];
 	[window makeKeyAndVisible];
-
 	return YES;
-}
-
-- (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
 }
 
 @end
