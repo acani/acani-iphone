@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
-
-@interface message : NSObject {
+@interface Message : NSObject {
 	NSString* text;
 	time_t timestamp;
 //	uint32_t sender_id;
