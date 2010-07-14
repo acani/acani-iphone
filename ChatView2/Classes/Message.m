@@ -1,6 +1,5 @@
 #import "Message.h"
 
-
 @implementation Message
 
 @synthesize text, timestamp;

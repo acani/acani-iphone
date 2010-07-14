@@ -1,10 +1,11 @@
 #import "BubblesViewController.h"
 #import "Message.h"
+#import "ColorUtils.h"
 #include <time.h>
 
 @implementation BubblesViewController
 
-@synthesize tbl, messages, choosePhotoBtn, textfield, imageView, toolBar,timestampLabel;
+@synthesize tbl, messages, choosePhotoBtn, textfield, imageView, toolBar, timestampLabel;
 
 CGPoint offset;
 
@@ -20,14 +21,12 @@ CGPoint offset;
 	messages = [[NSMutableArray alloc] initWithObjects: msg1, nil];
 	[msg1 release];
 
-	tbl.backgroundColor = [UIColor colorWithRed:219.0/255.0 green:226.0/255.0 blue:237.0/255.0 alpha:1.0];
+	tbl.backgroundColor = [UIColor chatBackgroundColor];
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [messages count];
@@ -36,16 +35,13 @@ CGPoint offset;
 -(IBAction) getPhoto:(id) sender {
 	UIImagePickerController * picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
-	
 	picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-	
 	[self presentModalViewController:picker animated:YES];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	[picker dismissModalViewControllerAnimated:YES];
 	imageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-	
 }
 
 -(IBAction) push:(id)sender {
@@ -125,16 +121,15 @@ CGPoint offset;
 
 		// Create timestampLabel
 		timestampLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, 320.0, 16.0)] autorelease];
-		timestampLabel.backgroundColor = [UIColor clearColor];
+		timestampLabel.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		timestampLabel.tag = TIMESTAMP_TAG;
-        timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
+		timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
 		timestampLabel.lineBreakMode = UILineBreakModeTailTruncation;
-        timestampLabel.textAlignment = UITextAlignmentCenter;
-        timestampLabel.textColor = [UIColor darkGrayColor];
+		timestampLabel.textAlignment = UITextAlignmentCenter;
+		timestampLabel.textColor = [UIColor darkGrayColor];
 		time_t t;
 		time(&t);
 		timestampLabel.text = [[NSString alloc] initWithFormat:@"%s", ctime(&t)];
-	
 
 
 		// Create text		
@@ -145,12 +140,12 @@ CGPoint offset;
 		text.lineBreakMode = UILineBreakModeWordWrap;
 		text.font = [UIFont systemFontOfSize:14.0];
 		text.text = msg.text;
-		//time(NULL)
+
 
 		// Create background
 		background = [[UIImageView alloc] init];
 		background.tag = BACKGROUND_TAG;
-						   
+
 
 		// Create messageView and add to cell
 		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
@@ -161,7 +156,7 @@ CGPoint offset;
 		messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[cell.contentView addSubview:messageView];
 
-		
+
 		[background release];
 		[text release];
 		[messageView release];
@@ -195,12 +190,9 @@ CGPoint offset;
 }
 
 -(CGFloat)tableView: (UITableView*) tableView hightForRowAtIndexPath :(NSIndexPath *)indexPath{
-	
 	Message *msg = [messages objectAtIndex:indexPath.row];
 	NSString *text = msg.text;
-	
 	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-
 	return size.height + 15;
 }
 
@@ -220,7 +212,7 @@ CGPoint offset;
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-	self.tbl  = nil;
+	self.tbl = nil;
 	self.messages = nil;
 }
 

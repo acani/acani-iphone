@@ -18,10 +18,9 @@
 @property (nonatomic, retain) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, retain) IBOutlet UILabel *timestampLabel;
 
-
 -(IBAction) getPhoto:(id) sender;
 -(IBAction) slideFrameUp;
 -(IBAction) slideFrameDown;
 -(IBAction) push:(id)sender; 
-@end
 
+@end

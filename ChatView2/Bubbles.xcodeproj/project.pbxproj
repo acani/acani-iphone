@@ -58,6 +58,7 @@
 		9AF39D2711E4FD0600148C2D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AF39D0211E4FD0600148C2D /* Icon.png */; };
 		9AF39D2811E4FD0600148C2D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AF39D0311E4FD0600148C2D /* Default.png */; };
 		9AF39E2E11E53F4800148C2D /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF39E2D11E53F4800148C2D /* Message.m */; };
+		C98659BE11ED71CE001763F2 /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C98659BD11ED71CE001763F2 /* ColorUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,8 @@
 		9AF39D0311E4FD0600148C2D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Images/Default.png; sourceTree = SOURCE_ROOT; };
 		9AF39E2C11E53F4800148C2D /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		9AF39E2D11E53F4800148C2D /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		C98659BC11ED71CE001763F2 /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
+		C98659BD11ED71CE001763F2 /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +144,8 @@
 				1D3623250D0F684500981E51 /* BubblesAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* BubblesViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* BubblesViewController.m */,
+				C98659BC11ED71CE001763F2 /* ColorUtils.h */,
+				C98659BD11ED71CE001763F2 /* ColorUtils.m */,
 				9AF39E2C11E53F4800148C2D /* Message.h */,
 				9AF39E2D11E53F4800148C2D /* Message.m */,
 			);
@@ -418,6 +423,7 @@
 				1D3623260D0F684500981E51 /* BubblesAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* BubblesViewController.m in Sources */,
 				9AF39E2E11E53F4800148C2D /* Message.m in Sources */,
+				C98659BE11ED71CE001763F2 /* ColorUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

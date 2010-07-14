@@ -1,11 +1,3 @@
-//
-//  BubblesAppDelegate.h
-//  Bubbles
-//
-//  Created by Rsg on 6/27/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @class BubblesViewController;
@@ -19,4 +11,3 @@
 @property (nonatomic, retain) IBOutlet BubblesViewController *viewController;
 
 @end
-
