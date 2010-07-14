@@ -1,5 +1,8 @@
 #import "UsersViewController.h"
 
+#define COOKBOOK_PURPLE_COLOR	[UIColor colorWithRed:0.20392f green:0.19607f blue:0.61176f alpha:1.0f]
+#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
+
 @implementation UsersViewController
 
 /*
@@ -12,9 +15,34 @@
 }
 */
 
+- (void) goToProfile: (id) sender {
+//	showAlert(@"You pressed the right button");
+	NSLog(@"GoToProfile!");
+}
+
+- (void) logout: (id) sender {
+//	showAlert(@"You pressed the left button");
+	NSLog(@"Logout");
+}
+
 - (void)loadView {
+	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
+	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Profile", @selector(goToProfile:));
+	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:));
+
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor lightGrayColor];
+	
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 30.0f)];
+    label.text = @"Users View (TableView)";
+    label.center = contentView.center;
+	label.backgroundColor = [UIColor lightGrayColor];
+	label.textAlignment = UITextAlignmentCenter;
+	
+    [contentView addSubview:label];
+    [label release];
+
 	self.view = contentView;
 	[contentView release];
 }
