@@ -7,6 +7,7 @@
 	UIImageView *imageView;
 	UIButton *choosePhotoBtn;
 	IBOutlet UIToolbar *toolBar;
+	IBOutlet UILabel *timestampLabel;
 }
 
 @property (nonatomic, retain) UIImageView *imageView;
@@ -15,6 +16,8 @@
 @property (nonatomic, retain) UITableView *tbl;
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolBar;
+@property (nonatomic, retain) IBOutlet UILabel *timestampLabel;
+
 
 -(IBAction) getPhoto:(id) sender;
 -(IBAction) slideFrameUp;

@@ -1,9 +1,10 @@
 #import "BubblesViewController.h"
 #import "Message.h"
+#include <time.h>
 
 @implementation BubblesViewController
 
-@synthesize tbl, messages, choosePhotoBtn, textfield, imageView, toolBar;
+@synthesize tbl, messages, choosePhotoBtn, textfield, imageView, toolBar,timestampLabel;
 
 CGPoint offset;
 
@@ -14,7 +15,7 @@ CGPoint offset;
 	// release the msg1 later
 	Message * msg1 = [[Message alloc] init];
 	msg1.text = @"text 1";
-	msg1.timestamp = 399999;
+//	msg1.timestamp = 399999;
 	
 	messages = [[NSMutableArray alloc] initWithObjects: msg1, nil];
 	[msg1 release];
@@ -52,7 +53,8 @@ CGPoint offset;
 		NSLog(@"push function");
 		Message *mesg2 = [[Message alloc] init];
 		mesg2.text = textfield.text;
-		mesg2.timestamp = time(NULL);
+		//mesg2.timestamp = time(NULL);
+		mesg2.timestamp = timestampLabel.text;
 		[messages addObject: mesg2];
 		[mesg2 release];
 		[tbl reloadData]; 
@@ -111,7 +113,7 @@ CGPoint offset;
 	
     static NSString *CellIdentifier = @"MessageCell";
 	
-	UILabel *timestamp, *text;
+	UILabel *text;
     UIImageView *background;
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -119,13 +121,20 @@ CGPoint offset;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-//		// Create timestamp
-//		timestamp = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)] autorelease];
-//		timestamp.tag = TIMESTAMP_TAG;
-//        timestamp.font = [UIFont boldSystemFontOfSize:12.0];
-//		timestamp.lineBreakMode = UILineBreakModeTailTruncation;
-//        timestamp.textAlignment = UITextAlignmentCenter;
-//        timestamp.textColor = [UIColor darkGrayColor];
+		Message *msg = [messages objectAtIndex:indexPath.row];
+
+		// Create timestampLabel
+		timestampLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, 320.0, 16.0)] autorelease];
+		timestampLabel.backgroundColor = [UIColor clearColor];
+		timestampLabel.tag = TIMESTAMP_TAG;
+        timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
+		timestampLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        timestampLabel.textAlignment = UITextAlignmentCenter;
+        timestampLabel.textColor = [UIColor darkGrayColor];
+		time_t t;
+		time(&t);
+		timestampLabel.text = [[NSString alloc] initWithFormat:@"%s", ctime(&t)];
+	
 
 
 		// Create text		
@@ -135,9 +144,8 @@ CGPoint offset;
 		text.numberOfLines = 0;
 		text.lineBreakMode = UILineBreakModeWordWrap;
 		text.font = [UIFont systemFontOfSize:14.0];
-		Message *msg = [messages objectAtIndex:indexPath.row];
 		text.text = msg.text;
-		
+		//time(NULL)
 
 		// Create background
 		background = [[UIImageView alloc] init];
@@ -145,20 +153,20 @@ CGPoint offset;
 						   
 
 		// Create messageView and add to cell
-		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
+		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
 	    messageView.tag = MESSAGE_TAG;
-//		[messageView addSubview:timestamp];
+		[messageView addSubview:timestampLabel];
 		[messageView addSubview:background];
 		[messageView addSubview:text];
 		messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[cell.contentView addSubview:messageView];
 
-//		[timestamp release];
+		
 		[background release];
 		[text release];
 		[messageView release];
 	} else {
-//		timestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
+		timestampLabel = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
 		background = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag: BACKGROUND_TAG];
 		text = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
@@ -166,22 +174,21 @@ CGPoint offset;
 	CGSize size = [text.text sizeWithFont: [UIFont systemFontOfSize:14.0]constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
 	UIImage *balloon;
 	if (indexPath.row%2 == 0) {
-		background.frame = CGRectMake(320.0f - (size.width + 28.0f), 2.0f, size.width +28.0f, size.height + 15.0f);
+		background.frame = CGRectMake(320.0f - (size.width + 28.0f), 22.0f, size.width +28.0f, size.height + 15.0f);
 	    background.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		balloon = [[UIImage imageNamed:@"green.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 	
-		text.frame = CGRectMake(307.0f - (size.width + 5.0f), 8.0f, size.width + 5.0f, size.height);
+		text.frame = CGRectMake(307.0f - (size.width + 5.0f), 28.0f, size.width + 5.0f, size.height);
 	    text.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	} else {
-		background.frame = CGRectMake(0.0, 2.0f, size.width +28.0f, size.height + 15.0f);
+		background.frame = CGRectMake(0.0, 22.0f, size.width +28.0f, size.height + 15.0f);
 	    background.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		balloon = [[UIImage imageNamed:@"grey.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
 		
-		text.frame = CGRectMake(16.0f, 8.0f, size.width + 5.0f, size.height);
+		text.frame = CGRectMake(16.0f, 28.0f, size.width + 5.0f, size.height);
 	    text.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	}
 
-//	timestamp.text = @"Jul 10, 2010 11:55 AM";
 	background.image = balloon;
 	
 	return cell;
@@ -219,6 +226,7 @@ CGPoint offset;
 
 - (void)dealloc {
 	//[msg1 release];
+	[timestampLabel release];
 	[tbl release];
 	[messages release];
     [super dealloc];
