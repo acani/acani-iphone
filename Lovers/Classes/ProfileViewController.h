@@ -1,0 +1,4 @@
+@interface ProfileViewController : UIViewController {
+}
+
+@end

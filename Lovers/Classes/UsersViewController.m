@@ -1,4 +1,5 @@
 #import "UsersViewController.h"
+#import "ProfileViewController.h"
 
 #define COOKBOOK_PURPLE_COLOR	[UIColor colorWithRed:0.20392f green:0.19607f blue:0.61176f alpha:1.0f]
 #define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
@@ -16,18 +17,20 @@
 */
 
 - (void) goToProfile: (id) sender {
-//	showAlert(@"You pressed the right button");
+	ProfileViewController *pvc = [[[ProfileViewController alloc] init] autorelease];
+	[self.navigationController pushViewController:pvc animated:YES];
 	NSLog(@"GoToProfile!");
 }
 
 - (void) logout: (id) sender {
-//	showAlert(@"You pressed the left button");
+	// Discoonect
 	NSLog(@"Logout");
 }
 
 - (void)loadView {
 	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Profile", @selector(goToProfile:));
 	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:));
 
