@@ -1,4 +1,7 @@
 #import "PhotoViewController.h"
+#import "ChatViewController.h"
+
+#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
 
 @implementation PhotoViewController
 
@@ -12,9 +15,16 @@
 }
 */
 
+- (void)goToChat:(id)sender {
+	ChatViewController *chatVC = [[[ChatViewController alloc] init] autorelease];
+	[self.navigationController pushViewController:chatVC animated:YES];
+}
+
 - (void)loadView {
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor cyanColor];
+
+	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Chat", @selector(goToChat:));
 
 	self.view = contentView;
 	[contentView release];

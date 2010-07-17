@@ -15,6 +15,7 @@
 		28D7ACF80DDB3853001CB0EB /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* UsersViewController.m */; };
 		C90353BA11EE982500595857 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90353B911EE982500595857 /* ProfileViewController.m */; };
 		C903547111EFD63500595857 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C903547011EFD63500595857 /* PhotoViewController.m */; };
+		C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D3E11F257F000C7C55C /* ChatViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,8 @@
 		C90353B911EE982500595857 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		C903546F11EFD63500595857 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		C903547011EFD63500595857 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		C9700D3D11F257F000C7C55C /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		C9700D3E11F257F000C7C55C /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +55,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C9700D3D11F257F000C7C55C /* ChatViewController.h */,
+				C9700D3E11F257F000C7C55C /* ChatViewController.m */,
 				C90353B811EE982500595857 /* ProfileViewController.h */,
 				C90353B911EE982500595857 /* ProfileViewController.m */,
 				C903546F11EFD63500595857 /* PhotoViewController.h */,
@@ -168,6 +173,7 @@
 				28D7ACF80DDB3853001CB0EB /* UsersViewController.m in Sources */,
 				C90353BA11EE982500595857 /* ProfileViewController.m in Sources */,
 				C903547111EFD63500595857 /* PhotoViewController.m in Sources */,
+				C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
