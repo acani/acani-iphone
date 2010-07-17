@@ -13,6 +13,11 @@
 */
 
 - (void)loadView {
+	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+	contentView.backgroundColor = [UIColor cyanColor];
+
+	self.view = contentView;
+	[contentView release];
 }
 
 /*

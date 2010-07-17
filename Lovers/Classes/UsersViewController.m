@@ -1,5 +1,6 @@
 #import "UsersViewController.h"
 #import "ProfileViewController.h"
+#import "PhotoViewController.h"
 
 #define COOKBOOK_PURPLE_COLOR	[UIColor colorWithRed:0.20392f green:0.19607f blue:0.61176f alpha:1.0f]
 #define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
@@ -17,11 +18,16 @@
 */
 
 - (void)goToProfile:(id)sender {
-	ProfileViewController *pvc = [[[ProfileViewController alloc] init] autorelease];
+	ProfileViewController *profileVC = [[[ProfileViewController alloc] init] autorelease];
 //	[self.navigationController pushViewController:pvc animated:YES];
-	pvc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	[self presentModalViewController:pvc animated:YES];
+	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	[self presentModalViewController:profileVC animated:YES];
 	NSLog(@"GoToProfile!");
+}
+
+- (void)goToPhoto:(id)sender {
+	PhotoViewController *photoVC = [[[PhotoViewController alloc] init] autorelease];
+	[self.navigationController pushViewController:photoVC animated:YES];
 }
 
 - (void)logout:(id)sender {
@@ -44,7 +50,13 @@
     label.center = contentView.center;
 	label.backgroundColor = [UIColor lightGrayColor];
 	label.textAlignment = UITextAlignmentCenter;
-	
+
+	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 120.0f, 44.0f)];
+	[button setTitle:@"Photo View" forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(goToPhoto:) forControlEvents:UIControlEventTouchUpInside];
+	[contentView addSubview:button];
+	[button release];
+
     [contentView addSubview:label];
     [label release];
 

@@ -115,12 +115,12 @@ CGPoint offset;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	    tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
 		Message *msg = [messages objectAtIndex:indexPath.row];
 
 		// Create timestampLabel
-		timestampLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0, 320.0, 16.0)] autorelease];
+		timestampLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)] autorelease];
 		timestampLabel.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		timestampLabel.tag = TIMESTAMP_TAG;
 		timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
@@ -189,11 +189,14 @@ CGPoint offset;
 	return cell;
 }
 
--(CGFloat)tableView: (UITableView*) tableView hightForRowAtIndexPath :(NSIndexPath *)indexPath{
-	Message *msg = [messages objectAtIndex:indexPath.row];
-	NSString *text = msg.text;
-	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-	return size.height + 15;
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//	Message *msg = [messages objectAtIndex:indexPath.row];
+//	NSString *text = msg.text;
+//	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
+//	return size.height + 15;
+//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [indexPath row] * 70;
 }
 
 // Override to allow orientations other than the default portrait orientation.
