@@ -12,8 +12,36 @@
 }
 */
 
+- (void)saveProfile:(id)sender {
+	[[self parentViewController] dismissModalViewControllerAnimated:YES];
+}
+
 - (void)loadView {
-	self.title = @"Profile";
+	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+	contentView.backgroundColor = [UIColor blueColor];
+
+	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
+//	UIBarButtonItem *saveBtn = 
+	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
+	[navBar pushNavigationItem:navItem animated:NO];
+	[contentView addSubview:navBar];
+
+//	// This didn't work, but is it possible to use the UsersViewController's
+//	// navigationController's navBar instead of making a new one?
+//    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
+
+//	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
+//	[button setTitle:@"Save2" forState:UIControlStateNormal];
+//	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
+//	[contentView addSubview:button];
+
+	[navItem release];
+	[navItem.leftBarButtonItem release];
+	[navBar release];
+
+	self.view = contentView;
+	[contentView release];
 }
 
 /*

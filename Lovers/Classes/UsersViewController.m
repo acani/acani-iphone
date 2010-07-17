@@ -18,7 +18,9 @@
 
 - (void) goToProfile: (id) sender {
 	ProfileViewController *pvc = [[[ProfileViewController alloc] init] autorelease];
-	[self.navigationController pushViewController:pvc animated:YES];
+//	[self.navigationController pushViewController:pvc animated:YES];
+	pvc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	[self presentModalViewController:pvc animated:YES];
 	NSLog(@"GoToProfile!");
 }
 

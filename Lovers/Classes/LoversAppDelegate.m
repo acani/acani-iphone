@@ -1,5 +1,6 @@
 #import "LoversAppDelegate.h"
 #import "UsersViewController.h"
+#import "ProfileViewController.h"
 
 @implementation LoversAppDelegate
 
