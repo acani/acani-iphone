@@ -1,6 +1,4 @@
-@interface ProfileViewController : UIViewController {
+@interface ProfileViewController : UITableViewController {
 }
-
-- (IBAction) saveProfile;
 
 @end

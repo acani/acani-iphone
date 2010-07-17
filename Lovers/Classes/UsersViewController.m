@@ -16,7 +16,7 @@
 }
 */
 
-- (void) goToProfile: (id) sender {
+- (void)goToProfile:(id)sender {
 	ProfileViewController *pvc = [[[ProfileViewController alloc] init] autorelease];
 //	[self.navigationController pushViewController:pvc animated:YES];
 	pvc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -24,7 +24,7 @@
 	NSLog(@"GoToProfile!");
 }
 
-- (void) logout: (id) sender {
+- (void)logout:(id)sender {
 	// Discoonect
 	NSLog(@"Logout");
 }
