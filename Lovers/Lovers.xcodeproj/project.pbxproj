@@ -16,6 +16,8 @@
 		C90353BA11EE982500595857 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90353B911EE982500595857 /* ProfileViewController.m */; };
 		C903547111EFD63500595857 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C903547011EFD63500595857 /* PhotoViewController.m */; };
 		C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D3E11F257F000C7C55C /* ChatViewController.m */; };
+		C9700D7311F259F100C7C55C /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7011F259F100C7C55C /* ColorUtils.m */; };
+		C9700D7411F259F100C7C55C /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7211F259F100C7C55C /* Message.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,10 @@
 		C903547011EFD63500595857 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		C9700D3D11F257F000C7C55C /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		C9700D3E11F257F000C7C55C /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		C9700D6F11F259F100C7C55C /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
+		C9700D7011F259F100C7C55C /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
+		C9700D7111F259F100C7C55C /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		C9700D7211F259F100C7C55C /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +63,10 @@
 			children = (
 				C9700D3D11F257F000C7C55C /* ChatViewController.h */,
 				C9700D3E11F257F000C7C55C /* ChatViewController.m */,
+				C9700D6F11F259F100C7C55C /* ColorUtils.h */,
+				C9700D7011F259F100C7C55C /* ColorUtils.m */,
+				C9700D7111F259F100C7C55C /* Message.h */,
+				C9700D7211F259F100C7C55C /* Message.m */,
 				C90353B811EE982500595857 /* ProfileViewController.h */,
 				C90353B911EE982500595857 /* ProfileViewController.m */,
 				C903546F11EFD63500595857 /* PhotoViewController.h */,
@@ -174,6 +184,8 @@
 				C90353BA11EE982500595857 /* ProfileViewController.m in Sources */,
 				C903547111EFD63500595857 /* PhotoViewController.m in Sources */,
 				C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */,
+				C9700D7311F259F100C7C55C /* ColorUtils.m in Sources */,
+				C9700D7411F259F100C7C55C /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
