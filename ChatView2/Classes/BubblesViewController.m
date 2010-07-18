@@ -116,7 +116,7 @@ CGPoint offset;
 //        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	    tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 		Message *msg = [messages objectAtIndex:indexPath.row];
 

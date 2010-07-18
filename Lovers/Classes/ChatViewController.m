@@ -1,16 +1,11 @@
-//
-//  ChatViewController.m
-//  Lovers
-//
-//  Created by Matt Di Pasquale on 7/17/10.
-//  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
-//
-
 #import "ChatViewController.h"
+#import "Message.h"
+#import "ColorUtils.h"
+#include <time.h>
 
+#define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 
 @implementation ChatViewController
-
 
 #pragma mark -
 #pragma mark Initialization
@@ -27,6 +22,11 @@
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)loadView {
+	[super loadView];
+	self.tableView.backgroundColor = [UIColor chatBackgroundColor];
+}
 
 /*
 - (void)viewDidLoad {
@@ -80,19 +80,70 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 1;
+    return 10;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
+	CGFloat height = [indexPath row] * 70;
+	return height;
+} 
+
+
+#define TIMESTAMP_TAG 1
+#define TEXT_TAG 2
+#define BACKGROUND_TAG 3
+#define MESSAGE_TAG 4
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"MessageCell";
-    
+
+	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
+
+//		Message *msg = [messages objectAtIndex:indexPath.row];
+
+		// Create timestampLabel
+		UILabel *timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)];
+		timestampLabel.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
+		timestampLabel.tag = TIMESTAMP_TAG;
+		timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
+		timestampLabel.lineBreakMode = UILineBreakModeTailTruncation;
+		timestampLabel.textAlignment = UITextAlignmentCenter;
+		timestampLabel.textColor = [UIColor darkGrayColor];
+		time_t t;
+		time(&t);
+		timestampLabel.text = [[NSString alloc] initWithFormat:@"%s", ctime(&t)];
+
+
+		//    UIImageView *backgroundImage;
+
+
+//		// Create text		
+//		UILabel *textLabel = [[UILabel alloc] init];
+//		textLabel.tag = TEXT_TAG;
+//		textLabel.backgroundColor = [UIColor clearColor];
+//		textLabel.numberOfLines = 0;
+//		textLabel.lineBreakMode = UILineBreakModeWordWrap;
+//		textLabel.font = [UIFont systemFontOfSize:14.0];
+//		textLabel.text = msg.text;
+		
+	
+		// Create messageView and add to cell
+		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
+	    messageView.tag = MESSAGE_TAG;
+		[messageView addSubview:timestampLabel];
+//		[messageView addSubview:backgroundImage];
+//		[messageView addSubview:textLabel];
+		messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[cell.contentView addSubview:messageView];
+
+		[timestampLabel release];
+		[messageView release];		
+	}
     
     // Configure the cell...
     
