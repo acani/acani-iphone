@@ -13,6 +13,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D7ACF80DDB3853001CB0EB /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* UsersViewController.m */; };
+		9A1B4ED611F39F580018371C /* IRC.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1B4ED511F39F580018371C /* IRC.png */; };
 		C90353BA11EE982500595857 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90353B911EE982500595857 /* ProfileViewController.m */; };
 		C903547111EFD63500595857 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C903547011EFD63500595857 /* PhotoViewController.m */; };
 		C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D3E11F257F000C7C55C /* ChatViewController.m */; };
@@ -32,6 +33,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Lovers-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lovers-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9A1B4ED511F39F580018371C /* IRC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IRC.png; sourceTree = "<group>"; };
 		C90353B811EE982500595857 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		C90353B911EE982500595857 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		C903546F11EFD63500595857 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9A1B4ED511F39F580018371C /* IRC.png */,
 				8D1107310486CEB800E47090 /* Lovers-Info.plist */,
 			);
 			name = Resources;
@@ -168,6 +171,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1B4ED611F39F580018371C /* IRC.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,7 +232,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphonesimulator3.2;
 			};
 			name = Debug;
 		};
@@ -242,7 +246,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphonesimulator3.2;
 			};
 			name = Release;
 		};

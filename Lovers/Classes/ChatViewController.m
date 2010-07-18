@@ -2,6 +2,7 @@
 #import "Message.h"
 #import "ColorUtils.h"
 #include <time.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 
@@ -10,13 +11,13 @@
 #pragma mark -
 #pragma mark Initialization
 
-/*
-- (id)initWithStyle:(UITableViewStyle)style {
-    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    if ((self = [super initWithStyle:style])) {
-    }
-    return self;
-}
+
+//- (id)initWithStyle:(UITableViewStyle)style {
+//    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+//    if ((self = [super initWithStyle:style])) {
+//    }
+//    return self;
+//}
 
 
 #pragma mark -
@@ -26,18 +27,93 @@
 	[super loadView];
 	self.view.backgroundColor = [UIColor chatBackgroundColor];
 
-	UITableView *tableView = [[[UITableView alloc] init] autorelease];
+	// create tableview
+	UITableView *tableView = [[UITableView alloc] init];
 	tableView.frame = CGRectMake(0.0, 0.0, 320,380.0);
-	tableview.delegate = self;
-	tableview.dataSource = self;
-	
-    UIToolbar *toolbar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 380.0, 320.0, 40.0)] autorelease];
-	[self.view addSubview:toolbar];
+	tableView.delegate = self;
+	tableView.dataSource = self;
 	[self.view addSubview:tableView];
+	[tableView release];
 
+	// create toolbar
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 380.0, 320.0, 40.0)];
+	
+	// create textView
+	textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 8.0, 240, 25)];
+	textView.layer.cornerRadius = 15;
+	textView.clipsToBounds = YES;
+	textView.textAlignment = UITextAlignmentCenter;
+	textView.userInteractionEnabled = YES;
+	[toolbar addSubview:textView];
+	[textView release];
 
+	// create send button
+	UIButton *sendButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	sendButton.frame = CGRectMake(260.0f, 7.0f, 40.0f, 26.0f);
+	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
+	sendButton.backgroundColor = [UIColor clearColor];
+	
+	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
+	[sendButton addTarget:self action:NO forControlEvents:UIControlEventTouchUpInside];
+	[toolbar addSubview:sendButton];
+	[sendButton release];
 
+	[self.view addSubview:toolbar];
+	[toolbar release];
 }
+
+//- (void)send:(id)sender {
+//	if (textView.text.length != 0) {
+//		NSLog(@"push function");
+//		Message *mesg2 = [[Message alloc] init];
+//		mesg2.text = textView.text;
+//		//mesg2.timestamp = time(NULL);
+//		mesg2.timestamp = timestampLabel.text;
+//		[messages addObject: mesg2];
+//		[mesg2 release];
+//		[tbl reloadData]; 
+//		textView.text = @""; // clear textView after send
+//		
+//		// Scroll up tableView
+//		NSInteger nSections = [tbl numberOfSections];
+//		NSInteger nRows = [tbl numberOfRowsInSection:nSections - 1];
+//		NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
+//		[tbl scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//	}
+//}
+//
+//-(IBAction) slideFrameUp {
+//	[self slideFrame:YES];
+//}
+//
+//-(IBAction) slideFrameDown {
+//	[self slideFrame:NO];
+//}
+//
+//// Shrink tableView when keyboard pops up
+//-(void) slideFrame:(BOOL) up
+//{
+//	const int movementDistance = 210; // tweak as needed
+//	const float movementDuration = 0.3f; // tweak as needed
+//	
+//	int movement = (up ? -movementDistance : movementDistance);
+//	
+//	[UIView beginAnimations: @"anim" context: nil];
+//	[UIView setAnimationBeginsFromCurrentState: YES];
+//	[UIView setAnimationDuration: movementDuration];
+//	offset = tbl.contentOffset;
+//	CGRect viewFrame = tbl.frame;
+//	viewFrame.size.height += movement;
+//	tbl.frame = viewFrame;
+//	toolBar.frame = CGRectOffset(toolBar.frame, 0, movement);
+//	NSInteger nSections = [tbl numberOfSections];
+//	NSInteger nRows = [tbl numberOfRowsInSection:nSections - 1];
+//	NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
+//	[tbl scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//	[UIView commitAnimations];
+//}
+
+
 
 /*
 - (void)viewDidLoad {
