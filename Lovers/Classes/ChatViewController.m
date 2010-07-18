@@ -17,7 +17,6 @@
     }
     return self;
 }
-*/
 
 
 #pragma mark -
@@ -25,7 +24,19 @@
 
 - (void)loadView {
 	[super loadView];
-	self.tableView.backgroundColor = [UIColor chatBackgroundColor];
+	self.view.backgroundColor = [UIColor chatBackgroundColor];
+
+	UITableView *tableView = [[[UITableView alloc] init] autorelease];
+	tableView.frame = CGRectMake(0.0, 0.0, 320,380.0);
+	tableview.delegate = self;
+	tableview.dataSource = self;
+	
+    UIToolbar *toolbar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 380.0, 320.0, 40.0)] autorelease];
+	[self.view addSubview:toolbar];
+	[self.view addSubview:tableView];
+
+
+
 }
 
 /*

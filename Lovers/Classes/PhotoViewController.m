@@ -16,8 +16,8 @@
 */
 
 - (void)goToChat:(id)sender {
-	ChatViewController *chatVC = [[[ChatViewController alloc] init] autorelease];
-	[self.navigationController pushViewController:chatVC animated:YES];
+	ChatViewController *chatView = [[[ChatViewController alloc] init] autorelease];
+	[self.navigationController pushViewController:chatView animated:YES];
 }
 
 - (void)loadView {
