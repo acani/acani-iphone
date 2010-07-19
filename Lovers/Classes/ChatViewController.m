@@ -5,6 +5,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
+#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
 
 @implementation ChatViewController
 
@@ -19,6 +20,59 @@
 //    return self;
 //}
 
+// Recursively travel down the view tree, increasing the indentation level for children
+- (void) dumpView: (UIView *) aView atIndent: (int) indent into:(NSMutableString *) outstring
+{
+	for (int i = 0; i < indent; i++) [outstring appendString:@"--"];
+	[outstring appendFormat:@"[%2d] %@\n", indent, [[aView class] description]];
+	for (UIView *view in [aView subviews]) [self dumpView:view atIndent:indent + 1 into:outstring];
+}
+
+// Start the tree recursion at level 0 with the root view
+- (NSString *) displayViews: (UIView *) aView
+{
+	NSMutableString *outstring = [[NSMutableString alloc] init];
+	[self dumpView: self.view.window atIndent:0 into:outstring];
+	return [outstring autorelease];
+}
+
+// Show the tree
+- (void) displayViews
+{
+	CFShow([self displayViews: self.view.window]);
+}
+
+
+// Reveal a Done button when editing starts
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", nil);
+}
+
+// Prepare to resize for keyboard
+- (void)keyboardWillShow:(NSNotification *)notification {
+	NSLog(@"runit");
+
+	NSDictionary *userInfo = [notification userInfo];
+	CGRect bounds;
+	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
+	
+	// Resize text view
+	CGRect aFrame = textView.frame;
+	aFrame.size.height -= bounds.size.height;
+	textView.frame = aFrame;
+}
+
+// Expand textview on keyboard dismissal
+- (void)keyboardWillHide:(NSNotification *)notification;
+{
+	NSDictionary *userInfo = [notification userInfo];
+	CGRect bounds;
+	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
+	
+	// Resize text view
+	CGRect aFrame = CGRectMake(0.0f, 0.0f, 320.0f, 416.0f);
+	textView.frame = aFrame;
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -28,8 +82,7 @@
 	self.view.backgroundColor = [UIColor chatBackgroundColor];
 
 	// create tableview
-	UITableView *tableView = [[UITableView alloc] init];
-	tableView.frame = CGRectMake(0.0, 0.0, 320,380.0);
+	UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 380.0)];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	[self.view addSubview:tableView];
@@ -40,6 +93,7 @@
 	
 	// create textView
 	textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 8.0, 240, 25)];
+	textView.delegate = self;
 	textView.layer.cornerRadius = 15;
 	textView.clipsToBounds = YES;
 	textView.textAlignment = UITextAlignmentCenter;
@@ -52,7 +106,6 @@
 	sendButton.frame = CGRectMake(260.0f, 7.0f, 40.0f, 26.0f);
 	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
 	sendButton.backgroundColor = [UIColor clearColor];
-	
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
 	[sendButton addTarget:self action:NO forControlEvents:UIControlEventTouchUpInside];
 	[toolbar addSubview:sendButton];
@@ -60,6 +113,12 @@
 
 	[self.view addSubview:toolbar];
 	[toolbar release];
+	
+//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
+//
+//	// Listen for keyboard
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
 }
 
 //- (void)send:(id)sender {
@@ -310,9 +369,8 @@
 
 
 - (void)dealloc {
-    [super dealloc];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super dealloc];
 }
 
-
 @end
-

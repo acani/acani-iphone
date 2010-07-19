@@ -1,7 +1,5 @@
-@interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
 	UITextView *textView;
 }
-
-//@property (nonatomic, retain) UITextView *textView;
 
 @end
