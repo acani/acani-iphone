@@ -18,6 +18,8 @@
 		C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D3E11F257F000C7C55C /* ChatViewController.m */; };
 		C9700D7311F259F100C7C55C /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7011F259F100C7C55C /* ColorUtils.m */; };
 		C9700D7411F259F100C7C55C /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7211F259F100C7C55C /* Message.m */; };
+		C9D0351B11F475F60092079C /* ChatBubbleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D0351911F475F60092079C /* ChatBubbleGreen.png */; };
+		C9D0351C11F475F60092079C /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D0351A11F475F60092079C /* ChatBubbleGray.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		C9700D7011F259F100C7C55C /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
 		C9700D7111F259F100C7C55C /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		C9700D7211F259F100C7C55C /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		C9D0351911F475F60092079C /* ChatBubbleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBubbleGreen.png; sourceTree = "<group>"; };
+		C9D0351A11F475F60092079C /* ChatBubbleGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBubbleGray.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C9D0351911F475F60092079C /* ChatBubbleGreen.png */,
+				C9D0351A11F475F60092079C /* ChatBubbleGray.png */,
 				8D1107310486CEB800E47090 /* Lovers-Info.plist */,
 			);
 			name = Resources;
@@ -168,6 +174,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9D0351B11F475F60092079C /* ChatBubbleGreen.png in Resources */,
+				C9D0351C11F475F60092079C /* ChatBubbleGray.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

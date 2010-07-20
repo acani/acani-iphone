@@ -2,7 +2,8 @@
 
 @implementation Message
 
-@synthesize text, timestamp;
+@synthesize text;
+@synthesize timestamp;
 //@synthesize sender_id;
 //@synthesize receiver_id;
 

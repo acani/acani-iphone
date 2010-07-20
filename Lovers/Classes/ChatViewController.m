@@ -45,7 +45,9 @@
 
 // Reveal a Done button when editing starts
 - (void)textViewDidBeginEditing:(UITextView *)textView {
+	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", nil);
+	[self slideFrameUp];
 }
 
 // Prepare to resize for keyboard
@@ -79,14 +81,28 @@
 
 - (void)loadView {
 	[super loadView];
-	self.view.backgroundColor = [UIColor chatBackgroundColor];
 
+	// create messages
+	Message *msg1 = [[Message alloc] init];
+	msg1.text = @"text 1";
+	//	msg1.timestamp = 399999;
+	Message *msg2 = [[Message alloc] init];
+	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
+	//	msg2.timestamp = 399999;
+	Message *msg3 = [[Message alloc] init];
+	msg3.text = @"text 3 a shorter message";
+	//	msg2.timestamp = 399999;
+	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, nil];
+	[msg1 release];
+	[msg2 release];
+	
 	// create tableview
-	UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 380.0)];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	[self.view addSubview:tableView];
-	[tableView release];
+	UITableView *chatTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 380.0)];
+	chatTableView.delegate = self;
+	chatTableView.dataSource = self;
+	chatTableView.backgroundColor = [UIColor chatBackgroundColor];
+	[self.view addSubview:chatTableView];
+	[chatTableView release];
 
 	// create toolbar
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 380.0, 320.0, 40.0)];
@@ -114,7 +130,6 @@
 	[self.view addSubview:toolbar];
 	[toolbar release];
 	
-//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
 //
 //	// Listen for keyboard
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
@@ -141,36 +156,29 @@
 //	}
 //}
 //
-//-(IBAction) slideFrameUp {
-//	[self slideFrame:YES];
-//}
-//
-//-(IBAction) slideFrameDown {
-//	[self slideFrame:NO];
-//}
-//
-//// Shrink tableView when keyboard pops up
-//-(void) slideFrame:(BOOL) up
-//{
-//	const int movementDistance = 210; // tweak as needed
-//	const float movementDuration = 0.3f; // tweak as needed
-//	
-//	int movement = (up ? -movementDistance : movementDistance);
-//	
-//	[UIView beginAnimations: @"anim" context: nil];
-//	[UIView setAnimationBeginsFromCurrentState: YES];
-//	[UIView setAnimationDuration: movementDuration];
-//	offset = tbl.contentOffset;
-//	CGRect viewFrame = tbl.frame;
-//	viewFrame.size.height += movement;
-//	tbl.frame = viewFrame;
-//	toolBar.frame = CGRectOffset(toolBar.frame, 0, movement);
-//	NSInteger nSections = [tbl numberOfSections];
-//	NSInteger nRows = [tbl numberOfRowsInSection:nSections - 1];
-//	NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
-//	[tbl scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//	[UIView commitAnimations];
-//}
+-(void) slideFrameUp {
+	[self slideFrame:YES];
+}
+
+-(void) slideFrameDown {
+	[self slideFrame:NO];
+}
+
+// Decrease height of UIView when keyboard pops up
+-(void) slideFrame:(BOOL)up {
+	const int movementDistance = 210; // tweak as needed
+	const float movementDuration = 0.3f; // tweak as needed
+	
+	int movement = (up ? -movementDistance : movementDistance);
+	
+	[UIView beginAnimations: @"anim" context: nil];
+	[UIView setAnimationBeginsFromCurrentState: YES];
+	[UIView setAnimationDuration: movementDuration];
+	CGRect viewFrame = self.view.frame;
+	viewFrame.size.height += movement;
+	self.view.frame = viewFrame;
+	[UIView commitAnimations];
+}
 
 
 
@@ -226,12 +234,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 10;
+    return [messages count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	CGFloat height = [indexPath row] * 70;
-	return height;
+//	CGFloat height = [indexPath row] * 70;
+//	return height;
+	Message *msg = [messages objectAtIndex:indexPath.row];
+	NSString *text = msg.text;
+	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
+	return size.height + 15 + 22;
 } 
 
 
@@ -250,10 +262,10 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 
-//		Message *msg = [messages objectAtIndex:indexPath.row];
+		Message *msg = [messages objectAtIndex:indexPath.row];
 
 		// Create timestampLabel
-		UILabel *timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)];
+		timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)];
 		timestampLabel.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		timestampLabel.tag = TIMESTAMP_TAG;
 		timestampLabel.font = [UIFont boldSystemFontOfSize:12.0];
@@ -264,36 +276,59 @@
 		time(&t);
 		timestampLabel.text = [[NSString alloc] initWithFormat:@"%s", ctime(&t)];
 
+		// Create text		
+		textLabel = [[UILabel alloc] init];
+		textLabel.tag = TEXT_TAG;
+		textLabel.backgroundColor = [UIColor clearColor];
+		textLabel.numberOfLines = 0;
+		textLabel.lineBreakMode = UILineBreakModeWordWrap;
+		textLabel.font = [UIFont systemFontOfSize:14.0];
+		textLabel.text = msg.text; // @"This is just a hard-coded message.";
 
-		//    UIImageView *backgroundImage;
 
+		// Create background
+		backgroundImageView = [[UIImageView alloc] init];
+		backgroundImageView.tag = BACKGROUND_TAG;
 
-//		// Create text		
-//		UILabel *textLabel = [[UILabel alloc] init];
-//		textLabel.tag = TEXT_TAG;
-//		textLabel.backgroundColor = [UIColor clearColor];
-//		textLabel.numberOfLines = 0;
-//		textLabel.lineBreakMode = UILineBreakModeWordWrap;
-//		textLabel.font = [UIFont systemFontOfSize:14.0];
-//		textLabel.text = msg.text;
-		
-	
+		CGSize size = [textLabel.text sizeWithFont: [UIFont systemFontOfSize:14.0]constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
+		UIImage *balloon;
+		if (indexPath.row%2 == 0) {
+			backgroundImageView.frame = CGRectMake(320.0f - (size.width + 28.0f), 22.0f, size.width +28.0f, size.height + 15.0f);
+			backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+			balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
+			
+			textLabel.frame = CGRectMake(307.0f - (size.width + 5.0f), 28.0f, size.width + 5.0f, size.height);
+			textLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+		} else {
+			backgroundImageView.frame = CGRectMake(0.0, 22.0f, size.width +28.0f, size.height + 15.0f);
+			backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+			balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
+			
+			textLabel.frame = CGRectMake(16.0f, 28.0f, size.width + 5.0f, size.height);
+			textLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+		}
+
+		backgroundImageView.image = balloon;
+
 		// Create messageView and add to cell
 		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
 	    messageView.tag = MESSAGE_TAG;
 		[messageView addSubview:timestampLabel];
-//		[messageView addSubview:backgroundImage];
-//		[messageView addSubview:textLabel];
+		[messageView addSubview:backgroundImageView];
+		[messageView addSubview:textLabel];
 		messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[cell.contentView addSubview:messageView];
-
+		
 		[timestampLabel release];
-		[messageView release];		
+		[backgroundImageView release];
+		[textLabel release];
+		[messageView release];
+	} else {
+		timestampLabel = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
+		backgroundImageView = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag: BACKGROUND_TAG];
+		textLabel = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
-    
-    // Configure the cell...
-    
-    return cell;
+	return cell;
 }
 
 
