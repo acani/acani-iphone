@@ -4,6 +4,9 @@
 	UILabel *timestampLabel;
 	UIImageView *backgroundImageView;
 	UILabel *textLabel;
+	
+	UITableView *chatTableView;
+	UIToolbar *toolbar;
 }
 
 @end

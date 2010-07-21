@@ -24,7 +24,7 @@
 - (void) dumpView: (UIView *) aView atIndent: (int) indent into:(NSMutableString *) outstring
 {
 	for (int i = 0; i < indent; i++) [outstring appendString:@"--"];
-	[outstring appendFormat:@"[%2d] %@\n", indent, [[aView class] description]];
+	[outstring appendFormat:@"[%2d] %@ - (%f, %f) - %f x %f \n", indent, [[aView class] description], aView.frame.origin.x, aView.frame.origin.y, aView.bounds.size.width, aView.bounds.size.height];
 	for (UIView *view in [aView subviews]) [self dumpView:view atIndent:indent + 1 into:outstring];
 }
 
@@ -42,11 +42,15 @@
 	CFShow([self displayViews: self.view.window]);
 }
 
+- (void)done:(id)sender {
+	[textView resignFirstResponder]; // temporary
+	[self slideFrameDown];
+}
 
 // Reveal a Done button when editing starts
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
-	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", nil);
+	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", @selector(done:));
 	[self slideFrameUp];
 }
 
@@ -91,22 +95,40 @@
 	//	msg2.timestamp = 399999;
 	Message *msg3 = [[Message alloc] init];
 	msg3.text = @"text 3 a shorter message";
-	//	msg2.timestamp = 399999;
-	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, nil];
+	//	msg3.timestamp = 399999;
+	Message *msg4 = [[Message alloc] init];
+	msg4.text = @"text 4 i want to add more messages here to see if the table view collapses nicely";
+	//	msg4.timestamp = 399999;
+	Message *msg5 = [[Message alloc] init];
+	msg5.text = @"text 5 does it scroll well too?";
+	//	msg5.timestamp = 399999;
+	Message *msg6 = [[Message alloc] init];
+	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
+	//	msg6.timestamp = 399999;
+	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
 	[msg1 release];
 	[msg2 release];
-	
+
+	CGFloat viewWidth = self.view.frame.size.width;
+	CGFloat viewHeight = self.view.frame.size.height;
+	CGFloat tbHeight = 40.0; // toolbar height
+
+	NSLog(@"view.frame.size: %f x %f", viewWidth, viewHeight);
+
 	// create tableview
-	UITableView *chatTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 380.0)];
+	chatTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight - tbHeight)];
 	chatTableView.delegate = self;
 	chatTableView.dataSource = self;
 	chatTableView.backgroundColor = [UIColor chatBackgroundColor];
+	chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	chatTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:chatTableView];
 	[chatTableView release];
 
 	// create toolbar
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 380.0, 320.0, 40.0)];
-	
+	toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, viewHeight - tbHeight, viewWidth, tbHeight)];	
+	toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+
 	// create textView
 	textView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 8.0, 240, 25)];
 	textView.delegate = self;
@@ -123,7 +145,7 @@
 	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
-	[sendButton addTarget:self action:NO forControlEvents:UIControlEventTouchUpInside];
+	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
 	[toolbar addSubview:sendButton];
 	[sendButton release];
 
@@ -136,26 +158,28 @@
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
 }
 
-//- (void)send:(id)sender {
-//	if (textView.text.length != 0) {
-//		NSLog(@"push function");
-//		Message *mesg2 = [[Message alloc] init];
-//		mesg2.text = textView.text;
-//		//mesg2.timestamp = time(NULL);
-//		mesg2.timestamp = timestampLabel.text;
-//		[messages addObject: mesg2];
-//		[mesg2 release];
-//		[tbl reloadData]; 
-//		textView.text = @""; // clear textView after send
-//		
-//		// Scroll up tableView
-//		NSInteger nSections = [tbl numberOfSections];
-//		NSInteger nRows = [tbl numberOfRowsInSection:nSections - 1];
-//		NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
-//		[tbl scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//	}
-//}
-//
+- (void)sendMSG:(id)sender {
+	if (textView.text.length != 0) {
+		NSLog(@"push function");
+		Message *msg = [[Message alloc] init];
+		msg.text = textView.text;
+		//mesg2.timestamp = time(NULL);
+		time_t t;
+		time(&t);
+		msg.timestamp = ctime(&t);
+		[messages addObject: msg];
+		[msg release];
+		[chatTableView reloadData]; 
+		textView.text = @""; // clear textView after send
+
+		// Scroll up tableView
+		NSInteger nSections = [chatTableView numberOfSections];
+		NSInteger nRows = [chatTableView numberOfRowsInSection:nSections - 1];
+		NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
+		[chatTableView scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
+}
+
 -(void) slideFrameUp {
 	[self slideFrame:YES];
 }
@@ -166,18 +190,29 @@
 
 // Decrease height of UIView when keyboard pops up
 -(void) slideFrame:(BOOL)up {
-	const int movementDistance = 210; // tweak as needed
+	const int movementDistance = 216; // tweak as needed
 	const float movementDuration = 0.3f; // tweak as needed
 	
 	int movement = (up ? -movementDistance : movementDistance);
 	
-	[UIView beginAnimations: @"anim" context: nil];
-	[UIView setAnimationBeginsFromCurrentState: YES];
-	[UIView setAnimationDuration: movementDuration];
+	NSLog(@"self.view.frame.size = %f x %f", self.view.frame.size.width, self.view.frame.size.height);
+	NSLog(@"chatTableView.superview = %@", [[chatTableView.superview class] description]);
+
+	[UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];	
+//	toolbar.frame = CGRectMake(0, 156, 320, 44);
+//	chatTableView.frame = CGRectMake(0, 0, 320, 156);
 	CGRect viewFrame = self.view.frame;
-	viewFrame.size.height += movement;
-	self.view.frame = viewFrame;
-	[UIView commitAnimations];
+	viewFrame.size.height += movement;	
+	self.view.frame = viewFrame; // CGRectMake(0, 0, 320.0, 220.0);	
+	[UIView commitAnimations];	
+	
+	if([messages count] > 0)
+	{
+		NSUInteger index = [messages count] - 1;
+		[chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+	}
+	
 }
 
 
@@ -261,6 +296,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone; // necessary?
 
 		Message *msg = [messages objectAtIndex:indexPath.row];
 
