@@ -118,6 +118,7 @@
 
 	// create tableview
 	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight - chatFooterHeight)];
+	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
 	chatContent.backgroundColor = [UIColor chatBackgroundColor];
@@ -128,10 +129,12 @@
 
 	// create toolbar
 	chatFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, viewHeight - chatFooterHeight, viewWidth, chatFooterHeight)];
+	chatFooter.clearsContextBeforeDrawing = NO;
 	chatFooter.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 
 	// create textView
 	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 6.0, 240.0, 22.0)];
+	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.delegate = self;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
@@ -143,6 +146,7 @@
 
 	// create send button
 	UIButton *sendButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	sendButton.clearsContextBeforeDrawing = NO;
 	sendButton.frame = CGRectMake(270.0, 5.0, 40.0, 24.0);
 	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
 	sendButton.backgroundColor = [UIColor clearColor];
@@ -162,23 +166,16 @@
 
 - (void)sendMSG:(id)sender {
 	if (chatInput.text.length != 0) {
-		NSLog(@"push function");
 		Message *msg = [[Message alloc] init];
 		msg.text = chatInput.text;
-		//mesg2.timestamp = time(NULL);
-		time_t t;
-		time(&t);
+		time_t t; time(&t);
 		msg.timestamp = ctime(&t);
 		[storedMsgs addObject: msg];
 		[msg release];
-		[chatContent reloadData]; 
-		chatInput.text = @""; // clear textView after send
-
-		// Scroll up tableView
-		NSInteger nSections = [chatContent numberOfSections];
-		NSInteger nRows = [chatContent numberOfRowsInSection:nSections - 1];
-		NSIndexPath * indexPath = [NSIndexPath indexPathForRow:nRows - 1 inSection:nSections - 1];
-		[chatContent scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		[chatContent reloadData];
+		NSUInteger index = [storedMsgs count] - 1;
+		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		chatInput.text = @"";
 	}
 }
 
@@ -190,30 +187,24 @@
 	[self slideFrame:NO];
 }
 
-// Decrease height of UIView when keyboard pops up
+// Shorten height of UIView when keyboard pops up
 -(void) slideFrame:(BOOL)up {
 	const int movementDistance = 216; // set to keyboard variable	
 	int movement = (up ? -movementDistance : movementDistance);
-	
-	NSLog(@"self.view.frame.size = %f x %f", self.view.frame.size.width, self.view.frame.size.height);
-	NSLog(@"chatContent.superview = %@", [[chatContent.superview class] description]);
 
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];	
 	CGRect viewFrame = self.view.frame;
 	viewFrame.size.height += movement;	
-	self.view.frame = viewFrame; // CGRectMake(0, 0, 320.0, 220.0);	
+	self.view.frame = viewFrame;
 	[UIView commitAnimations];	
 	
-	if([storedMsgs count] > 0)
-	{
+	if([storedMsgs count] > 0) {
 		NSUInteger index = [storedMsgs count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}
 	
 }
-
-
 
 /*
 - (void)viewDidLoad {
@@ -296,10 +287,9 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone; // necessary?
 
-		Message *msg = [storedMsgs objectAtIndex:indexPath.row];
-
 		// Create message timestamp lable
 		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)];
+		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		msgTimestamp.tag = TIMESTAMP_TAG;
 		msgTimestamp.font = [UIFont boldSystemFontOfSize:12.0];
@@ -312,41 +302,21 @@
 
 		// Create text		
 		msgText = [[UILabel alloc] init];
+		msgText.clearsContextBeforeDrawing = NO;
 		msgText.tag = TEXT_TAG;
 		msgText.backgroundColor = [UIColor clearColor];
 		msgText.numberOfLines = 0;
 		msgText.lineBreakMode = UILineBreakModeWordWrap;
 		msgText.font = [UIFont systemFontOfSize:14.0];
-		msgText.text = msg.text; // @"This is just a hard-coded message.";
-
 
 		// Create background
 		msgBackground = [[UIImageView alloc] init];
+		msgBackground.clearsContextBeforeDrawing = NO;
 		msgBackground.tag = BACKGROUND_TAG;
-
-		CGSize size = [msgText.text sizeWithFont: [UIFont systemFontOfSize:14.0]constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-		UIImage *balloon;
-		if (indexPath.row%2 == 0) {
-			msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), 22.0f, size.width +28.0f, size.height + 15.0f);
-			msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-			balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
-			
-			msgText.frame = CGRectMake(307.0f - (size.width + 5.0f), 28.0f, size.width + 5.0f, size.height);
-			msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		} else {
-			msgBackground.frame = CGRectMake(0.0, 22.0f, size.width +28.0f, size.height + 15.0f);
-			msgBackground.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-			balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
-			
-			msgText.frame = CGRectMake(16.0f, 28.0f, size.width + 5.0f, size.height);
-			msgText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-		}
-
-		msgBackground.image = balloon;
 
 		// Create messageView and add to cell
 		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
-	    messageView.tag = MESSAGE_TAG;
+		messageView.tag = MESSAGE_TAG;
 		[messageView addSubview:msgTimestamp];
 		[messageView addSubview:msgBackground];
 		[messageView addSubview:msgText];
@@ -356,12 +326,47 @@
 		[msgTimestamp release];
 		[msgBackground release];
 		[msgText release];
-		[messageView release];
+		[messageView release];		
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
 		msgBackground = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag: BACKGROUND_TAG];
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
+
+	Message *msg = [storedMsgs objectAtIndex:indexPath.row];
+	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
+	
+	UIImage *balloon;
+	
+	if (indexPath.row % 2 == 0) {
+		msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), 22.0f, size.width + 28.0f, size.height + 15.0f);
+		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
+		
+		msgText.frame = CGRectMake(307.0f - (size.width + 5.0f), 28.0f, size.width + 5.0f, size.height);
+		msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+	} else {
+		msgBackground.frame = CGRectMake(0.0, 22.0f, size.width +28.0f, size.height + 15.0f);
+		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
+		
+		msgText.frame = CGRectMake(16.0f, 28.0f, size.width + 5.0f, size.height);
+		msgText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	}
+	
+	//		if(indexPath.row % 2 == 0) {
+	//			msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), 2.0f, size.width + 28.0f, size.height + 15.0f);
+	//			balloon = [[UIImage imageNamed:@"green.png"] stretchableImageWithLeftCapWidth:24 topCapHeight:15];
+	//			msgText.frame = CGRectMake(307.0f - (size.width + 5.0f), 8.0f, size.width + 5.0f, size.height);
+	//		} else {
+	//			msgBackground.frame = CGRectMake(0.0, 2.0, size.width + 28, size.height + 15);
+	//			balloon = [[UIImage imageNamed:@"grey.png"] stretchableImageWithLeftCapWidth:24 topCapHeight:15];
+	//			msgText.frame = CGRectMake(16, 8, size.width + 5, size.height);
+	//		}
+	
+	msgBackground.image = balloon;
+	msgText.text = msg.text;
+
 	return cell;
 }
 
