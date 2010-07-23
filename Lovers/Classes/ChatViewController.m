@@ -87,37 +87,38 @@
 - (void)loadView {
 	[super loadView];
 
-	// create storedMsgs
+	// create messages
+	time_t now; time(&now);
 	Message *msg1 = [[Message alloc] init];
 	msg1.text = @"text 1";
-	//	msg1.timestamp = 399999;
+	msg1.timestamp = now - 10000;
 	Message *msg2 = [[Message alloc] init];
 	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
-	//	msg2.timestamp = 399999;
+	msg2.timestamp = now - 9000;
 	Message *msg3 = [[Message alloc] init];
 	msg3.text = @"text 3 a shorter message";
-	//	msg3.timestamp = 399999;
+	msg3.timestamp = now - 7200;
 	Message *msg4 = [[Message alloc] init];
-	msg4.text = @"text 4 i want to add more storedMsgs here to see if the table view collapses nicely";
-	//	msg4.timestamp = 399999;
+	msg4.text = @"text 4 i want to add more messages here to see if the table view collapses nicely";
+	msg4.timestamp = now - 4000;
 	Message *msg5 = [[Message alloc] init];
 	msg5.text = @"text 5 does it scroll well too?";
-	//	msg5.timestamp = 399999;
+	msg5.timestamp = now - 2000;
 	Message *msg6 = [[Message alloc] init];
 	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
-	//	msg6.timestamp = 399999;
-	storedMsgs = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
+	msg6.timestamp = now - 1500;
+	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
 	[msg1 release];
 	[msg2 release];
 
 	CGFloat viewWidth = self.view.frame.size.width;
 	CGFloat viewHeight = self.view.frame.size.height;
-	CGFloat chatFooterHeight = 33.0f;
+	CGFloat chatToolbarHeight = 33.0f;
 
 	NSLog(@"view.frame.size: %f x %f", viewWidth, viewHeight);
 
 	// create tableview
-	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatFooterHeight)];
+	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatToolbarHeight)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
@@ -128,9 +129,9 @@
 	[chatContent release];
 
 	// create toolbar
-	chatFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatFooterHeight, viewWidth, chatFooterHeight)];
-	chatFooter.clearsContextBeforeDrawing = NO;
-	chatFooter.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	chatToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatToolbarHeight, viewWidth, chatToolbarHeight)];
+	chatToolbar.clearsContextBeforeDrawing = NO;
+	chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 
 	// create textView
 	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0f, 6.0f, 240.0f, 22.0f)];
@@ -141,7 +142,7 @@
 	chatInput.layer.cornerRadius = 12;
 	chatInput.clipsToBounds = YES;
 	chatInput.userInteractionEnabled = YES;
-	[chatFooter addSubview:chatInput];
+	[chatToolbar addSubview:chatInput];
 	[chatInput release];
 
 	// create send button
@@ -152,11 +153,11 @@
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
 	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
-	[chatFooter addSubview:sendButton];
+	[chatToolbar addSubview:sendButton];
 	[sendButton release];
 
-	[self.view addSubview:chatFooter];
-	[chatFooter release];
+	[self.view addSubview:chatToolbar];
+	[chatToolbar release];
 	
 //
 //	// Listen for keyboard
@@ -168,12 +169,12 @@
 	if (chatInput.text.length != 0) {
 		Message *msg = [[Message alloc] init];
 		msg.text = chatInput.text;
-		time_t t; time(&t);
-		msg.timestamp = ctime(&t);
-		[storedMsgs addObject: msg];
+		time_t now; time(&now);
+		msg.timestamp = now;
+		[messages addObject: msg];
 		[msg release];
 		[chatContent reloadData];
-		NSUInteger index = [storedMsgs count] - 1;
+		NSUInteger index = [messages count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		chatInput.text = @"";
 	}
@@ -199,8 +200,8 @@
 	self.view.frame = viewFrame;
 	[UIView commitAnimations];	
 	
-	if([storedMsgs count] > 0) {
-		NSUInteger index = [storedMsgs count] - 1;
+	if([messages count] > 0) {
+		NSUInteger index = [messages count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}
 	
@@ -258,7 +259,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [storedMsgs count];
+    return [messages count];
 }
 
 
@@ -267,7 +268,7 @@
 #define BACKGROUND_TAG 3
 #define MESSAGE_TAG 4
 
-CGFloat msgTimestampHeight = 24.0f; // 24.0f;
+CGFloat msgTimestampHeight = 22.0f; // 24.0f;
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -277,20 +278,17 @@ CGFloat msgTimestampHeight = 24.0f; // 24.0f;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-//		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
 		// Create message timestamp lable
-		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 6.0, 320.0, 14.0)];
+		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)];
 		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.tag = TIMESTAMP_TAG;
-		msgTimestamp.font = [UIFont boldSystemFontOfSize:12.0];
+		msgTimestamp.font = [UIFont boldSystemFontOfSize:12.0f];
 		msgTimestamp.lineBreakMode = UILineBreakModeTailTruncation;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
 		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		msgTimestamp.textColor = [UIColor darkGrayColor];
-		time_t t;
-		time(&t);
-		msgTimestamp.text = [[NSString alloc] initWithFormat:@"%s", ctime(&t)];
 
 		// Create text		
 		msgText = [[UILabel alloc] init];
@@ -325,47 +323,44 @@ CGFloat msgTimestampHeight = 24.0f; // 24.0f;
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
-	Message *msg = [storedMsgs objectAtIndex:indexPath.row];
+	Message *msg = [messages objectAtIndex:indexPath.row];
 	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UIImage *balloon;
 
 	if (indexPath.row % 2 == 0) {
 		msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
-		
 		msgText.frame = CGRectMake(305.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
-		msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	} else {
 		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
-		
 		msgText.frame = CGRectMake(22.0f, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
-		msgText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	}
-	
-	//		if(indexPath.row % 2 == 0) {
-	//			msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), 2.0f, size.width + 28.0f, size.height + 15.0f);
-	//			balloon = [[UIImage imageNamed:@"green.png"] stretchableImageWithLeftCapWidth:24 topCapHeight:15];
-	//			msgText.frame = CGRectMake(307.0f - (size.width + 5.0f), 8.0f, size.width + 5.0f, size.height);
-	//		} else {
-	//			msgBackground.frame = CGRectMake(0.0, 2.0, size.width + 28, size.height + 15);
-	//			balloon = [[UIImage imageNamed:@"grey.png"] stretchableImageWithLeftCapWidth:24 topCapHeight:15];
-	//			msgText.frame = CGRectMake(16, 8, size.width + 5, size.height);
-	//		}
-	
+
 	msgBackground.image = balloon;
 	msgText.text = msg.text;
+	
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
+	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
+	
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:msg.timestamp];
+	
+	NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
+	[dateFormatter setLocale:usLocale];
+	[usLocale release];
+
+	msgTimestamp.text = [dateFormatter stringFromDate:date];
+	[dateFormatter release];
 
 	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	Message *msg = [storedMsgs objectAtIndex:indexPath.row];
+	Message *msg = [messages objectAtIndex:indexPath.row];
 	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-	return size.height + 22.0f + msgTimestampHeight/2.0f;
+	return size.height + 22.0f + msgTimestampHeight;
 } 
 
 /*

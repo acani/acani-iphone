@@ -1,12 +1,12 @@
 @interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
-	NSMutableArray *storedMsgs;
+	NSMutableArray *messages;
 
 	UITableView *chatContent;
 		UILabel *msgTimestamp;
 		UIImageView *msgBackground;
 		UILabel *msgText;
 
-	UIToolbar *chatFooter;
+	UIToolbar *chatToolbar;
 		UITextView *chatInput;
 }
 

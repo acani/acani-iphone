@@ -1,7 +1,17 @@
-Today:
-	- Return key makes newline
-	- Post timestamp to MessageView
-	- Create & use message objects
+Current:
+	Chat:
+		Message:
+			- Give timestamp
+			- If timestamp != NULL, fix layout
+		Server:
+		ChatView:
+			chatInput:
+				- Scroll to top
+				- Expands to 3 lines with chatToolbar
+			orientations:
+				- Show in horizontal orientation. See SMS Bubbles app.
+Backlog:
+	- Tap and hold (or double-tap) on table-cell highlights msgText for copying
 	- Clicking on TableView minimizes keyboard
 
 Continuous Integration:
