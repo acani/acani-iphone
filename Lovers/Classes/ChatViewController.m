@@ -52,7 +52,16 @@
 	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", @selector(done:));
 	[self slideFrameUp];
-	[textView scrollRangeToVisible:NSMakeRange(0,0)];
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+	if (textView.text.length == 0) {
+		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix bug, but is there a better way to fix this?
+		// contentOffset never changes. It's something else. What is it?
+//		NSLog(@"%f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
+//		NSLog(@"(%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
+//		NSLog(@"%f x %f", chatInput.contentSize.width, chatInput.contentSize.height);
+	}
 }
 
 // Prepare to resize for keyboard
@@ -135,6 +144,7 @@
 
 	// create textView
 	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0f, 6.0f, 240.0f, 22.0f)];
+	chatInput.scrollEnabled = NO; // not initially
 	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.delegate = self;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
@@ -142,6 +152,7 @@
 	chatInput.layer.cornerRadius = 12;
 	chatInput.clipsToBounds = YES;
 	chatInput.userInteractionEnabled = YES;
+	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 	[chatToolbar addSubview:chatInput];
 	[chatInput release];
 
