@@ -112,12 +112,12 @@
 
 	CGFloat viewWidth = self.view.frame.size.width;
 	CGFloat viewHeight = self.view.frame.size.height;
-	CGFloat chatFooterHeight = 33.0;
+	CGFloat chatFooterHeight = 33.0f;
 
 	NSLog(@"view.frame.size: %f x %f", viewWidth, viewHeight);
 
 	// create tableview
-	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight - chatFooterHeight)];
+	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatFooterHeight)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
@@ -128,12 +128,12 @@
 	[chatContent release];
 
 	// create toolbar
-	chatFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, viewHeight - chatFooterHeight, viewWidth, chatFooterHeight)];
+	chatFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatFooterHeight, viewWidth, chatFooterHeight)];
 	chatFooter.clearsContextBeforeDrawing = NO;
 	chatFooter.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 
 	// create textView
-	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0, 6.0, 240.0, 22.0)];
+	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0f, 6.0f, 240.0f, 22.0f)];
 	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.delegate = self;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
@@ -147,7 +147,7 @@
 	// create send button
 	UIButton *sendButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	sendButton.clearsContextBeforeDrawing = NO;
-	sendButton.frame = CGRectMake(270.0, 5.0, 40.0, 24.0);
+	sendButton.frame = CGRectMake(270.0f, 5.0f, 40.0f, 24.0f);
 	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
@@ -261,40 +261,32 @@
     return [storedMsgs count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-//	CGFloat height = [indexPath row] * 70;
-//	return height;
-	Message *msg = [storedMsgs objectAtIndex:indexPath.row];
-	NSString *text = msg.text;
-	CGSize size = [text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-	return size.height + 15 + 22;
-} 
-
 
 #define TIMESTAMP_TAG 1
 #define TEXT_TAG 2
 #define BACKGROUND_TAG 3
 #define MESSAGE_TAG 4
 
+CGFloat msgTimestampHeight = 24.0f; // 24.0f;
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"MessageCell";
-
 	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.selectionStyle = UITableViewCellSelectionStyleNone; // necessary?
+//		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
 		// Create message timestamp lable
-		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 4.0, 320.0, 16.0)];
+		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 6.0, 320.0, 14.0)];
 		msgTimestamp.clearsContextBeforeDrawing = NO;
-		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		msgTimestamp.tag = TIMESTAMP_TAG;
 		msgTimestamp.font = [UIFont boldSystemFontOfSize:12.0];
 		msgTimestamp.lineBreakMode = UILineBreakModeTailTruncation;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
+		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
 		msgTimestamp.textColor = [UIColor darkGrayColor];
 		time_t t;
 		time(&t);
@@ -337,20 +329,20 @@
 	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UIImage *balloon;
-	
+
 	if (indexPath.row % 2 == 0) {
-		msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), 22.0f, size.width + 28.0f, size.height + 15.0f);
+		msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 		
-		msgText.frame = CGRectMake(307.0f - (size.width + 5.0f), 28.0f, size.width + 5.0f, size.height);
+		msgText.frame = CGRectMake(305.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 		msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	} else {
-		msgBackground.frame = CGRectMake(0.0, 22.0f, size.width +28.0f, size.height + 15.0f);
+		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
 		
-		msgText.frame = CGRectMake(16.0f, 28.0f, size.width + 5.0f, size.height);
+		msgText.frame = CGRectMake(22.0f, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 		msgText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	}
 	
@@ -370,6 +362,11 @@
 	return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
+	Message *msg = [storedMsgs objectAtIndex:indexPath.row];
+	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
+	return size.height + 22.0f + msgTimestampHeight/2.0f;
+} 
 
 /*
 // Override to support conditional editing of the table view.
