@@ -42,16 +42,15 @@
 	CFShow([self displayViews: self.view.window]);
 }
 
+//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
+
 - (void)done:(id)sender {
 	[chatInput resignFirstResponder]; // temporary
-	[self slideFrameDown];
 }
 
 // Reveal a Done button when editing starts
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", @selector(done:));
-	[self slideFrameUp];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -66,28 +65,30 @@
 
 // Prepare to resize for keyboard
 - (void)keyboardWillShow:(NSNotification *)notification {
-	NSLog(@"runit");
-
-	NSDictionary *userInfo = [notification userInfo];
-	CGRect bounds;
-	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
+//	NSDictionary *userInfo = [notification userInfo];
+//	CGRect bounds;
+//	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
 	
-	// Resize text view
-	CGRect aFrame = chatInput.frame;
-	aFrame.size.height -= bounds.size.height;
-	chatInput.frame = aFrame;
+//	// Resize text view
+//	CGRect aFrame = chatInput.frame;
+//	aFrame.size.height -= bounds.size.height;
+//	chatInput.frame = aFrame;
+
+	[self slideFrameUp];
+	// These methods can do better.
+	// They should check for version of iPhone OS.
+	// And use appropriate methods to determine:
+	//   animation movement, speed, duration, etc.
 }
 
 // Expand textview on keyboard dismissal
 - (void)keyboardWillHide:(NSNotification *)notification;
 {
-	NSDictionary *userInfo = [notification userInfo];
-	CGRect bounds;
-	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
-	
-	// Resize text view
-	CGRect aFrame = CGRectMake(0.0f, 0.0f, 320.0f, 416.0f);
-	chatInput.frame = aFrame;
+//	NSDictionary *userInfo = [notification userInfo];
+//	CGRect bounds;
+//	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
+
+	[self slideFrameDown];
 }
 
 #pragma mark -
@@ -98,12 +99,13 @@
 
 	// create messages
 	time_t now; time(&now);
+	latestTimestamp = 0;
 	Message *msg1 = [[Message alloc] init];
 	msg1.text = @"text 1";
 	msg1.timestamp = now - 10000;
 	Message *msg2 = [[Message alloc] init];
 	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
-	msg2.timestamp = now - 9000;
+	msg2.timestamp = 0;
 	Message *msg3 = [[Message alloc] init];
 	msg3.text = @"text 3 a shorter message";
 	msg3.timestamp = now - 7200;
@@ -116,9 +118,16 @@
 	Message *msg6 = [[Message alloc] init];
 	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
 	msg6.timestamp = now - 1500;
+
+	latestTimestamp = msg6.timestamp;
+
 	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
 	[msg1 release];
 	[msg2 release];
+	[msg3 release];
+	[msg4 release];
+	[msg5 release];
+	[msg6 release];
 
 	CGFloat viewWidth = self.view.frame.size.width;
 	CGFloat viewHeight = self.view.frame.size.height;
@@ -170,10 +179,10 @@
 	[self.view addSubview:chatToolbar];
 	[chatToolbar release];
 	
-//
-//	// Listen for keyboard
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+
+	// Listen for keyboard
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)sendMSG:(id)sender {
@@ -181,7 +190,11 @@
 		Message *msg = [[Message alloc] init];
 		msg.text = chatInput.text;
 		time_t now; time(&now);
-		msg.timestamp = now;
+		if (now < latestTimestamp+780) { // show timestamp every 15 mins
+			msg.timestamp = 0;
+		} else {
+			msg.timestamp = latestTimestamp = now;
+		}
 		[messages addObject: msg];
 		[msg release];
 		[chatContent reloadData];
@@ -279,19 +292,23 @@
 #define BACKGROUND_TAG 3
 #define MESSAGE_TAG 4
 
-CGFloat msgTimestampHeight = 22.0f; // 24.0f;
+CGFloat msgTimestampHeight;
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+	Message *msg = [messages objectAtIndex:indexPath.row];
+
     static NSString *CellIdentifier = @"MessageCell";
-	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-		// Create message timestamp lable
+		// Create messageView to contain subviews (boosts scrolling performance)
+		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
+		messageView.tag = MESSAGE_TAG;
+		
+		// Create message timestamp lable if appropriate
 		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)];
 		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.tag = TIMESTAMP_TAG;
@@ -299,9 +316,18 @@ CGFloat msgTimestampHeight = 22.0f; // 24.0f;
 		msgTimestamp.lineBreakMode = UILineBreakModeTailTruncation;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
 		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
-		msgTimestamp.textColor = [UIColor darkGrayColor];
+		msgTimestamp.textColor = [UIColor darkGrayColor];			
+		[messageView addSubview:msgTimestamp];
+		[msgTimestamp release];
 
-		// Create text		
+		// Create message background image view
+		msgBackground = [[UIImageView alloc] init];
+		msgBackground.clearsContextBeforeDrawing = NO;
+		msgBackground.tag = BACKGROUND_TAG;
+		[messageView addSubview:msgBackground];
+		[msgBackground release];
+
+		// Create message text label
 		msgText = [[UILabel alloc] init];
 		msgText.clearsContextBeforeDrawing = NO;
 		msgText.tag = TEXT_TAG;
@@ -309,24 +335,10 @@ CGFloat msgTimestampHeight = 22.0f; // 24.0f;
 		msgText.numberOfLines = 0;
 		msgText.lineBreakMode = UILineBreakModeWordWrap;
 		msgText.font = [UIFont systemFontOfSize:14.0];
-
-		// Create background
-		msgBackground = [[UIImageView alloc] init];
-		msgBackground.clearsContextBeforeDrawing = NO;
-		msgBackground.tag = BACKGROUND_TAG;
-
-		// Create messageView and add to cell
-		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
-		messageView.tag = MESSAGE_TAG;
-		[messageView addSubview:msgTimestamp];
-		[messageView addSubview:msgBackground];
 		[messageView addSubview:msgText];
-		messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[cell.contentView addSubview:messageView];
-		
-		[msgTimestamp release];
-		[msgBackground release];
 		[msgText release];
+		
+		[cell.contentView addSubview:messageView];
 		[messageView release];		
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
@@ -334,7 +346,25 @@ CGFloat msgTimestampHeight = 22.0f; // 24.0f;
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
-	Message *msg = [messages objectAtIndex:indexPath.row];
+	if (msg.timestamp) {
+		msgTimestampHeight = 22.0f;
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
+		
+		NSDate *date = [NSDate dateWithTimeIntervalSince1970:msg.timestamp];
+		
+		NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
+		[dateFormatter setLocale:usLocale];
+		[usLocale release];
+		
+		msgTimestamp.text = [dateFormatter stringFromDate:date];
+		[dateFormatter release];
+	} else {
+		msgTimestampHeight = 0.0f;
+		msgTimestamp.text = @"";
+	}	
+
 	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UIImage *balloon;
@@ -352,24 +382,12 @@ CGFloat msgTimestampHeight = 22.0f; // 24.0f;
 	msgBackground.image = balloon;
 	msgText.text = msg.text;
 	
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
-	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
-	
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:msg.timestamp];
-	
-	NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
-	[dateFormatter setLocale:usLocale];
-	[usLocale release];
-
-	msgTimestamp.text = [dateFormatter stringFromDate:date];
-	[dateFormatter release];
-
 	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = [messages objectAtIndex:indexPath.row];
+	msgTimestampHeight = msg.timestamp ? 22.0f : 0.0f;
 	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
 	return size.height + 22.0f + msgTimestampHeight;
 } 

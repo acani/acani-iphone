@@ -1,18 +1,20 @@
 Current:
 	Chat:
 		Message:
-			- Give timestamp
-			- If timestamp != NULL, fix layout
+			- Conditional timestamps
+				- If it's been less than 13 mins since last message, set timestamp to NULL
+				- If timestamp != NULL, fix layout
 		Server:
 		ChatView:
 			chatInput:
-				- Scroll to top
 				- Expands to 3 lines with chatToolbar
 			orientations:
 				- Show in horizontal orientation. See SMS Bubbles app.
 Backlog:
 	- Tap and hold (or double-tap) on table-cell highlights msgText for copying
 	- Clicking on TableView minimizes keyboard
+	- Message sending progress bar at top of navbar
+	- Message animation on send from msgInput to chatContent
 
 Continuous Integration:
 	- Integrate our work into one repository
