@@ -54,25 +54,50 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
+	NSLog(@"contentOffset: (%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
+	NSLog(@"contentInset: %f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
+
 	if ([textView hasText]) {
 		sendButton.enabled = YES;
 		sendButton.titleLabel.alpha	= 1.0f;
-		//		CGSize chatInputSize = [textView.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:chatInput.frame.size lineBreakMode:UILineBreakModeWordWrap];
-		//		CGFloat newHeight = chatInputSize.height+10.0f + 18.0f;
-		//		chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.origin.y+self.view.frame.size.height-newHeight, chatBar.frame.size.width, newHeight);
-		chatContent.frame = CGRectMake(chatContent.frame.origin.x, chatContent.frame.origin.y, chatContent.frame.size.width, self.view.frame.size.height-80.f);
-		chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - 80.f, self.view.frame.size.width, 80.f);
-		chatInput.scrollEnabled = YES;
+
+		if (textView.text.length > 1024) { // truncate text to 1024 chars
+			textView.text = [textView.text substringToIndex:1024];
+		}
+
+		CGFloat	frameHeight = textView.frame.size.height;
+		CGFloat contentHeight = textView.contentSize.height - 12.0f;
+		NSLog(@"frame.size.height: %f", frameHeight);
+		NSLog(@"contentSize.height: %f", contentHeight);
+
+		// Resize textView to contentHeight
+		if (contentHeight != frameHeight) {
+			if (contentHeight <= 76.0f) { // Limit frameHeight <= 4 lines
+				CGFloat chatBarHeight = contentHeight + 18.0f;
+				CGRect chatContentFrame = chatContent.frame;
+				chatContentFrame.size.height = self.view.frame.size.height - chatBarHeight;	
+				[UIView beginAnimations:nil context:NULL];
+				[UIView setAnimationDuration:0.1f];
+				chatContent.frame = chatContentFrame;
+				chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
+				[UIView commitAnimations];
+				chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+//				chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f); // doesn't do anything
+			} else if (lastContentHeight == 76.0f && contentHeight == 94.0f) { // grow
+				chatInput.scrollEnabled = YES;
+//				chatInput.contentOffset = CGPointMake(0.0f, 26.0f); // shift to bottom
+				[chatInput setContentOffset:CGPointMake(0.0f, 58.0f) animated:YES]; // temporary until we can reset inset
+			}
+		} else if (lastContentHeight == 94.0f && contentHeight == 76.0f) { // shrink
+			chatInput.scrollEnabled = NO;
+			[chatInput setContentOffset:CGPointMake(0.0f, 6.0f) animated:YES]; // scroll to top
+		}		
+		lastContentHeight = contentHeight;
 	} else {
 		sendButton.enabled = NO;
 		sendButton.titleLabel.alpha	= 0.5f;
-		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix bug, but is there a better way to fix this?
-		// contentOffset never changes. It's something else. What is it?
-		//		NSLog(@"%f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
-		//		NSLog(@"(%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
-		//		NSLog(@"%f x %f", chatInput.contentSize.width, chatInput.contentSize.height);
+		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 	}
-
 }
 
 // Prepare to resize for keyboard
@@ -166,18 +191,17 @@
 	chatBar.userInteractionEnabled = YES;
 
 	// create chatInput
-	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];	
+	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];
+	chatInput.contentSize = CGSizeMake(234.0f, 22.0f);
 	chatInput.delegate = self;
 	chatInput.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	chatInput.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	chatInput.scrollEnabled = NO; // not initially
 	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, -3.0f);
 	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
-	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
-	chatInput.contentOffset = CGPointMake(0, 0);
 	chatInput.backgroundColor = [UIColor clearColor];
-	chatInput.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	[chatBar addSubview:chatInput];
 	[chatInput release];
 
@@ -213,6 +237,18 @@
 	if (chatInput.text.length != 0) {
 		Message *msg = [[Message alloc] init];
 		msg.text = chatInput.text;
+		chatInput.text = @"";
+		if (lastContentHeight > 22.0f) {
+			// This code can be refactored because it's modified from textViewDidChange above
+			CGFloat chatBarHeight = 40.0f;
+			CGRect chatContentFrame = chatContent.frame;
+			chatContentFrame.size.height = self.view.frame.size.height - chatBarHeight;	
+			[UIView beginAnimations:nil context:NULL];
+			[UIView setAnimationDuration:0.1f];
+			chatContent.frame = chatContentFrame;
+			chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
+			[UIView commitAnimations];
+		}		
 		time_t now; time(&now);
 		if (now < latestTimestamp+780) { // show timestamp every 15 mins
 			msg.timestamp = 0;
@@ -224,7 +260,6 @@
 		[chatContent reloadData];
 		NSUInteger index = [messages count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-		chatInput.text = @"";
 	}
 }
 
@@ -244,15 +279,16 @@
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];	
 	CGRect viewFrame = self.view.frame;
-	viewFrame.size.height += movement;	
+	viewFrame.size.height += movement;
 	self.view.frame = viewFrame;
-	[UIView commitAnimations];	
+	[UIView commitAnimations];
 	
 	if([messages count] > 0) {
 		NSUInteger index = [messages count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}
-	
+	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
+	chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 }
 
 /*
@@ -412,7 +448,7 @@ CGFloat msgTimestampHeight;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = [messages objectAtIndex:indexPath.row];
 	msgTimestampHeight = msg.timestamp ? 20.0f : 0.0f;
-	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
+	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
 
@@ -484,11 +520,11 @@ CGFloat msgTimestampHeight;
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 - (void)dealloc {
-//	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super dealloc];
 }
 
