@@ -7,8 +7,9 @@
 		UIImageView *msgBackground;
 		UILabel *msgText;
 
-	UIToolbar *chatToolbar;
+	UIImageView *chatBar;
 		UITextView *chatInput;
+		UIButton *sendButton;
 }
 
 @end

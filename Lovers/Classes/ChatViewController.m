@@ -54,13 +54,25 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-	if (textView.text.length == 0) {
+	if ([textView hasText]) {
+		sendButton.enabled = YES;
+		sendButton.titleLabel.alpha	= 1.0f;
+		//		CGSize chatInputSize = [textView.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:chatInput.frame.size lineBreakMode:UILineBreakModeWordWrap];
+		//		CGFloat newHeight = chatInputSize.height+10.0f + 18.0f;
+		//		chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.origin.y+self.view.frame.size.height-newHeight, chatBar.frame.size.width, newHeight);
+		chatContent.frame = CGRectMake(chatContent.frame.origin.x, chatContent.frame.origin.y, chatContent.frame.size.width, self.view.frame.size.height-80.f);
+		chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - 80.f, self.view.frame.size.width, 80.f);
+		chatInput.scrollEnabled = YES;
+	} else {
+		sendButton.enabled = NO;
+		sendButton.titleLabel.alpha	= 0.5f;
 		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix bug, but is there a better way to fix this?
 		// contentOffset never changes. It's something else. What is it?
-//		NSLog(@"%f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
-//		NSLog(@"(%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
-//		NSLog(@"%f x %f", chatInput.contentSize.width, chatInput.contentSize.height);
+		//		NSLog(@"%f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
+		//		NSLog(@"(%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
+		//		NSLog(@"%f x %f", chatInput.contentSize.width, chatInput.contentSize.height);
 	}
+
 }
 
 // Prepare to resize for keyboard
@@ -131,12 +143,12 @@
 
 	CGFloat viewWidth = self.view.frame.size.width;
 	CGFloat viewHeight = self.view.frame.size.height;
-	CGFloat chatToolbarHeight = 33.0f;
+	CGFloat chatBarHeight = 40.0f;
 
 	NSLog(@"view.frame.size: %f x %f", viewWidth, viewHeight);
 
-	// create tableview
-	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatToolbarHeight)];
+	// create chatContent
+	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatBarHeight)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
@@ -146,40 +158,52 @@
 	[self.view addSubview:chatContent];
 	[chatContent release];
 
-	// create toolbar
-	chatToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatToolbarHeight, viewWidth, chatToolbarHeight)];
-	chatToolbar.clearsContextBeforeDrawing = NO;
-	chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	// create chatBar
+	chatBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatBarHeight, viewWidth, chatBarHeight)];
+	chatBar.clearsContextBeforeDrawing = NO;
+	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
+	chatBar.userInteractionEnabled = YES;
 
-	// create textView
-	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(20.0f, 6.0f, 240.0f, 22.0f)];
-	chatInput.scrollEnabled = NO; // not initially
-	chatInput.clearsContextBeforeDrawing = NO;
+	// create chatInput
+	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];	
 	chatInput.delegate = self;
+	chatInput.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	chatInput.scrollEnabled = NO; // not initially
+	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, -3.0f);
+	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
-	chatInput.layer.cornerRadius = 12;
-	chatInput.clipsToBounds = YES;
-	chatInput.userInteractionEnabled = YES;
 	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
-	[chatToolbar addSubview:chatInput];
+	chatInput.contentOffset = CGPointMake(0, 0);
+	chatInput.backgroundColor = [UIColor clearColor];
+	chatInput.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	[chatBar addSubview:chatInput];
 	[chatInput release];
 
-	// create send button
-	UIButton *sendButton = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	// create sendButton
+	sendButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 	sendButton.clearsContextBeforeDrawing = NO;
-	sendButton.frame = CGRectMake(270.0f, 5.0f, 40.0f, 24.0f);
-	sendButton.titleLabel.font = [UIFont systemFontOfSize: 14];
+	sendButton.frame = CGRectMake(250.0f, 8.0f, 64.0f, 26.0f);
+	sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	UIImage *sendButtonBackground = [UIImage imageNamed:@"SendButton.png"];
+	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateNormal];
+	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateDisabled];	
+	sendButton.titleLabel.font = [UIFont boldSystemFontOfSize: 16];
+	sendButton.titleLabel.alpha	= 0.5f;
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
 	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
-	[chatToolbar addSubview:sendButton];
+	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
+	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
+	sendButton.enabled = NO; // not initially
+	[chatBar addSubview:sendButton];
 	[sendButton release];
 
-	[self.view addSubview:chatToolbar];
-	[chatToolbar release];
+	[self.view addSubview:chatBar];
+	[self.view sendSubviewToBack: chatBar];
+	[chatBar release];
 	
-
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -312,7 +336,7 @@ CGFloat msgTimestampHeight;
 		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)];
 		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.tag = TIMESTAMP_TAG;
-		msgTimestamp.font = [UIFont boldSystemFontOfSize:12.0f];
+		msgTimestamp.font = [UIFont boldSystemFontOfSize:11.0f];
 		msgTimestamp.lineBreakMode = UILineBreakModeTailTruncation;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
 		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
@@ -337,7 +361,7 @@ CGFloat msgTimestampHeight;
 		msgText.font = [UIFont systemFontOfSize:14.0];
 		[messageView addSubview:msgText];
 		[msgText release];
-		
+
 		[cell.contentView addSubview:messageView];
 		[messageView release];		
 	} else {
@@ -347,7 +371,7 @@ CGFloat msgTimestampHeight;
 	}
 
 	if (msg.timestamp) {
-		msgTimestampHeight = 22.0f;
+		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
@@ -370,12 +394,12 @@ CGFloat msgTimestampHeight;
 	UIImage *balloon;
 
 	if (indexPath.row % 2 == 0) {
-		msgBackground.frame = CGRectMake(320.0f - (size.width + 28.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"]stretchableImageWithLeftCapWidth:15 topCapHeight:13];
-		msgText.frame = CGRectMake(305.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
+		msgBackground.frame = CGRectMake(320.0f - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
+		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
+		msgText.frame = CGRectMake(298.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 	} else {
 		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"]stretchableImageWithLeftCapWidth:23 topCapHeight:15];
+		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
 		msgText.frame = CGRectMake(22.0f, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 	}
 
@@ -387,9 +411,9 @@ CGFloat msgTimestampHeight;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = [messages objectAtIndex:indexPath.row];
-	msgTimestampHeight = msg.timestamp ? 22.0f : 0.0f;
+	msgTimestampHeight = msg.timestamp ? 20.0f : 0.0f;
 	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: CGSizeMake(240.0f, 480.0f)lineBreakMode: UILineBreakModeWordWrap];
-	return size.height + 22.0f + msgTimestampHeight;
+	return size.height + 20.0f + msgTimestampHeight;
 } 
 
 /*
