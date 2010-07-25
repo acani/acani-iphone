@@ -1,22 +1,23 @@
 Current:
 	Chat:
-		Message:
-		Server:
-		ChatView:
-			chatInput:
-				- Expands to 3 lines with chatToolbar
-			orientations:
-				- Show in horizontal orientation. See SMS Bubbles app.
+		- Distinguish between incoming & outgoing messages and display accordingly
+		- Show in horizontal orientation. See SMS Bubbles app
+	Connect to Server:
+		- node.js, redis
+		- sinatra, mongodb
 Backlog:
-	- Tap and hold (or double-tap) on table-cell highlights msgText for copying
-		- sets backgroundViewSelected
-		- may require redesign of cell
-			- Make timestamps separate cells
-	- Clicking on TableView minimizes keyboard
-	- Message sending progress bar at top of navbar
-	- Message animation on send from msgInput to chatContent
-
+	Chat:
+		- Add edit, delete, forward support
+		- Tap and hold (or double-tap) on table-cell highlights msgText for copying
+			- sets backgroundViewSelected
+			- may require redesign of cell
+				- Make timestamps separate cells
+		- Clicking on TableView minimizes keyboard
+		- Message sending progress bar at top of navbar
+		- Message animation on send from msgInput to chatContent
 Continuous Integration:
 	- Integrate our work into one repository
-Connect to Server:
-	- 
+
+Misc:
+	- Get iPhone Developer account
+	- Get RackSpace hosting

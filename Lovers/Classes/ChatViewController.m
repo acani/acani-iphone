@@ -134,6 +134,8 @@
 - (void)loadView {
 	[super loadView];
 
+	self.title = @"Joanna";
+
 	// create messages
 	time_t now; time(&now);
 	latestTimestamp = 0;
