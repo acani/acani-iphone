@@ -54,8 +54,8 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-	NSLog(@"contentOffset: (%f, %f)", chatInput.contentOffset.x, chatInput.contentOffset.y);
-	NSLog(@"contentInset: %f, %f, %f, %f", chatInput.contentInset.top, chatInput.contentInset.right, chatInput.contentInset.bottom, chatInput.contentInset.left);
+	NSLog(@"contentOffset: (%f, %f)", textView.contentOffset.x, textView.contentOffset.y);
+	NSLog(@"contentInset: %f, %f, %f, %f", textView.contentInset.top, textView.contentInset.right, textView.contentInset.bottom, textView.contentInset.left);
 
 	if ([textView hasText]) {
 		sendButton.enabled = YES;
@@ -81,23 +81,28 @@
 				chatContent.frame = chatContentFrame;
 				chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
 				[UIView commitAnimations];
-				chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
-//				chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f); // doesn't do anything
+				textView.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+//				textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f); // doesn't do anything
 			} else if (lastContentHeight == 76.0f && contentHeight == 94.0f) { // grow
-				chatInput.scrollEnabled = YES;
-//				chatInput.contentOffset = CGPointMake(0.0f, 26.0f); // shift to bottom
-				[chatInput setContentOffset:CGPointMake(0.0f, 58.0f) animated:YES]; // temporary until we can reset inset
+				textView.scrollEnabled = YES;
+				textView.contentOffset = CGPointMake(0.0f, 26.0f); // shift to bottom
+//				[textView setContentOffset:CGPointMake(0.0f, 58.0f) animated:YES]; // temporary until we can reset inset
 			}
 		} else if (lastContentHeight == 94.0f && contentHeight == 76.0f) { // shrink
-			chatInput.scrollEnabled = NO;
-			[chatInput setContentOffset:CGPointMake(0.0f, 6.0f) animated:YES]; // scroll to top
+			textView.scrollEnabled = NO;
+			[textView setContentOffset:CGPointMake(0.0f, 6.0f) animated:NO]; // scroll to top
 		}		
 		lastContentHeight = contentHeight;
 	} else {
 		sendButton.enabled = NO;
 		sendButton.titleLabel.alpha	= 0.5f;
-		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+		[textView setContentOffset:CGPointMake(0.0f, 6.0f) animated:NO]; // fix quirk
 	}
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
+	return YES;
 }
 
 // Prepare to resize for keyboard
@@ -199,7 +204,7 @@
 	chatInput.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 	chatInput.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	chatInput.scrollEnabled = NO; // not initially
-	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, -3.0f);
+	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 4.0f, -2.0f);
 	chatInput.clearsContextBeforeDrawing = NO;
 	chatInput.font = [UIFont systemFontOfSize:14.0];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
@@ -250,6 +255,9 @@
 			chatContent.frame = chatContentFrame;
 			chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
 			[UIView commitAnimations];
+			chatInput.scrollEnabled = NO;
+			chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
+			chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 		}		
 		time_t now; time(&now);
 		if (now < latestTimestamp+780) { // show timestamp every 15 mins
