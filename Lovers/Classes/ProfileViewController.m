@@ -1,41 +1,73 @@
+#import "LoversAppDelegate.h"
 #import "ProfileViewController.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 
 @implementation ProfileViewController
 
+- (ProfileViewController *) init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	return self;
+}
+
+// Recursively travel down the view tree, increasing the indentation level for children
+- (void) dumpView: (UIView *) aView atIndent: (int) indent into:(NSMutableString *) outstring
+{
+	for (int i = 0; i < indent; i++) [outstring appendString:@"--"];
+	[outstring appendFormat:@"[%2d] %@ - (%f, %f) - %f x %f \n", indent, [[aView class] description], aView.frame.origin.x, aView.frame.origin.y, aView.bounds.size.width, aView.bounds.size.height];
+	for (UIView *view in [aView subviews]) [self dumpView:view atIndent:indent + 1 into:outstring];
+}
+
+// Start the tree recursion at level 0 with the root view
+- (NSString *) displayViews: (UIView *) aView
+{
+	NSMutableString *outstring = [[NSMutableString alloc] init];
+	[self dumpView: self.view.window atIndent:0 into:outstring];
+	return [outstring autorelease];
+}
+
+// Show the tree
+- (void) displayViews
+{
+	CFShow([self displayViews: self.view.window]);
+}
+
 - (void)saveProfile:(id)sender {
 	[[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
-//
-//- (void)loadView {
-//	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
-//	contentView.backgroundColor = [UIColor blueColor];
-//
-//	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-//	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
-////	UIBarButtonItem *saveBtn = 
-//	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
-//	[navBar pushNavigationItem:navItem animated:NO];
-//	[contentView addSubview:navBar];
-//
-////	// This didn't work, but is it possible to use the UsersViewController's
-////	// navigationController's navBar instead of making a new one?
-////    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
-//
-////	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
-////	[button setTitle:@"Save2" forState:UIControlStateNormal];
-////	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
-////	[contentView addSubview:button];
-//
-//	[navItem release];
-//	[navItem.leftBarButtonItem release];
-//	[navBar release];
-//
-//	self.view = contentView;
-//	[contentView release];
-//}
-//
+
+- (void)loadView {
+	[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
+
+	[super loadView];
+
+	[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
+
+	CGRect pvcf = [[UIScreen mainScreen] applicationFrame];
+	pvcf = CGRectMake(pvcf.origin.x, pvcf.origin.y+44.0f, pvcf.size.width, pvcf.size.height-44.0f);
+
+	self.tableView.frame = pvcf;
+
+	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
+//	UIBarButtonItem *saveBtn = 
+	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
+	[navBar pushNavigationItem:navItem animated:NO];
+	[self.view.superview addSubview:navBar];
+
+//	// This didn't work, but is it possible to use the UsersViewController's
+//	// navigationController's navBar instead of making a new one?
+//    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
+
+//	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
+//	[button setTitle:@"Save2" forState:UIControlStateNormal];
+//	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
+//	[contentView addSubview:button];
+
+	[navItem.leftBarButtonItem release];
+	[navItem release];
+	[navBar release];
+}
 
 
 #pragma mark -
@@ -55,14 +87,22 @@
 #pragma mark View lifecycle
 
 
-- (void)loadView {
-	[super loadView];
-	self.navigationItem.titleView = [[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 30.0f)] autorelease];
-	[MAINLABEL setBackgroundColor:[UIColor clearColor]];
-	[MAINLABEL setTextColor:[UIColor whiteColor]];
-	[MAINLABEL setTextAlignment:UITextAlignmentCenter];
-	[MAINLABEL setText:@"Profile"];
-}
+//- (void)loadView {
+//	[super loadView];
+//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
+
+//	NSLog(@"parentView: %@", self.parentViewController.view);
+//	NSLog(@"parentView: %@", self.parentViewController.view.subviews);
+//	[self.parentViewController.view removeFromSuperview];
+//  // maybe put a willChangeWindow?
+//	[self.view addSubview:self.parentViewController.view];
+
+//	self.navigationItem.titleView = [[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 30.0f)] autorelease];
+//	[MAINLABEL setBackgroundColor:[UIColor clearColor]];
+//	[MAINLABEL setTextColor:[UIColor whiteColor]];
+//	[MAINLABEL setTextAlignment:UITextAlignmentCenter];
+//	[MAINLABEL setText:@"Profile"];
+//}
 
 //- (void)viewDidLoad {
 //	[super viewDidLoad];
