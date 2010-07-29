@@ -6,8 +6,45 @@
 @implementation ProfileViewController
 
 - (ProfileViewController *) init {
-	self = [super initWithStyle:UITableViewStyleGrouped];
+	self = [super initWithStyle:UITableViewStyleGrouped];    
+	self.title = @"Edit Profile";
+
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+//	UIBarButtonItem *editButton = [[UIBarButtonItem alloc] 
+//								   initWithTitle:@"Edit"
+//								   style:UIBarButtonItemStyleBordered 
+//								   target:self 
+//								   action:@selector(edit:)];
+//	self.navigationItem.rightBarButtonItem = editButton;
+//	[editButton release];
+	
+	
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+								   initWithTitle:@"Lovers"
+								   style:UIBarButtonItemStyleBordered
+								   target:self 
+								   action:@selector(back:)];
+	self.navigationItem.leftBarButtonItem = backButton;
+	[backButton release];
+	
+	//self.navigationItem.backBarButtonItem =
+//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
+//									 target:self action:nil] autorelease];
+//
 	return self;
+	
+}
+
+
+-(void)edit:(id)sender
+{
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)back:(id)sender
+{
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 // Recursively travel down the view tree, increasing the indentation level for children
@@ -37,36 +74,36 @@
 }
 
 - (void)loadView {
-	[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
-
 	[super loadView];
+   
 
-	[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
+	
+	//[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
 
-	CGRect pvcf = [[UIScreen mainScreen] applicationFrame];
-	pvcf = CGRectMake(pvcf.origin.x, pvcf.origin.y+44.0f, pvcf.size.width, pvcf.size.height-44.0f);
-
-	self.tableView.frame = pvcf;
-
-	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
-//	UIBarButtonItem *saveBtn = 
-	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
-	[navBar pushNavigationItem:navItem animated:NO];
-	[self.view.superview addSubview:navBar];
-
-//	// This didn't work, but is it possible to use the UsersViewController's
-//	// navigationController's navBar instead of making a new one?
-//    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
-
-//	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
-//	[button setTitle:@"Save2" forState:UIControlStateNormal];
-//	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
-//	[contentView addSubview:button];
-
-	[navItem.leftBarButtonItem release];
-	[navItem release];
-	[navBar release];
+//	CGRect pvcf = [[UIScreen mainScreen] applicationFrame];
+//	pvcf = CGRectMake(pvcf.origin.x, pvcf.origin.y+44.0f, pvcf.size.width, pvcf.size.height-44.0f);
+//
+//	self.tableView.frame = pvcf;
+//
+//	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+//	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
+////	UIBarButtonItem *saveBtn = 
+//	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
+//	[navBar pushNavigationItem:navItem animated:NO];
+//	[self.view.superview addSubview:navBar];
+//
+////	// This didn't work, but is it possible to use the UsersViewController's
+////	// navigationController's navBar instead of making a new one?
+////    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
+//
+////	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
+////	[button setTitle:@"Save2" forState:UIControlStateNormal];
+////	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
+////	[contentView addSubview:button];
+//
+//	[navItem.leftBarButtonItem release];
+//	[navItem release];
+//	[navBar release];
 }
 
 

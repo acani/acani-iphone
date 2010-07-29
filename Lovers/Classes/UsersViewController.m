@@ -21,7 +21,10 @@
 	ProfileViewController *profileVC = [[[ProfileViewController alloc] init] autorelease];
 //	[self.navigationController pushViewController:pvc animated:YES];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	[self presentModalViewController:profileVC animated:YES];
+	UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
+	[navController setNavigationBarHidden:NO];
+	
+	[self presentModalViewController:navController animated:YES];
 	NSLog(@"GoToProfile!");
 }
 
