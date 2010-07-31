@@ -5,7 +5,30 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
-#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
+#define BARBUTTON(TITLE, SELECTOR)	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
+
+#define CHAT_BAR_HEIGHT_1	40.0f
+#define CHAT_BAR_HEIGHT_4	94.0f
+#define VIEW_WIDTH	self.view.frame.size.width
+#define VIEW_HEIGHT	self.view.frame.size.height
+
+#define RESET_CHAT_BAR_HEIGHT	SET_CHAT_BAR_HEIGHT(CHAT_BAR_HEIGHT_1)
+#define EXPAND_CHAT_BAR_HEIGHT	SET_CHAT_BAR_HEIGHT(CHAT_BAR_HEIGHT_4)
+#define	SET_CHAT_BAR_HEIGHT(HEIGHT) \
+	CGRect chatContentFrame = chatContent.frame; \
+	chatContentFrame.size.height = VIEW_HEIGHT - HEIGHT; \
+	[UIView beginAnimations:nil context:NULL]; \
+	[UIView setAnimationDuration:0.1f]; \
+	chatContent.frame = chatContentFrame; \
+	chatBar.frame = CGRectMake(chatBar.frame.origin.x, chatContentFrame.size.height, VIEW_WIDTH, HEIGHT); \
+	[UIView commitAnimations]; \
+	chatInput.scrollEnabled = NO
+
+#define ENABLE_SEND_BUTTON	SET_SEND_BUTTON(YES, 1.0f)
+#define DISABLE_SEND_BUTTON	SET_SEND_BUTTON(NO, 0.5f)
+#define SET_SEND_BUTTON(ENABLED, ALPHA) \
+	sendButton.enabled = ENABLED; \
+	sendButton.titleLabel.alpha = ALPHA
 
 @implementation ChatViewController
 
@@ -58,8 +81,10 @@
 	NSLog(@"contentInset: %f, %f, %f, %f", textView.contentInset.top, textView.contentInset.right, textView.contentInset.bottom, textView.contentInset.left);
 
 	if ([textView hasText]) {
-		sendButton.enabled = YES;
-		sendButton.titleLabel.alpha	= 1.0f;
+		if (!chatInputHadText) {
+			ENABLE_SEND_BUTTON;
+			chatInputHadText = YES;
+		}
 
 		if (textView.text.length > 1024) { // truncate text to 1024 chars
 			textView.text = [textView.text substringToIndex:1024];
@@ -69,34 +94,37 @@
 		CGFloat contentHeight = textView.contentSize.height - 12.0f;
 		NSLog(@"frame.size.height: %f", frameHeight);
 		NSLog(@"contentSize.height: %f", contentHeight);
+//		NSLog(@"chatBarHeight: %f", chatBar.frame.size.height);
 
 		// Resize textView to contentHeight
 		if (contentHeight != frameHeight) {
 			if (contentHeight <= 76.0f) { // Limit frameHeight <= 4 lines
 				CGFloat chatBarHeight = contentHeight + 18.0f;
-				CGRect chatContentFrame = chatContent.frame;
-				chatContentFrame.size.height = self.view.frame.size.height - chatBarHeight;	
-				[UIView beginAnimations:nil context:NULL];
-				[UIView setAnimationDuration:0.1f];
-				chatContent.frame = chatContentFrame;
-				chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
-				[UIView commitAnimations];
+				SET_CHAT_BAR_HEIGHT(chatBarHeight);
 				textView.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 //				textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f); // doesn't do anything
-			} else if (lastContentHeight == 76.0f && contentHeight == 94.0f) { // grow
+			} else { // grow
+				if (lastContentHeight < 76.0f) {
+					EXPAND_CHAT_BAR_HEIGHT;
+				}
 				textView.scrollEnabled = YES;
-				textView.contentOffset = CGPointMake(0.0f, 26.0f); // shift to bottom
-//				[textView setContentOffset:CGPointMake(0.0f, 58.0f) animated:YES]; // temporary until we can reset inset
+				textView.contentOffset = CGPointMake(0.0f, contentHeight-68.0f); // shift to bottom
 			}
 		} else if (lastContentHeight == 94.0f && contentHeight == 76.0f) { // shrink
 			textView.scrollEnabled = NO;
 			[textView setContentOffset:CGPointMake(0.0f, 6.0f) animated:NO]; // scroll to top
 		}		
 		lastContentHeight = contentHeight;
-	} else {
-		sendButton.enabled = NO;
-		sendButton.titleLabel.alpha	= 0.5f;
-		[textView setContentOffset:CGPointMake(0.0f, 6.0f) animated:NO]; // fix quirk
+	} else { // textView is empty
+		if (chatInputHadText) {
+			DISABLE_SEND_BUTTON;
+			chatInputHadText = NO;
+		}
+		
+		if (lastContentHeight > 22.0f) {
+			RESET_CHAT_BAR_HEIGHT;
+		}		
+		textView.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 	}
 }
 
@@ -173,14 +201,8 @@
 	[msg5 release];
 	[msg6 release];
 
-	CGFloat viewWidth = self.view.frame.size.width;
-	CGFloat viewHeight = self.view.frame.size.height;
-	CGFloat chatBarHeight = 40.0f;
-
-	NSLog(@"view.frame.size: %f x %f", viewWidth, viewHeight);
-
 	// create chatContent
-	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, viewHeight - chatBarHeight)];
+	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, VIEW_WIDTH, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
@@ -191,7 +213,7 @@
 	[chatContent release];
 
 	// create chatBar
-	chatBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, viewHeight - chatBarHeight, viewWidth, chatBarHeight)];
+	chatBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1, VIEW_WIDTH, CHAT_BAR_HEIGHT_1)];
 	chatBar.clearsContextBeforeDrawing = NO;
 	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
@@ -209,6 +231,8 @@
 	chatInput.font = [UIFont systemFontOfSize:14.0];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
 	chatInput.backgroundColor = [UIColor clearColor];
+	lastContentHeight = chatInput.contentSize.height;
+	chatInputHadText = NO;
 	[chatBar addSubview:chatInput];
 	[chatInput release];
 
@@ -221,13 +245,12 @@
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateNormal];
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateDisabled];	
 	sendButton.titleLabel.font = [UIFont boldSystemFontOfSize: 16];
-	sendButton.titleLabel.alpha	= 0.5f;
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
 	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
 	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
 	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
-	sendButton.enabled = NO; // not initially
+	DISABLE_SEND_BUTTON; // initially
 	[chatBar addSubview:sendButton];
 	[sendButton release];
 
@@ -241,21 +264,12 @@
 }
 
 - (void)sendMSG:(id)sender {
-	if (chatInput.text.length != 0) {
+	if ([chatInput hasText]) {
 		Message *msg = [[Message alloc] init];
 		msg.text = chatInput.text;
 		chatInput.text = @"";
 		if (lastContentHeight > 22.0f) {
-			// This code can be refactored because it's modified from textViewDidChange above
-			CGFloat chatBarHeight = 40.0f;
-			CGRect chatContentFrame = chatContent.frame;
-			chatContentFrame.size.height = self.view.frame.size.height - chatBarHeight;	
-			[UIView beginAnimations:nil context:NULL];
-			[UIView setAnimationDuration:0.1f];
-			chatContent.frame = chatContentFrame;
-			chatBar.frame = CGRectMake(chatBar.frame.origin.x, self.view.frame.size.height - chatBarHeight, self.view.frame.size.width, chatBarHeight);
-			[UIView commitAnimations];
-			chatInput.scrollEnabled = NO;
+			RESET_CHAT_BAR_HEIGHT;
 			chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 			chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 		}		

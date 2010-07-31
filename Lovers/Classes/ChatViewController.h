@@ -10,6 +10,7 @@
 	UIImageView *chatBar;
 		UITextView *chatInput;
 			CGFloat lastContentHeight;
+			Boolean chatInputHadText;
 		UIButton *sendButton;
 }
 
