@@ -1,10 +1,7 @@
 @interface ProfileViewController : UITableViewController {
-	
-	UINavigationController * navController;
-	
-	
+	UINavigationController *navController;
+	UIView *profileHeader;
+	NSArray *profileFields;
 }
-
-
 
 @end

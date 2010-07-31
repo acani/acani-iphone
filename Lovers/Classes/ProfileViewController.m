@@ -6,36 +6,10 @@
 @implementation ProfileViewController
 
 - (ProfileViewController *) init {
-	self = [super initWithStyle:UITableViewStyleGrouped];    
+	self = [super initWithStyle:UITableViewStyleGrouped];
 	self.title = @"Edit Profile";
-
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-//	UIBarButtonItem *editButton = [[UIBarButtonItem alloc] 
-//								   initWithTitle:@"Edit"
-//								   style:UIBarButtonItemStyleBordered 
-//								   target:self 
-//								   action:@selector(edit:)];
-//	self.navigationItem.rightBarButtonItem = editButton;
-//	[editButton release];
-	
-	
-	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
-								   initWithTitle:@"Lovers"
-								   style:UIBarButtonItemStyleBordered
-								   target:self 
-								   action:@selector(back:)];
-	self.navigationItem.leftBarButtonItem = backButton;
-	[backButton release];
-	
-	//self.navigationItem.backBarButtonItem =
-//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
-//									 target:self action:nil] autorelease];
-//
-	return self;
-	
+	return self;	
 }
-
 
 -(void)edit:(id)sender
 {
@@ -75,8 +49,49 @@
 
 - (void)loadView {
 	[super loadView];
-   
 
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+								   initWithTitle:@"Lovers"
+								   style:UIBarButtonItemStyleBordered
+								   target:self 
+								   action:@selector(back:)];
+	self.navigationItem.leftBarButtonItem = backButton;
+	[backButton release];
+
+	profileFields = [NSArray arrayWithObjects:@"Camping", @"Water Skiing", @"Weight Lifting", @"Stamp Collecting", nil];
+	
+	// set up the table's header view based on our UIView 'myHeaderView' outlet
+	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 86.0f)];
+	profileHeader.clearsContextBeforeDrawing = NO;
+	profileHeader.backgroundColor = [UIColor clearColor];
+	
+	
+	UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
+	avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
+	[profileHeader addSubview:avatar];
+	[avatar release];
+	
+	UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
+	profileName.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0f];
+	profileName.adjustsFontSizeToFitWidth = YES;
+	profileName.minimumFontSize = 10.0f;
+	profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	profileName.text = @"Matt Di Pasquale";
+	profileName.backgroundColor = [UIColor clearColor];
+
+	profileHeader.clearsContextBeforeDrawing = NO;	
+	
+	profileHeader.backgroundColor = [UIColor clearColor];
+	[profileHeader addSubview:profileName];
+	[profileName release];
+
+	self.tableView.tableHeaderView = profileHeader;	// note this will override UITableView's 'sectionHeaderHeight' property
+
+	//self.navigationItem.backBarButtonItem =
+	//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
+	//									 target:self action:nil] autorelease];
+	//
 	
 	//[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
 
@@ -273,12 +288,14 @@
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
+	profileHeader = nil;
+	[super viewDidUnload];
+	// Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+	// For example: self.myOutlet = nil;
 }
 
 - (void)dealloc {
+	[profileHeader release];
     [super dealloc];
 }
 

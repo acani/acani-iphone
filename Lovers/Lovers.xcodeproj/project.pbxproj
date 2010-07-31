@@ -20,6 +20,7 @@
 		C9700D3F11F257F000C7C55C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D3E11F257F000C7C55C /* ChatViewController.m */; };
 		C9700D7311F259F100C7C55C /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7011F259F100C7C55C /* ColorUtils.m */; };
 		C9700D7411F259F100C7C55C /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C9700D7211F259F100C7C55C /* Message.m */; };
+		C97E8F3D12047FD500EA06DE /* BlankAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = C97E8F3C12047FD500EA06DE /* BlankAvatar.png */; };
 		C9D0351B11F475F60092079C /* ChatBubbleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D0351911F475F60092079C /* ChatBubbleGreen.png */; };
 		C9D0351C11F475F60092079C /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = C9D0351A11F475F60092079C /* ChatBubbleGray.png */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		C9700D7011F259F100C7C55C /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
 		C9700D7111F259F100C7C55C /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		C9700D7211F259F100C7C55C /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		C97E8F3C12047FD500EA06DE /* BlankAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlankAvatar.png; sourceTree = "<group>"; };
 		C9D0351911F475F60092079C /* ChatBubbleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBubbleGreen.png; sourceTree = "<group>"; };
 		C9D0351A11F475F60092079C /* ChatBubbleGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBubbleGray.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C97E8F3C12047FD500EA06DE /* BlankAvatar.png */,
 				C93ACB8911FBA12D00E596CD /* ChatBar.png */,
 				C93ACB8611FBA10D00E596CD /* SendButton.png */,
 				C9D0351911F475F60092079C /* ChatBubbleGreen.png */,
@@ -184,6 +187,7 @@
 				C9D0351C11F475F60092079C /* ChatBubbleGray.png in Resources */,
 				C93ACB8711FBA10D00E596CD /* SendButton.png in Resources */,
 				C93ACB8A11FBA12D00E596CD /* ChatBar.png in Resources */,
+				C97E8F3D12047FD500EA06DE /* BlankAvatar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
