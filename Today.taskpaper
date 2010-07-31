@@ -2,6 +2,9 @@ Current:
 	Chat:
 		- Distinguish between incoming & outgoing messages and display accordingly
 		- Show in horizontal orientation. See SMS Bubbles app
+		Fix chatInputView bugs:
+			- Hit return x-times and then backspace x+1-times. Sometimes cursor jumps.
+			- Type a word, hit return, hit backspace. Sometimes weird word suggestion is made.
 	Connect to Server:
 		- node.js, redis
 		- sinatra, mongodb

@@ -22,7 +22,6 @@
 	chatContent.frame = chatContentFrame; \
 	chatBar.frame = CGRectMake(chatBar.frame.origin.x, chatContentFrame.size.height, VIEW_WIDTH, HEIGHT); \
 	[UIView commitAnimations]; \
-	chatInput.scrollEnabled = NO
 
 #define ENABLE_SEND_BUTTON	SET_SEND_BUTTON(YES, 1.0f)
 #define DISABLE_SEND_BUTTON	SET_SEND_BUTTON(NO, 0.5f)
@@ -77,8 +76,11 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
+	CGFloat contentHeight = textView.contentSize.height - 12.0f;
+
 	NSLog(@"contentOffset: (%f, %f)", textView.contentOffset.x, textView.contentOffset.y);
 	NSLog(@"contentInset: %f, %f, %f, %f", textView.contentInset.top, textView.contentInset.right, textView.contentInset.bottom, textView.contentInset.left);
+	NSLog(@"contentSize.height: %f", contentHeight);
 
 	if ([textView hasText]) {
 		if (!chatInputHadText) {
@@ -90,42 +92,37 @@
 			textView.text = [textView.text substringToIndex:1024];
 		}
 
-		CGFloat	frameHeight = textView.frame.size.height;
-		CGFloat contentHeight = textView.contentSize.height - 12.0f;
-		NSLog(@"frame.size.height: %f", frameHeight);
-		NSLog(@"contentSize.height: %f", contentHeight);
-//		NSLog(@"chatBarHeight: %f", chatBar.frame.size.height);
-
 		// Resize textView to contentHeight
-		if (contentHeight != frameHeight) {
-			if (contentHeight <= 76.0f) { // Limit frameHeight <= 4 lines
+		if (contentHeight != lastContentHeight) {
+			if (contentHeight <= 76.0f) { // Limit chatInputHeight <= 4 lines
 				CGFloat chatBarHeight = contentHeight + 18.0f;
 				SET_CHAT_BAR_HEIGHT(chatBarHeight);
+				if (lastContentHeight > 76.0f) {
+					textView.scrollEnabled = NO;
+				}
 				textView.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
-//				textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f); // doesn't do anything
-			} else { // grow
+			} else if (lastContentHeight <= 76.0f) { // grow
+				textView.scrollEnabled = YES;
+				textView.contentOffset = CGPointMake(0.0f, contentHeight-68.0f); // shift to bottom
 				if (lastContentHeight < 76.0f) {
 					EXPAND_CHAT_BAR_HEIGHT;
 				}
-				textView.scrollEnabled = YES;
-				textView.contentOffset = CGPointMake(0.0f, contentHeight-68.0f); // shift to bottom
 			}
-		} else if (lastContentHeight == 94.0f && contentHeight == 76.0f) { // shrink
-			textView.scrollEnabled = NO;
-			[textView setContentOffset:CGPointMake(0.0f, 6.0f) animated:NO]; // scroll to top
-		}		
-		lastContentHeight = contentHeight;
+		}	
 	} else { // textView is empty
 		if (chatInputHadText) {
 			DISABLE_SEND_BUTTON;
 			chatInputHadText = NO;
 		}
-		
 		if (lastContentHeight > 22.0f) {
 			RESET_CHAT_BAR_HEIGHT;
+			if (lastContentHeight > 76.0f) {
+				textView.scrollEnabled = NO;
+			}
 		}		
 		textView.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 	}
+	lastContentHeight = contentHeight;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
