@@ -60,18 +60,18 @@
 	[backButton release];
 
 	profileFields = [NSArray arrayWithObjects:@"Camping", @"Water Skiing", @"Weight Lifting", @"Stamp Collecting", nil];
-	
+
 	// set up the table's header view based on our UIView 'myHeaderView' outlet
 	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 86.0f)];
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
-	
-	
+
+
 	UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
 	avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
 	[profileHeader addSubview:avatar];
 	[avatar release];
-	
+
 	UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
 	profileName.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0f];
 	profileName.adjustsFontSizeToFitWidth = YES;
@@ -81,19 +81,19 @@
 	profileName.backgroundColor = [UIColor clearColor];
 
 	profileHeader.clearsContextBeforeDrawing = NO;	
-	
+
 	profileHeader.backgroundColor = [UIColor clearColor];
 	[profileHeader addSubview:profileName];
 	[profileName release];
 
 	self.tableView.tableHeaderView = profileHeader;	// note this will override UITableView's 'sectionHeaderHeight' property
 
-	//self.navigationItem.backBarButtonItem =
-	//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
-	//									 target:self action:nil] autorelease];
-	//
-	
-	//[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
+//self.navigationItem.backBarButtonItem =
+//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
+//									 target:self action:nil] autorelease];
+//
+
+//[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
 
 //	CGRect pvcf = [[UIScreen mainScreen] applicationFrame];
 //	pvcf = CGRectMake(pvcf.origin.x, pvcf.origin.y+44.0f, pvcf.size.width, pvcf.size.height-44.0f);
@@ -198,31 +198,78 @@
 
 #pragma mark -
 #pragma mark Table view data source
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	if(section == 0)
+		return @"Basic Information:";
+	else   
+		return @"Filter Option:";
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 5;
+	if(section == 0)
+		return 6;
+	else 
+		return 2;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    // Configure the cell...
-    
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+		descArray = [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil];
+		descArray1 = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil];
+
+		if(indexPath.section == 0) {
+			cell.textLabel.text = [descArray objectAtIndex:indexPath.row];
+		}
+		else{
+			cell.textLabel.text = [descArray1 objectAtIndex:indexPath.row];
+		}
+
+		int height;
+		if (indexPath.section == 0 && indexPath.row == 0) {
+			height = 50;
+		} else {
+			height = 22;
+		}
+		UITextView *aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)];
+
+		//aboutInput.clearsContextBeforeDrawing = NO;
+		aboutInput.font = [UIFont systemFontOfSize:14.0];
+		//aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
+		aboutInput.backgroundColor = [UIColor grayColor];
+		aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+		aboutInput.delegate = self;
+		[cell.contentView addSubview:aboutInput];
+		[aboutInput release];
+	}
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
+	if(indexPath.section == 0 && indexPath.row == 0)
+		return 60.0f;
+	else return 30.0f;
+} 
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
+	return YES;
 }
 
 /*
