@@ -62,7 +62,7 @@
     [m_ImageRequestData release];
 	
     // inform the user
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+    NSLog(@"Connection failed! Error - %@ %@. From acani-sinatra, run: ruby acani.rb", [error localizedDescription], [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
 	workInProgress = NO;
 }
 

@@ -1,4 +1,8 @@
 Current:
+	Users:
+		- Generate fake photos & thumbnails
+		- Refresh
+		- Scroll
 	Chat:
 		- Distinguish between incoming & outgoing messages and display accordingly
 		- Show in horizontal orientation. See SMS Bubbles app

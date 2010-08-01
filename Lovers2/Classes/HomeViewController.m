@@ -138,7 +138,7 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	// TODO: download image from facebook containing fb_id from user
 
 	//[self downloadImageFromInternet:@"http://graph.facebook.com/5/picture"];
-	[self downloadJsonFromInternet:@"http://127.0.0.1:8000/json/"];
+	[self downloadJsonFromInternet:@"http://localhost:4567/sample-json"];
 }
 
 - (void) downloadJsonFromInternet:(NSString*) urlToJson {
