@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1331AC1C11906025004ABBC6 /* logo_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1331AC1B11906025004ABBC6 /* logo_bg.png */; };
 		137342BE118F1D66006CCB0E /* InternetImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 137342BD118F1D66006CCB0E /* InternetImage.m */; };
-		1374571B1189DF7F00F8BE18 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 1374571A1189DF7E00F8BE18 /* user.png */; };
 		1D3623260D0F684500981E51 /* LoversAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LoversAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -23,7 +22,6 @@
 		AD5EFD0411E52E2200F86E5B /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCFC11E52E2200F86E5B /* SBJsonBase.m */; };
 		AD5EFD0511E52E2200F86E5B /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCFE11E52E2200F86E5B /* SBJsonParser.m */; };
 		AD5EFD0611E52E2200F86E5B /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFD0011E52E2200F86E5B /* SBJsonWriter.m */; };
-		AD81CE4711FCC7D00095F3CA /* background_sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AD81CE4611FCC7D00095F3CA /* background_sample.jpg */; };
 		AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */; };
 		ADA9560111F914430073D09A /* greendot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADA9560011F914430073D09A /* greendot.jpg */; };
 		ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* ThumbnailDownload.m */; };
@@ -41,17 +39,13 @@
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
 		F56D02661188744A00F2A797 /* PhotoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F56D02651188744A00F2A797 /* PhotoView.xib */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
-		F56D02CA1188869B00F2A797 /* lovers.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02C31188869B00F2A797 /* lovers.png */; };
 		F56D02CC1188869B00F2A797 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02C51188869B00F2A797 /* refresh.png */; };
-		F56D02E01188895500F2A797 /* sign_off.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02DE1188895500F2A797 /* sign_off.png */; };
-		F56D02E11188895500F2A797 /* sign_on.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02DF1188895500F2A797 /* sign_on.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1331AC1B11906025004ABBC6 /* logo_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_bg.png; sourceTree = "<group>"; };
 		137342BC118F1D66006CCB0E /* InternetImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InternetImage.h; path = Classes/InternetImage.h; sourceTree = SOURCE_ROOT; };
 		137342BD118F1D66006CCB0E /* InternetImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InternetImage.m; path = Classes/InternetImage.m; sourceTree = SOURCE_ROOT; };
-		1374571A1189DF7E00F8BE18 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* LoversAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoversAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* LoversAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoversAppDelegate.m; sourceTree = "<group>"; };
@@ -77,7 +71,6 @@
 		AD5EFCFE11E52E2200F86E5B /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		AD5EFCFF11E52E2200F86E5B /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		AD5EFD0011E52E2200F86E5B /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		AD81CE4611FCC7D00095F3CA /* background_sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_sample.jpg; sourceTree = "<group>"; };
 		AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomURLConnection.h; sourceTree = "<group>"; };
 		AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomURLConnection.m; sourceTree = "<group>"; };
 		ADA9560011F914430073D09A /* greendot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = greendot.jpg; sourceTree = "<group>"; };
@@ -103,10 +96,7 @@
 		F56D02631188743D00F2A797 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		F56D02651188744A00F2A797 /* PhotoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoView.xib; sourceTree = "<group>"; };
 		F56D02981188790900F2A797 /* lovers-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lovers-text.png"; sourceTree = "<group>"; };
-		F56D02C31188869B00F2A797 /* lovers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lovers.png; sourceTree = "<group>"; };
 		F56D02C51188869B00F2A797 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
-		F56D02DE1188895500F2A797 /* sign_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_off.png; sourceTree = "<group>"; };
-		F56D02DF1188895500F2A797 /* sign_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_on.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,19 +218,14 @@
 		F56D02911188781800F2A797 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				1374571A1189DF7E00F8BE18 /* user.png */,
 				ADA9560011F914430073D09A /* greendot.jpg */,
-				AD81CE4611FCC7D00095F3CA /* background_sample.jpg */,
 				ADB02B2B1204AFDB006FD53D /* BlankAvatar.png */,
 				ADB02B2C1204AFDB006FD53D /* ChatBar.png */,
 				ADB02B2D1204AFDB006FD53D /* SendButton.png */,
 				ADB02B2E1204AFDB006FD53D /* ChatBubbleGreen.png */,
 				ADB02B2F1204AFDB006FD53D /* ChatBubbleGray.png */,
-				F56D02C31188869B00F2A797 /* lovers.png */,
 				F56D02C51188869B00F2A797 /* refresh.png */,
 				F56D02981188790900F2A797 /* lovers-text.png */,
-				F56D02DE1188895500F2A797 /* sign_off.png */,
-				F56D02DF1188895500F2A797 /* sign_on.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -297,14 +282,9 @@
 				F56D024611886CFD00F2A797 /* HomeView.xib in Resources */,
 				F56D02661188744A00F2A797 /* PhotoView.xib in Resources */,
 				F56D02991188790900F2A797 /* lovers-text.png in Resources */,
-				F56D02CA1188869B00F2A797 /* lovers.png in Resources */,
 				F56D02CC1188869B00F2A797 /* refresh.png in Resources */,
-				F56D02E01188895500F2A797 /* sign_off.png in Resources */,
-				F56D02E11188895500F2A797 /* sign_on.png in Resources */,
-				1374571B1189DF7F00F8BE18 /* user.png in Resources */,
 				1331AC1C11906025004ABBC6 /* logo_bg.png in Resources */,
 				ADA9560111F914430073D09A /* greendot.jpg in Resources */,
-				AD81CE4711FCC7D00095F3CA /* background_sample.jpg in Resources */,
 				ADB02B301204AFDB006FD53D /* BlankAvatar.png in Resources */,
 				ADB02B311204AFDB006FD53D /* ChatBar.png in Resources */,
 				ADB02B321204AFDB006FD53D /* SendButton.png in Resources */,
