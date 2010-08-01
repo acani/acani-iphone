@@ -26,7 +26,7 @@
 		AD81CE4711FCC7D00095F3CA /* background_sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AD81CE4611FCC7D00095F3CA /* background_sample.jpg */; };
 		AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */; };
 		ADA9560111F914430073D09A /* greendot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADA9560011F914430073D09A /* greendot.jpg */; };
-		ADA9564C11FA09930073D09A /* thumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* thumbnailDownload.m */; };
+		ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* ThumbnailDownload.m */; };
 		ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B231204AE76006FD53D /* ChatViewController.m */; };
 		ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B261204AEDF006FD53D /* ColorUtils.m */; };
 		ADB02B2A1204AF9A006FD53D /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B291204AF9A006FD53D /* Message.m */; };
@@ -81,8 +81,8 @@
 		AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomURLConnection.h; sourceTree = "<group>"; };
 		AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomURLConnection.m; sourceTree = "<group>"; };
 		ADA9560011F914430073D09A /* greendot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = greendot.jpg; sourceTree = "<group>"; };
-		ADA9564A11FA09930073D09A /* thumbnailDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thumbnailDownload.h; sourceTree = "<group>"; };
-		ADA9564B11FA09930073D09A /* thumbnailDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = thumbnailDownload.m; sourceTree = "<group>"; };
+		ADA9564A11FA09930073D09A /* ThumbnailDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailDownload.h; sourceTree = "<group>"; };
+		ADA9564B11FA09930073D09A /* ThumbnailDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailDownload.m; sourceTree = "<group>"; };
 		ADB02B221204AE76006FD53D /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		ADB02B231204AE76006FD53D /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		ADB02B251204AEDF006FD53D /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
@@ -148,8 +148,8 @@
 				F56D02651188744A00F2A797 /* PhotoView.xib */,
 				AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */,
 				AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */,
-				ADA9564A11FA09930073D09A /* thumbnailDownload.h */,
-				ADA9564B11FA09930073D09A /* thumbnailDownload.m */,
+				ADA9564A11FA09930073D09A /* ThumbnailDownload.h */,
+				ADA9564B11FA09930073D09A /* ThumbnailDownload.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -272,7 +272,6 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */;
 			compatibilityVersion = "Xcode 3.1";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -334,7 +333,7 @@
 				AD5EFD0511E52E2200F86E5B /* SBJsonParser.m in Sources */,
 				AD5EFD0611E52E2200F86E5B /* SBJsonWriter.m in Sources */,
 				AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */,
-				ADA9564C11FA09930073D09A /* thumbnailDownload.m in Sources */,
+				ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */,
 				ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */,
 				ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */,
 				ADB02B2A1204AF9A006FD53D /* Message.m in Sources */,

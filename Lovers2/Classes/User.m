@@ -1,11 +1,3 @@
-//
-//  User.m
-//  Acani
-//
-//  Created by Abhinav Sharma on 6/29/10.
-//  Copyright 2010 Columbia University. All rights reserved.
-//
-
 #import "User.h"
 #import "SBJSON.h"
 #import "JSON.h"
@@ -16,12 +8,9 @@
 @synthesize fbId;
 @synthesize name;
 
-
-- (id)initWithJsonDictionary:(NSDictionary*)dictionary
-{
+- (id)initWithJsonDictionary:(NSDictionary*)dictionary {
 	if (self = [super init]) {    
 		self.userId    = [dictionary valueForKey:@"id"];
-		
 		self.fbId      = [[dictionary objectForKey:@"fb_id"] longValue];
 		NSLog(@"user fbID %d", self.fbId);
 		self.name      = [dictionary objectForKey:@"name"];
@@ -57,12 +46,10 @@
 
 */ 
 
-- (void)dealloc 
-{
+- (void)dealloc {
 	[userId release];
 	[name release];
    	[super dealloc];
 }
-
  
 @end

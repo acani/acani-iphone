@@ -284,16 +284,16 @@
 	}
 }
 
--(void) slideFrameUp {
+- (void) slideFrameUp {
 	[self slideFrame:YES];
 }
 
--(void) slideFrameDown {
+- (void) slideFrameDown {
 	[self slideFrame:NO];
 }
 
 // Shorten height of UIView when keyboard pops up
--(void) slideFrame:(BOOL)up {
+- (void) slideFrame:(BOOL)up {
 	const int movementDistance = 216; // set to keyboard variable	
 	int movement = (up ? -movementDistance : movementDistance);
 
@@ -304,7 +304,7 @@
 	self.view.frame = viewFrame;
 	[UIView commitAnimations];
 	
-	if([messages count] > 0) {
+	if ([messages count] > 0) {
 		NSUInteger index = [messages count] - 1;
 		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}

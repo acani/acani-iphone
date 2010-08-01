@@ -1,19 +1,9 @@
-//
-//  User.h
-//  Acani
-//
-//  Created by Abhinav Sharma on 6/29/10.
-//  Copyright 2010 Columbia University. All rights reserved.
-//
-
-#import <Foundation/Foundation.h>
-
-
 @interface User : NSObject {
 	NSString*   userId;
 	uint32_t    fbId;
 	NSString*   name;
 }
+
 //	NSString*   head;
 //	NSString*   about;
 //	uint32_t*   age;
@@ -39,8 +29,6 @@
 //	time_t      updatedAt;
 //	time_t      lastOn;
 //}
-
-
 
 // {
 //	 "_id": {
@@ -72,12 +60,9 @@
 // },
 //
 
-
-
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, assign) uint32_t fbId;
 @property (nonatomic, copy) NSString *name;
-
 
 - (id)initWithJsonDictionary:(NSDictionary *)dictionary;
 + (NSArray *)findNearest;

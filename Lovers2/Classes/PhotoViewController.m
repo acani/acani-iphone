@@ -1,11 +1,3 @@
-    //
-//  ProfileViewController.m
-//  Lovers
-//
-//  Created by Jose Lona on 28/04/10.
-//  Copyright 2010 fstech. All rights reserved.
-//
-
 #import "PhotoViewController.h"
 #import "ChatViewController.h"
 
@@ -28,8 +20,6 @@
 	[contentView release];
 }
 
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 	overlay = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 150, 150)];
@@ -68,15 +58,11 @@
     [super dealloc];
 }
 
--(IBAction)backButtonClicked:(id)sender
-{
+- (IBAction)backButtonClicked:(id)sender {
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-
--(IBAction)moveOverlay:(id)sender
-{
-
+- (IBAction)moveOverlay:(id)sender {
 	if (self.view.window!=nil) {
 		[UIView beginAnimations: @"move_Overlay" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -88,8 +74,6 @@
 		
 		[UIView commitAnimations];
 	}
-	
-
 }
 
 @end

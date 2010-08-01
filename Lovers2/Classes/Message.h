@@ -1,5 +1,3 @@
-#import <Foundation/Foundation.h>
-
 @interface Message : NSObject {
 	NSString* text;
 	time_t timestamp;

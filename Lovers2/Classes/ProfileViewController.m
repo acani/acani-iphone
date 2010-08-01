@@ -11,36 +11,12 @@
 	return self;	
 }
 
--(void)edit:(id)sender
-{
+- (void)edit:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
--(void)back:(id)sender
-{
+- (void)back:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
-}
-
-// Recursively travel down the view tree, increasing the indentation level for children
-- (void) dumpView: (UIView *) aView atIndent: (int) indent into:(NSMutableString *) outstring
-{
-	for (int i = 0; i < indent; i++) [outstring appendString:@"--"];
-	[outstring appendFormat:@"[%2d] %@ - (%f, %f) - %f x %f \n", indent, [[aView class] description], aView.frame.origin.x, aView.frame.origin.y, aView.bounds.size.width, aView.bounds.size.height];
-	for (UIView *view in [aView subviews]) [self dumpView:view atIndent:indent + 1 into:outstring];
-}
-
-// Start the tree recursion at level 0 with the root view
-- (NSString *) displayViews: (UIView *) aView
-{
-	NSMutableString *outstring = [[NSMutableString alloc] init];
-	[self dumpView: self.view.window atIndent:0 into:outstring];
-	return [outstring autorelease];
-}
-
-// Show the tree
-- (void) displayViews
-{
-	CFShow([self displayViews: self.view.window]);
 }
 
 - (void)saveProfile:(id)sender {
@@ -107,7 +83,7 @@
 //	[navBar pushNavigationItem:navItem animated:NO];
 //	[self.view.superview addSubview:navBar];
 //
-////	// This didn't work, but is it possible to use the UsersViewController's
+////	// This didn't work, but is it possible to use the HomeViewController's
 ////	// navigationController's navBar instead of making a new one?
 ////    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
 //
@@ -198,12 +174,12 @@
 
 #pragma mark -
 #pragma mark Table view data source
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-	if(section == 0)
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 0) {
 		return @"Basic Information:";
-	else   
+	} else {
 		return @"Filter Option:";
+	}
 }
 
 
@@ -215,10 +191,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-	if(section == 0)
+	if (section == 0) {
 		return 6;
-	else 
+	} else { 
 		return 2;
+	}
 }
 
 // Customize the appearance of table view cells.
@@ -234,10 +211,9 @@
 		descArray = [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil];
 		descArray1 = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil];
 
-		if(indexPath.section == 0) {
+		if (indexPath.section == 0) {
 			cell.textLabel.text = [descArray objectAtIndex:indexPath.row];
-		}
-		else{
+		} else {
 			cell.textLabel.text = [descArray1 objectAtIndex:indexPath.row];
 		}
 
@@ -262,10 +238,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	if(indexPath.section == 0 && indexPath.row == 0)
+	if (indexPath.section == 0 && indexPath.row == 0) {
 		return 60.0f;
-	else return 30.0f;
-} 
+	} else {
+		return 30.0f;
+	}
+}
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
