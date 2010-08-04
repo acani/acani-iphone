@@ -4,15 +4,15 @@
 
 @implementation User
 
-@synthesize userId;
-@synthesize fbId;
+@synthesize uid;
+@synthesize fbid;
 @synthesize name;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dictionary {
 	if (self = [super init]) {    
-		self.userId    = [dictionary valueForKey:@"id"];
-		self.fbId      = [[dictionary objectForKey:@"fb_id"] longValue];
-		NSLog(@"user fbID %d", self.fbId);
+		self.uid       = [[dictionary objectForKey:@"_id"] objectForKey:@"$oid"];
+		self.fbid      = [[dictionary objectForKey:@"fbid"] longValue];
+		NSLog(@"user fbID %d", self.fbid);
 		self.name      = [dictionary objectForKey:@"name"];
 		NSLog(@"user fbID %@", self.name);
 	}
@@ -47,7 +47,7 @@
 */ 
 
 - (void)dealloc {
-	[userId release];
+	[uid release];
 	[name release];
    	[super dealloc];
 }

@@ -135,10 +135,10 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	//[self prepareImageList];
 	//[self downloadJSON];
 	// TODO: init with user
-	// TODO: download image from facebook containing fb_id from user
+	// TODO: download image from facebook containing fbid from user
 
 	//[self downloadImageFromInternet:@"http://graph.facebook.com/5/picture"];
-	[self downloadJsonFromInternet:@"http://localhost:4567/sample-json"];
+	[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
 }
 
 - (void) downloadJsonFromInternet:(NSString*) urlToJson {
@@ -154,9 +154,11 @@ static enum downloadType THUMBNAIL = _thumbnail;
 
 // download thumbnail images from internet and feed into users
 	for (User * user in users){
-		NSLog(@"user fbid %d", user.fbId);
+		NSLog(@"user id %@", user.uid);
+		NSLog(@"user fbid %d", user.fbid);
 		NSString *imageUrl;
-		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbId];
+		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", user.uid];
+//		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
 		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl];
 		[thumbnailLoad DownloadData:self];
 

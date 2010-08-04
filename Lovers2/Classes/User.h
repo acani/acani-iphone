@@ -1,7 +1,7 @@
 @interface User : NSObject {
-	NSString*   userId;
-	uint32_t    fbId;
-	NSString*   name;
+	NSString *uid;
+	uint32_t fbid;
+	NSString *name;
 }
 
 //	NSString*   head;
@@ -34,7 +34,7 @@
 //	 "_id": {
 //		 "$oid": "4c22e72a146728fe80000048"
 //	 },
-//	 "fb_id": 1719,
+//	 "fbid": 1719,
 //	 "name": "Abelardo W",
 //	 "head": "Dolor totam est.",
 //	 "about": "Laudantium enim dolorem enim. Modi et qui temporibus.",
@@ -60,8 +60,8 @@
 // },
 //
 
-@property (nonatomic, copy) NSString *userId;
-@property (nonatomic, assign) uint32_t fbId;
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, assign) uint32_t fbid;
 @property (nonatomic, copy) NSString *name;
 
 - (id)initWithJsonDictionary:(NSDictionary *)dictionary;
