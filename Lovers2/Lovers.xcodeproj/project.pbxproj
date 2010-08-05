@@ -14,7 +14,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		AD5EFCEC11E52C0800F86E5B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCEB11E52C0800F86E5B /* User.m */; };
 		AD5EFD0111E52E2200F86E5B /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCF611E52E2200F86E5B /* NSObject+SBJSON.m */; };
 		AD5EFD0211E52E2200F86E5B /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCF811E52E2200F86E5B /* NSString+SBJSON.m */; };
@@ -35,9 +34,7 @@
 		ADB02B341204AFDB006FD53D /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2F1204AFDB006FD53D /* ChatBubbleGray.png */; };
 		ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B851204CA15006FD53D /* ProfileViewController.m */; };
 		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
-		F56D024611886CFD00F2A797 /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F56D024511886CFD00F2A797 /* HomeView.xib */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
-		F56D02661188744A00F2A797 /* PhotoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F56D02651188744A00F2A797 /* PhotoView.xib */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
 		F56D02CC1188869B00F2A797 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02C51188869B00F2A797 /* refresh.png */; };
 /* End PBXBuildFile section */
@@ -52,7 +49,6 @@
 		1D6058910D05DD3D006BFB54 /* Lovers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lovers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Lovers_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lovers_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Lovers-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lovers-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -91,10 +87,8 @@
 		ADB02B851204CA15006FD53D /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F56D024311886CF000F2A797 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		F56D024511886CFD00F2A797 /* HomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeView.xib; sourceTree = "<group>"; };
 		F56D02621188743D00F2A797 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		F56D02631188743D00F2A797 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
-		F56D02651188744A00F2A797 /* PhotoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoView.xib; sourceTree = "<group>"; };
 		F56D02981188790900F2A797 /* lovers-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lovers-text.png"; sourceTree = "<group>"; };
 		F56D02C51188869B00F2A797 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,14 +122,12 @@
 				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
 				F56D024211886CF000F2A797 /* HomeViewController.h */,
 				F56D024311886CF000F2A797 /* HomeViewController.m */,
-				F56D024511886CFD00F2A797 /* HomeView.xib */,
 				137342BC118F1D66006CCB0E /* InternetImage.h */,
 				137342BD118F1D66006CCB0E /* InternetImage.m */,
 				ADB02B841204CA15006FD53D /* ProfileViewController.h */,
 				ADB02B851204CA15006FD53D /* ProfileViewController.m */,
 				F56D02621188743D00F2A797 /* PhotoViewController.h */,
 				F56D02631188743D00F2A797 /* PhotoViewController.m */,
-				F56D02651188744A00F2A797 /* PhotoView.xib */,
 				AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */,
 				AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */,
 				ADA9564A11FA09930073D09A /* ThumbnailDownload.h */,
@@ -179,7 +171,6 @@
 			children = (
 				1331AC1B11906025004ABBC6 /* logo_bg.png */,
 				F56D02911188781800F2A797 /* images */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Lovers-Info.plist */,
 			);
 			name = Resources;
@@ -278,9 +269,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				F56D024611886CFD00F2A797 /* HomeView.xib in Resources */,
-				F56D02661188744A00F2A797 /* PhotoView.xib in Resources */,
 				F56D02991188790900F2A797 /* lovers-text.png in Resources */,
 				F56D02CC1188869B00F2A797 /* refresh.png in Resources */,
 				1331AC1C11906025004ABBC6 /* logo_bg.png in Resources */,

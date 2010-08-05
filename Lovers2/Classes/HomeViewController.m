@@ -123,6 +123,21 @@ static int rowCounter = 0;
 const enum downloadType JSON = _json;
 static enum downloadType THUMBNAIL = _thumbnail;
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+
+
+-(void)loadView{
+
+	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+	contentView.backgroundColor = [UIColor lightGrayColor];
+	scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	
+	self.view = contentView;
+	[self.view addSubview:scroll];
+	[contentView release];
+	
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[self.navigationController setNavigationBarHidden:NO];
@@ -177,7 +192,7 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	
 	NSLog(@"homeviewcontroller: internetImageReady");
 	// The image has been downloaded. Put the image into the UIImageView
-	int totalImages = 20;
+	int totalImages = 100;
 	scroll.contentSize = CGSizeMake(320,(totalImages/4 * 80));
 	int xOffset = 76;
 	int yOffset = 76;

@@ -13,10 +13,12 @@
 - (void)loadView {
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor cyanColor];
+	NSLog(@"view is loading");
+	self.view = contentView;
 	[self.navigationController setNavigationBarHidden:NO];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Chat", @selector(goToChat:));
 	
-	self.view = contentView;
+	
 	[contentView release];
 }
 
