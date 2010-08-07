@@ -35,13 +35,10 @@
 	self.navigationItem.leftBarButtonItem = backButton;
 	[backButton release];
 
-	profileFields = [NSArray arrayWithObjects:@"Camping", @"Water Skiing", @"Weight Lifting", @"Stamp Collecting", nil];
-
 	// set up the table's header view based on our UIView 'myHeaderView' outlet
 	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 86.0f)];
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
-
 
 	UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
 	avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
@@ -63,6 +60,30 @@
 	[profileName release];
 
 	self.tableView.tableHeaderView = profileHeader;	// note this will override UITableView's 'sectionHeaderHeight' property
+	
+	aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
+	
+	//aboutInput.clearsContextBeforeDrawing = NO;
+	aboutInput.font = [UIFont systemFontOfSize:14.0];
+	//aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
+	aboutInput.backgroundColor = [UIColor grayColor];
+	aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+	aboutInput.delegate = self;	
+
+	int height = 22.0f;
+	profileFields = [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil];
+	profileValues =	[[NSArray alloc] initWithObjects:
+					 aboutInput,
+					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
+					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
+					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
+					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
+					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],nil];
+					 
+	 profileFields1 = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil];
+	 profileValues1 = [[NSArray alloc] initWithObjects:
+					   [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
+					   [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)], nil];
 
 //self.navigationItem.backBarButtonItem =
 //	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
@@ -206,85 +227,20 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-		descArray = [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil];
-		descArray1 = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil];
-        int height = 22;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		
 		if (indexPath.section == 0) {
-			
-			cell.textLabel.text = [descArray objectAtIndex:indexPath.row];
-			
-			switch (indexPath.row) {
-				case 0:
-					height = 50;
-					break;
-				default:
-					break;
+			cell.textLabel.text = [profileFields objectAtIndex:indexPath.row];
+			if (indexPath.row == 0) {
+				[cell.contentView addSubview:aboutInput];
+				[aboutInput release];
+			} else {
+				[cell.contentView addSubview:[profileValues objectAtIndex:indexPath.row]];
 			}
-			
-			
-//			switch (indexPath.row) {
-//				
-//	            case 0:
-//					height = 50;
-//					break;
-//				case 1:
-//					pickerViewArray = [[NSArray alloc] initWithObjects:@"1",@"2", @"3", nil];
-//					break;
-//				case 2:
-//					pickerViewArray = [[NSArray alloc] initWithObjects:@"6''",@"6''1", @"6''2", nil];
-//					break;
-//				case 3:
-//					pickerViewArray = [[NSArray alloc] initWithObjects:@"150",@"160", @"170", nil];
-//					break;
-//				case 4:
-//					pickerViewArray = [[NSArray alloc] initWithObjects:@"Chris",@"None", @"", nil];
-//					break;
-//				case 5:
-//					pickerViewArray = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter", @"w", nil];
-//					break;
-//				
-//				default:
-//					break;
-//			}
+		} else if (indexPath.section == 1) {
+			cell.textLabel.text = [profileFields1 objectAtIndex:indexPath.row];
+			[cell.contentView addSubview:[profileValues1 objectAtIndex:indexPath.row]];
 		}
-			
-			else if (indexPath.section == 1){
-				
-				cell.textLabel.text = [descArray1 objectAtIndex:indexPath.row];
-				
-				//switch (indexPath.row) {
-//					case 0:
-//						pickerViewArray = [[NSArray alloc] initWithObjects:@"10",@"20", @"30", nil];
-//						break;
-//						
-//					case 1:
-//						pickerViewArray = [[NSArray alloc] initWithObjects:@"15",@"16", @"1", nil];
-//						break;
-//						
-//					default:
-//						break;
-//				}
-		
-		}
-		
-		
-		if (indexPath.section == 0 && indexPath.row == 0) {
-		
-		UITextView *aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)];
-
-		//aboutInput.clearsContextBeforeDrawing = NO;
-		aboutInput.font = [UIFont systemFontOfSize:14.0];
-		//aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
-		aboutInput.backgroundColor = [UIColor grayColor];
-		aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
-		aboutInput.delegate = self;
-		[cell.contentView addSubview:aboutInput];
-		[aboutInput release];
-		}
-		
 	}
     return cell;
 }
@@ -343,13 +299,11 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+	
+	editIndexPath = indexPath;
 	
 	if (indexPath.section == 0) {
-		
-		
 		switch (indexPath.row) {
-				
 			case 1:
 				pickerViewArray = [[NSArray alloc] initWithObjects:@"1",@"2", @"3", nil];
 				break;
@@ -369,11 +323,7 @@
 			default:
 				break;
 		}
-	}
-	
-	else if (indexPath.section == 1){
-		
-			
+	} else if (indexPath.section == 1) {
 		switch (indexPath.row) {
 			case 0:
 				pickerViewArray = [[NSArray alloc] initWithObjects:@"10",@"20", @"30", nil];
@@ -386,27 +336,18 @@
 			default:
 				break;
 		}
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-		
-		NSLog(@"123");
-		aac = [[UIActionSheet alloc] initWithTitle:nil
+
+	aac = [[UIActionSheet alloc] initWithTitle:nil
 														 delegate:self
 												cancelButtonTitle:nil
 										   destructiveButtonTitle:nil
 												otherButtonTitles:nil];
 		
-		[aac setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+		[aac setActionSheetStyle:UIActionSheetStyleDefault];
 		
 		
-		pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];
+		pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, 200, 320)];
 		pickerView.showsSelectionIndicator = YES;
 		pickerView.delegate = self;
 		
@@ -444,13 +385,9 @@
 	    [aac addSubview:pickerToolbar];
 		[aac showInView:self.view];
 		[aac setBounds:CGRectMake(0,0,320, 320)];
-		
-		
-	
 }
 
--(BOOL)dismissActionSheet:(id)sender
-{
+-(BOOL)dismissActionSheet:(id)sender {
 	[aac dismissWithClickedButtonIndex:0 animated:YES];
 	[pickerView release];
 	[pickerToolbar release];
@@ -463,20 +400,22 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
 	return [pickerViewArray count];
-	
-	
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	
 	return [pickerViewArray objectAtIndex:row];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	
 	NSLog(@"Selected Color: %@. Index of selected color: %i", [pickerViewArray objectAtIndex:row], row);
+	NSLog(@"editIndexPath: %@", editIndexPath);
+	
+	if (editIndexPath.section == 0) {
+		[[profileValues objectAtIndex:editIndexPath.row] setText:[pickerViewArray objectAtIndex:row]];
+	} else {
+		[[profileValues1 objectAtIndex:editIndexPath.row] setText:[pickerViewArray objectAtIndex:row]];
+	}
 }
-
 
 -(void) DatePickerDoneClick{
 	

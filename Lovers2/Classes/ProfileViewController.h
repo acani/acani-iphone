@@ -2,12 +2,15 @@
 	UINavigationController *navController;
 	UIView *profileHeader;
 	NSArray *profileFields;
-	NSArray *descArray;
-	NSArray *descArray1;
+	NSArray *profileValues;
+	NSArray *profileFields1;
+	NSArray *profileValues1;
 	NSArray *pickerViewArray;
 	UIPickerView *pickerView;
 	UIToolbar *pickerToolbar;
 	UIActionSheet *aac;
+	NSIndexPath *editIndexPath;
+	UITextView *aboutInput;
 }
 
 
