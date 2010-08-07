@@ -252,7 +252,7 @@
 	[sendButton release];
 
 	[self.view addSubview:chatBar];
-	[self.view sendSubviewToBack: chatBar];
+	[self.view sendSubviewToBack:chatBar];
 	[chatBar release];
 	
 	// Listen for keyboard

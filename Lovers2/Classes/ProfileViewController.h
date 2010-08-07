@@ -1,4 +1,4 @@
-@interface ProfileViewController : UITableViewController <UITextViewDelegate, UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource> {
+@interface ProfileViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource> {
 	UINavigationController *navController;
 	UIView *profileHeader;
 	NSArray *profileFields;
@@ -11,6 +11,7 @@
 	UIActionSheet *aac;
 	NSIndexPath *editIndexPath;
 	UITextView *aboutInput;
+	UITableView *profileContent;
 }
 
 

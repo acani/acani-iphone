@@ -6,7 +6,6 @@
 @implementation ProfileViewController
 
 - (ProfileViewController *) init {
-	self = [super initWithStyle:UITableViewStyleGrouped];
 	self.title = @"Edit Profile";
 	return self;	
 }
@@ -25,6 +24,7 @@
 
 - (void)loadView {
 	[super loadView];
+	self.view.backgroundColor = [UIColor whiteColor];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
@@ -35,8 +35,14 @@
 	self.navigationItem.leftBarButtonItem = backButton;
 	[backButton release];
 
+	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 244.0f) style:UITableViewStyleGrouped];
+	profileContent.clearsContextBeforeDrawing = NO;
+	profileContent.delegate = self;
+	profileContent.dataSource = self;
+	profileContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
+
 	// set up the table's header view based on our UIView 'myHeaderView' outlet
-	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 86.0f)];
+	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 86.0f)];
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
 
@@ -52,20 +58,26 @@
 	profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	profileName.text = @"Matt Di Pasquale";
 	profileName.backgroundColor = [UIColor clearColor];
-
-	profileHeader.clearsContextBeforeDrawing = NO;	
-
-	profileHeader.backgroundColor = [UIColor clearColor];
 	[profileHeader addSubview:profileName];
 	[profileName release];
 
-	self.tableView.tableHeaderView = profileHeader;	// note this will override UITableView's 'sectionHeaderHeight' property
+	profileContent.tableHeaderView = profileHeader;	// note this overrides UITableView's 'sectionHeaderHeight' property
+
+	[self.view addSubview:profileContent];
+	[profileContent release];
+
+	pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 220.0f)];
+	pickerView.clearsContextBeforeDrawing = NO;
+	pickerView.showsSelectionIndicator = YES;
+	pickerView.delegate = self;
+	[self.view addSubview:pickerView];
+	[pickerView release];
 	
 	aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
-	
-	//aboutInput.clearsContextBeforeDrawing = NO;
+//	aboutInput.scrollEnabled = NO;
+	aboutInput.clearsContextBeforeDrawing = NO;
 	aboutInput.font = [UIFont systemFontOfSize:14.0];
-	//aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
+//	aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
 	aboutInput.backgroundColor = [UIColor grayColor];
 	aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 	aboutInput.delegate = self;	
@@ -84,38 +96,6 @@
 	 profileValues1 = [[NSArray alloc] initWithObjects:
 					   [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
 					   [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)], nil];
-
-//self.navigationItem.backBarButtonItem =
-//	[[[UIBarButtonItem alloc] initWithTitle:@"Acani" style:UIBarButtonItemStyleBordered
-//									 target:self action:nil] autorelease];
-//
-
-//[self performSelector:@selector(displayViews) withObject:nil afterDelay:0.0f];
-
-//	CGRect pvcf = [[UIScreen mainScreen] applicationFrame];
-//	pvcf = CGRectMake(pvcf.origin.x, pvcf.origin.y+44.0f, pvcf.size.width, pvcf.size.height-44.0f);
-//
-//	self.tableView.frame = pvcf;
-//
-//	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-//	UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Profile"];
-////	UIBarButtonItem *saveBtn = 
-//	navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveProfile:)];
-//	[navBar pushNavigationItem:navItem animated:NO];
-//	[self.view.superview addSubview:navBar];
-//
-////	// This didn't work, but is it possible to use the HomeViewController's
-////	// navigationController's navBar instead of making a new one?
-////    [contentView addSubview:self.parentViewController.navigationController.navigationBar];
-//
-////	UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(40.0f, 100.0f, 90.0f, 44.0f)];
-////	[button setTitle:@"Save2" forState:UIControlStateNormal];
-////	[button addTarget:self action:@selector(saveProfile:) forControlEvents:UIControlEventTouchUpInside];
-////	[contentView addSubview:button];
-//
-//	[navItem.leftBarButtonItem release];
-//	[navItem release];
-//	[navBar release];
 }
 
 
@@ -203,7 +183,6 @@
 	}
 }
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     return 2;
@@ -249,7 +228,7 @@
 	if (indexPath.section == 0 && indexPath.row == 0) {
 		return 60.0f;
 	} else {
-		return 30.0f;
+		return tableView.rowHeight;
 	}
 }
 
@@ -337,23 +316,14 @@
 				break;
 		}
 	}
-
-	aac = [[UIActionSheet alloc] initWithTitle:nil
-														 delegate:self
-												cancelButtonTitle:nil
-										   destructiveButtonTitle:nil
-												otherButtonTitles:nil];
-		
-		[aac setActionSheetStyle:UIActionSheetStyleDefault];
-		
-		
-		pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, 200, 320)];
-		pickerView.showsSelectionIndicator = YES;
-		pickerView.delegate = self;
-		
-		[aac addSubview:pickerView];
-		[pickerView release];
-		
+//
+//	aac = [[UIActionSheet alloc] initWithTitle:nil
+//														 delegate:self
+//												cancelButtonTitle:nil
+//										   destructiveButtonTitle:nil
+//												otherButtonTitles:nil];
+//		
+//		[aac setActionSheetStyle:UIActionSheetStyleDefault];
 //		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Close"]];
 //		closeButton.momentary = YES; 
 //		closeButton.frame = CGRectMake(260, 7.0f, 50.0f, 30.0f);
@@ -368,30 +338,23 @@
 //		[aac setBounds:CGRectMake(0, 0, 320, 485)];
 		
 		
-		pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-		pickerToolbar.barStyle = UIBarStyleBlackOpaque;
-		[pickerToolbar sizeToFit];
-		
-		NSMutableArray *barItems = [[NSMutableArray alloc] init];
-		
-		UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-		[barItems addObject:flexSpace];
-	
-	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissActionSheet:)];
-   [barItems addObject:doneBtn];
-		
-	[pickerToolbar setItems:barItems animated:YES];
-		
-	    [aac addSubview:pickerToolbar];
-		[aac showInView:self.view];
-		[aac setBounds:CGRectMake(0,0,320, 320)];
-}
-
--(BOOL)dismissActionSheet:(id)sender {
-	[aac dismissWithClickedButtonIndex:0 animated:YES];
-	[pickerView release];
-	[pickerToolbar release];
-	return YES;
+//		pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//		pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+//		[pickerToolbar sizeToFit];
+//		
+//		NSMutableArray *barItems = [[NSMutableArray alloc] init];
+//		
+//		UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+//		[barItems addObject:flexSpace];
+//	
+//	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissActionSheet:)];
+//   [barItems addObject:doneBtn];
+//		
+//	[pickerToolbar setItems:barItems animated:YES];
+//		
+//	    [aac addSubview:pickerToolbar];
+//		[aac showInView:self.view];
+//		[aac setBounds:CGRectMake(0,0,320, 320)];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -417,11 +380,6 @@
 	}
 }
 
--(void) DatePickerDoneClick{
-	
-	//[actionSheet dismissWithClickedButtonIndex: animated:NO];
-	 NSLog(@"2");
-}
 
 #pragma mark -
 #pragma mark Memory management
