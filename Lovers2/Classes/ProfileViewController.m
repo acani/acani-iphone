@@ -206,23 +206,73 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
 		descArray = [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil];
 		descArray1 = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil];
-
+        int height = 22;
+		
 		if (indexPath.section == 0) {
+			
 			cell.textLabel.text = [descArray objectAtIndex:indexPath.row];
-		} else {
-			cell.textLabel.text = [descArray1 objectAtIndex:indexPath.row];
+			
+			switch (indexPath.row) {
+				case 0:
+					height = 50;
+					break;
+				default:
+					break;
+			}
+			
+			
+//			switch (indexPath.row) {
+//				
+//	            case 0:
+//					height = 50;
+//					break;
+//				case 1:
+//					pickerViewArray = [[NSArray alloc] initWithObjects:@"1",@"2", @"3", nil];
+//					break;
+//				case 2:
+//					pickerViewArray = [[NSArray alloc] initWithObjects:@"6''",@"6''1", @"6''2", nil];
+//					break;
+//				case 3:
+//					pickerViewArray = [[NSArray alloc] initWithObjects:@"150",@"160", @"170", nil];
+//					break;
+//				case 4:
+//					pickerViewArray = [[NSArray alloc] initWithObjects:@"Chris",@"None", @"", nil];
+//					break;
+//				case 5:
+//					pickerViewArray = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter", @"w", nil];
+//					break;
+//				
+//				default:
+//					break;
+//			}
 		}
-
-		int height;
+			
+			else if (indexPath.section == 1){
+				
+				cell.textLabel.text = [descArray1 objectAtIndex:indexPath.row];
+				
+				//switch (indexPath.row) {
+//					case 0:
+//						pickerViewArray = [[NSArray alloc] initWithObjects:@"10",@"20", @"30", nil];
+//						break;
+//						
+//					case 1:
+//						pickerViewArray = [[NSArray alloc] initWithObjects:@"15",@"16", @"1", nil];
+//						break;
+//						
+//					default:
+//						break;
+//				}
+		
+		}
+		
+		
 		if (indexPath.section == 0 && indexPath.row == 0) {
-			height = 50;
-		} else {
-			height = 22;
-		}
+		
 		UITextView *aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)];
 
 		//aboutInput.clearsContextBeforeDrawing = NO;
@@ -233,6 +283,8 @@
 		aboutInput.delegate = self;
 		[cell.contentView addSubview:aboutInput];
 		[aboutInput release];
+		}
+		
 	}
     return cell;
 }
@@ -291,16 +343,146 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+
+	
+	if (indexPath.section == 0) {
+		
+		
+		switch (indexPath.row) {
+				
+			case 1:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"1",@"2", @"3", nil];
+				break;
+			case 2:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"6''",@"6''1", @"6''2", nil];
+				break;
+			case 3:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"150",@"160", @"170", nil];
+				break;
+			case 4:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"Chris",@"None", @"", nil];
+				break;
+			case 5:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter", @"w", nil];
+				break;
+				
+			default:
+				break;
+		}
+	}
+	
+	else if (indexPath.section == 1){
+		
+			
+		switch (indexPath.row) {
+			case 0:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"10",@"20", @"30", nil];
+				break;
+				
+			case 1:
+				pickerViewArray = [[NSArray alloc] initWithObjects:@"15",@"16", @"1", nil];
+				break;
+				
+			default:
+				break;
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+		
+		NSLog(@"123");
+		aac = [[UIActionSheet alloc] initWithTitle:nil
+														 delegate:self
+												cancelButtonTitle:nil
+										   destructiveButtonTitle:nil
+												otherButtonTitles:nil];
+		
+		[aac setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+		
+		
+		pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];
+		pickerView.showsSelectionIndicator = YES;
+		pickerView.delegate = self;
+		
+		[aac addSubview:pickerView];
+		[pickerView release];
+		
+//		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Close"]];
+//		closeButton.momentary = YES; 
+//		closeButton.frame = CGRectMake(260, 7.0f, 50.0f, 30.0f);
+//		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
+//		closeButton.tintColor = [UIColor blackColor];
+//		[closeButton addTarget:self action:@selector(dismissActionSheet:) forControlEvents:UIControlEventValueChanged];
+//		[aac addSubview:closeButton];
+//		[closeButton release];
+//		
+//		[aac showInView:self.view];
+//		
+//		[aac setBounds:CGRectMake(0, 0, 320, 485)];
+		
+		
+		pickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+		pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+		[pickerToolbar sizeToFit];
+		
+		NSMutableArray *barItems = [[NSMutableArray alloc] init];
+		
+		UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+		[barItems addObject:flexSpace];
+	
+	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissActionSheet:)];
+   [barItems addObject:doneBtn];
+		
+	[pickerToolbar setItems:barItems animated:YES];
+		
+	    [aac addSubview:pickerToolbar];
+		[aac showInView:self.view];
+		[aac setBounds:CGRectMake(0,0,320, 320)];
+		
+		
+	
 }
 
+-(BOOL)dismissActionSheet:(id)sender
+{
+	[aac dismissWithClickedButtonIndex:0 animated:YES];
+	[pickerView release];
+	[pickerToolbar release];
+	return YES;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+	return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+	return [pickerViewArray count];
+	
+	
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+	
+	return [pickerViewArray objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	
+	NSLog(@"Selected Color: %@. Index of selected color: %i", [pickerViewArray objectAtIndex:row], row);
+}
+
+
+-(void) DatePickerDoneClick{
+	
+	//[actionSheet dismissWithClickedButtonIndex: animated:NO];
+	 NSLog(@"2");
+}
 
 #pragma mark -
 #pragma mark Memory management
