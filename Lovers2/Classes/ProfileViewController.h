@@ -5,16 +5,13 @@
 	NSArray *profileValues;
 	NSArray *profileFields1;
 	NSArray *profileValues1;
-	NSArray *pickerViewArray;
-	UIPickerView *pickerView;
+	NSArray *valueSelects;
+	NSArray *valueSelectArray;
+	UIPickerView *valueSelect;
 	UIToolbar *pickerToolbar;
-	UIActionSheet *aac;
 	NSIndexPath *editIndexPath;
 	UITextView *aboutInput;
 	UITableView *profileContent;
 }
 
-
--(void) DatePickerDoneClick;
--(BOOL)dismissActionSheet:(id)sender;
 @end
