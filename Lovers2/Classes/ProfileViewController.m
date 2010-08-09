@@ -89,9 +89,10 @@
 //					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
 //				      [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)], nil], nil];
 
-	valueSelects = [[NSArray alloc] initWithObjects:
+	pickerOptions = [[NSArray alloc] initWithObjects:
 					[[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"", nil],
+					 [[NSArray alloc] initWithObjects:
+					  [[NSArray alloc] initWithObjects:@"", nil], nil],
 					 [[NSArray alloc] initWithObjects:
 					  [[NSArray	alloc] initWithObjects:@"Do Not Show", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", nil], nil],
 					 [[NSArray alloc] initWithObjects:
@@ -109,10 +110,10 @@
 					 [[NSArray alloc] initWithObjects:
 					  [[NSArray	alloc] initWithObjects:@"1", @"2", @"3", nil], nil], nil], nil];
 	
-	valueSelectArray = [[valueSelects objectAtIndex:0] objectAtIndex:0];
+	components = [[pickerOptions objectAtIndex:0] objectAtIndex:1];
 
-	NSLog(@"valueSelects: %@", valueSelects);
-	NSLog(@"valueSelects obj: %@", [[[valueSelects objectAtIndex:0] objectAtIndex:1] objectAtIndex:1]);
+//	NSLog(@"pickerOptions: %@", pickerOptions);
+	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
 }
 
 
@@ -213,17 +214,13 @@
 #define ABOUT_TAG 122
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    static NSString *CellIdentifier = @"Cell";
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {	
 	UILabel *value;
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellID = @"Attribute";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellID] autorelease];
 //		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-		cell.textLabel.text = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
 		if (indexPath.section == 0 && indexPath.row == 0) {
 			aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
@@ -246,12 +243,14 @@
 			[value release];
 //			[cell.contentView addSubview:[[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
 		}
+		[cell sendSubviewToBack:cell.textLabel];
 	}
 //	else {
 //		value = (UILabel *)[cell.contentView viewWithTag:VALUE_TAG];
 //		aboutInput = (UITextView *)[cell.contentView viewWithTag:ABOUT_TAG];		
 //	}
-
+	cell.textLabel.text = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	NSLog(@"cell.textLabel: %@", cell.textLabel);
     return cell;
 }
 
@@ -309,38 +308,35 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	NSLog(@"1: %d, %d", indexPath.section, indexPath.row);
+	NSLog(@"indexPath: %@", indexPath);
 	editIndexPath = indexPath;
-	valueSelectArray = [[valueSelects objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-
+	components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[valueSelect reloadAllComponents];
 }
 
-
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	NSLog(@"Selected Color: %@. Index of selected color: %i", [valueSelectArray objectAtIndex:row], row);
+	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
 	NSLog(@"editIndexPath: %@", editIndexPath);
 	
-	// Set text for UILabel
-	[(UILabel *)[[profileContent cellForRowAtIndexPath:editIndexPath].contentView viewWithTag:VALUE_TAG] setText:[valueSelectArray objectAtIndex:row]];
+	[(UILabel *)[[profileContent cellForRowAtIndexPath:editIndexPath].contentView viewWithTag:VALUE_TAG]
+	 setText:[[components objectAtIndex:component] objectAtIndex:row]]; // set text for UILabel
 
 //	[[[profileValues objectAtIndex:editIndexPath.section]
-//	  objectAtIndex:editIndexPath.row] setText:[valueSelectArray objectAtIndex:row]];
+//	  objectAtIndex:editIndexPath.row] setText:[components objectAtIndex:row]];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-	return [valueSelectArray count];
+	return [components count];
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-	NSLog(@"valueSelect rows count: %d", [[valueSelectArray objectAtIndex:component] count]);
-	return [[valueSelectArray objectAtIndex:component] count];
+	NSLog(@"valueSelect rows count: %d", [[components objectAtIndex:component] count]);
+	return [[components objectAtIndex:component] count];
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	NSLog(@"object: %@", [[valueSelectArray objectAtIndex:component] objectAtIndex:row]);
-	return [[valueSelectArray objectAtIndex:component] objectAtIndex:row];
+	NSLog(@"object: %@", [[components objectAtIndex:component] objectAtIndex:row]);
+	return [[components objectAtIndex:component] objectAtIndex:row];
 }
 
 

@@ -5,8 +5,8 @@
 	NSArray *profileValues;
 	NSArray *profileFields1;
 	NSArray *profileValues1;
-	NSArray *valueSelects;
-	NSArray *valueSelectArray;
+	NSArray *pickerOptions;
+	NSArray *components;
 	UIPickerView *valueSelect;
 	UIToolbar *pickerToolbar;
 	NSIndexPath *editIndexPath;
