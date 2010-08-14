@@ -74,8 +74,8 @@
 
 //	int height = 22.0f;
 	profileFields = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"About", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
-					 [[NSArray alloc] initWithObjects:@"Distance", @"Age Filter", nil], nil];
+					 [[NSArray alloc] initWithObjects:@"About", @"Sex", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
+					 [[NSArray alloc] initWithObjects:@"Distance", @"Sex Filter", @"Age Filter", nil], nil];
 	
 //	profileValues =	[[NSArray alloc] initWithObjects:
 //					 [[NSArray alloc] initWithObjects:
@@ -91,30 +91,35 @@
 
 	// This should be sqlite or something persistent
 	profileValues = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", nil],
-					 [[NSArray alloc] initWithObjects:@"Show", @"All Ages", nil], nil];
+					 [[NSArray alloc] initWithObjects:@"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", nil],
+					 [[NSArray alloc] initWithObjects:@"Show", @"Both", @"All ages", nil], nil];
 	
 	pickerOptions = [[NSArray alloc] initWithObjects:
-					[[NSArray alloc] initWithObjects:
 					 [[NSArray alloc] initWithObjects:
-					  [[NSArray alloc] initWithObjects:@"", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"5 feet", @"6 feet", @"7 feet", nil],
+					   [[NSArray alloc] initWithObjects:@"0 inches", @"1 inches", @"2 inches", @"3 inches", @"4 inches", @"5 inches", @"6 inches", @"7 inches", @"8 inches", @"9 inches", @"10 inches", @"11 inches", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"100 lbs", @"101 lbs", @"102 lbs", @"103 lbs", @"104 lbs", @"105 lbs", @"106 lbs", @"107 lbs", @"108 lbs", @"109 lbs", @"110 lbs", @"111 lbs", @"112 lbs", @"113 lbs", @"114 lbs", @"115 lbs", @"116 lbs", @"117 lbs", @"118 lbs", @"119 lbs", @"120 lbs", @"121 lbs", @"122 lbs", @"123 lbs", @"124 lbs", @"125 lbs", @"126 lbs", @"127 lbs", @"128 lbs", @"129 lbs", @"130 lbs", @"131 lbs", @"132 lbs", @"133 lbs", @"134 lbs", @"135 lbs", @"136 lbs", @"137 lbs", @"138 lbs", @"139 lbs", @"140 lbs", @"141 lbs", @"142 lbs", @"143 lbs", @"144 lbs", @"145 lbs", @"146 lbs", @"147 lbs", @"148 lbs", @"149 lbs", @"150 lbs", @"151 lbs", @"152 lbs", @"153 lbs", @"154 lbs", @"155 lbs", @"156 lbs", @"157 lbs", @"158 lbs", @"159 lbs", @"160 lbs", @"161 lbs", @"162 lbs", @"163 lbs", @"164 lbs", @"165 lbs", @"166 lbs", @"167 lbs", @"168 lbs", @"169 lbs", @"170 lbs", @"171 lbs", @"172 lbs", @"173 lbs", @"174 lbs", @"175 lbs", @"176 lbs", @"177 lbs", @"178 lbs", @"179 lbs", @"180 lbs", @"181 lbs", @"182 lbs", @"183 lbs", @"184 lbs", @"185 lbs", @"186 lbs", @"187 lbs", @"188 lbs", @"189 lbs", @"190 lbs", @"191 lbs", @"192 lbs", @"193 lbs", @"194 lbs", @"195 lbs", @"196 lbs", @"197 lbs", @"198 lbs", @"199 lbs", @"200 lbs", @"201 lbs", @"202 lbs", @"203 lbs", @"204 lbs", @"205 lbs", @"206 lbs", @"207 lbs", @"208 lbs", @"209 lbs", @"210 lbs", @"211 lbs", @"212 lbs", @"213 lbs", @"214 lbs", @"215 lbs", @"216 lbs", @"217 lbs", @"218 lbs", @"219 lbs", @"220 lbs", @"221 lbs", @"222 lbs", @"223 lbs", @"224 lbs", @"225 lbs", @"226 lbs", @"227 lbs", @"228 lbs", @"229 lbs", @"230 lbs", @"231 lbs", @"232 lbs", @"233 lbs", @"234 lbs", @"235 lbs", @"236 lbs", @"237 lbs", @"238 lbs", @"239 lbs", @"240 lbs", @"241 lbs", @"242 lbs", @"243 lbs", @"244 lbs", @"245 lbs", @"246 lbs", @"247 lbs", @"248 lbs", @"249 lbs", @"250 lbs", @"251 lbs", @"252 lbs", @"253 lbs", @"254 lbs", @"255 lbs", @"256 lbs", @"257 lbs", @"258 lbs", @"259 lbs", @"260 lbs", @"261 lbs", @"262 lbs", @"263 lbs", @"264 lbs", @"265 lbs", @"266 lbs", @"267 lbs", @"268 lbs", @"269 lbs", @"270 lbs", @"271 lbs", @"272 lbs", @"273 lbs", @"274 lbs", @"275 lbs", @"276 lbs", @"277 lbs", @"278 lbs", @"279 lbs", @"280 lbs", @"281 lbs", @"282 lbs", @"283 lbs", @"284 lbs", @"285 lbs", @"286 lbs", @"287 lbs", @"288 lbs", @"289 lbs", @"290 lbs", @"291 lbs", @"292 lbs", @"293 lbs", @"294 lbs", @"295 lbs", @"296 lbs", @"297 lbs", @"298 lbs", @"299 lbs", @"300 lbs", @"301 lbs", @"302 lbs", @"303 lbs", @"304 lbs", @"305 lbs", @"306 lbs", @"307 lbs", @"308 lbs", @"309 lbs", @"310 lbs", @"311 lbs", @"312 lbs", @"313 lbs", @"314 lbs", @"315 lbs", @"316 lbs", @"317 lbs", @"318 lbs", @"319 lbs", @"320 lbs", @"321 lbs", @"322 lbs", @"323 lbs", @"324 lbs", @"325 lbs", @"326 lbs", @"327 lbs", @"328 lbs", @"329 lbs", @"330 lbs", @"331 lbs", @"332 lbs", @"333 lbs", @"334 lbs", @"335 lbs", @"336 lbs", @"337 lbs", @"338 lbs", @"339 lbs", @"340 lbs", @"341 lbs", @"342 lbs", @"343 lbs", @"344 lbs", @"345 lbs", @"346 lbs", @"347 lbs", @"348 lbs", @"349 lbs", @"350 lbs", @"351 lbs", @"352 lbs", @"353 lbs", @"354 lbs", @"355 lbs", @"356 lbs", @"357 lbs", @"358 lbs", @"359 lbs", @"360 lbs", @"361 lbs", @"362 lbs", @"363 lbs", @"364 lbs", @"365 lbs", @"366 lbs", @"367 lbs", @"368 lbs", @"369 lbs", @"370 lbs", @"371 lbs", @"372 lbs", @"373 lbs", @"374 lbs", @"375 lbs", @"376 lbs", @"377 lbs", @"378 lbs", @"379 lbs", @"380 lbs", @"381 lbs", @"382 lbs", @"383 lbs", @"384 lbs", @"385 lbs", @"386 lbs", @"387 lbs", @"388 lbs", @"389 lbs", @"390 lbs", @"391 lbs", @"392 lbs", @"393 lbs", @"394 lbs", @"395 lbs", @"396 lbs", @"397 lbs", @"398 lbs", @"399 lbs", @"400 lbs", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino", @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"", nil], nil], nil],
 					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"Do Not Show", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", nil], nil],
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"Do Not Show", @"5 feet", @"6 feet", @"7 feet", nil],
-					  [[NSArray alloc] initWithObjects:@"0 inches", @"1 inches", @"2 inches", @"3 inches", @"4 inches", @"5 inches", @"6 inches", @"7 inches", @"8 inches", @"9 inches", @"10 inches", @"11 inches", nil], nil],
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"Do Not Show", @"100 lbs", @"101 lbs", @"102 lbs", @"103 lbs", @"104 lbs", @"105 lbs", @"106 lbs", @"107 lbs", @"108 lbs", @"109 lbs", @"110 lbs", @"111 lbs", @"112 lbs", @"113 lbs", @"114 lbs", @"115 lbs", @"116 lbs", @"117 lbs", @"118 lbs", @"119 lbs", @"120 lbs", @"121 lbs", @"122 lbs", @"123 lbs", @"124 lbs", @"125 lbs", @"126 lbs", @"127 lbs", @"128 lbs", @"129 lbs", @"130 lbs", @"131 lbs", @"132 lbs", @"133 lbs", @"134 lbs", @"135 lbs", @"136 lbs", @"137 lbs", @"138 lbs", @"139 lbs", @"140 lbs", @"141 lbs", @"142 lbs", @"143 lbs", @"144 lbs", @"145 lbs", @"146 lbs", @"147 lbs", @"148 lbs", @"149 lbs", @"150 lbs", @"151 lbs", @"152 lbs", @"153 lbs", @"154 lbs", @"155 lbs", @"156 lbs", @"157 lbs", @"158 lbs", @"159 lbs", @"160 lbs", @"161 lbs", @"162 lbs", @"163 lbs", @"164 lbs", @"165 lbs", @"166 lbs", @"167 lbs", @"168 lbs", @"169 lbs", @"170 lbs", @"171 lbs", @"172 lbs", @"173 lbs", @"174 lbs", @"175 lbs", @"176 lbs", @"177 lbs", @"178 lbs", @"179 lbs", @"180 lbs", @"181 lbs", @"182 lbs", @"183 lbs", @"184 lbs", @"185 lbs", @"186 lbs", @"187 lbs", @"188 lbs", @"189 lbs", @"190 lbs", @"191 lbs", @"192 lbs", @"193 lbs", @"194 lbs", @"195 lbs", @"196 lbs", @"197 lbs", @"198 lbs", @"199 lbs", @"200 lbs", @"201 lbs", @"202 lbs", @"203 lbs", @"204 lbs", @"205 lbs", @"206 lbs", @"207 lbs", @"208 lbs", @"209 lbs", @"210 lbs", @"211 lbs", @"212 lbs", @"213 lbs", @"214 lbs", @"215 lbs", @"216 lbs", @"217 lbs", @"218 lbs", @"219 lbs", @"220 lbs", @"221 lbs", @"222 lbs", @"223 lbs", @"224 lbs", @"225 lbs", @"226 lbs", @"227 lbs", @"228 lbs", @"229 lbs", @"230 lbs", @"231 lbs", @"232 lbs", @"233 lbs", @"234 lbs", @"235 lbs", @"236 lbs", @"237 lbs", @"238 lbs", @"239 lbs", @"240 lbs", @"241 lbs", @"242 lbs", @"243 lbs", @"244 lbs", @"245 lbs", @"246 lbs", @"247 lbs", @"248 lbs", @"249 lbs", @"250 lbs", @"251 lbs", @"252 lbs", @"253 lbs", @"254 lbs", @"255 lbs", @"256 lbs", @"257 lbs", @"258 lbs", @"259 lbs", @"260 lbs", @"261 lbs", @"262 lbs", @"263 lbs", @"264 lbs", @"265 lbs", @"266 lbs", @"267 lbs", @"268 lbs", @"269 lbs", @"270 lbs", @"271 lbs", @"272 lbs", @"273 lbs", @"274 lbs", @"275 lbs", @"276 lbs", @"277 lbs", @"278 lbs", @"279 lbs", @"280 lbs", @"281 lbs", @"282 lbs", @"283 lbs", @"284 lbs", @"285 lbs", @"286 lbs", @"287 lbs", @"288 lbs", @"289 lbs", @"290 lbs", @"291 lbs", @"292 lbs", @"293 lbs", @"294 lbs", @"295 lbs", @"296 lbs", @"297 lbs", @"298 lbs", @"299 lbs", @"300 lbs", @"301 lbs", @"302 lbs", @"303 lbs", @"304 lbs", @"305 lbs", @"306 lbs", @"307 lbs", @"308 lbs", @"309 lbs", @"310 lbs", @"311 lbs", @"312 lbs", @"313 lbs", @"314 lbs", @"315 lbs", @"316 lbs", @"317 lbs", @"318 lbs", @"319 lbs", @"320 lbs", @"321 lbs", @"322 lbs", @"323 lbs", @"324 lbs", @"325 lbs", @"326 lbs", @"327 lbs", @"328 lbs", @"329 lbs", @"330 lbs", @"331 lbs", @"332 lbs", @"333 lbs", @"334 lbs", @"335 lbs", @"336 lbs", @"337 lbs", @"338 lbs", @"339 lbs", @"340 lbs", @"341 lbs", @"342 lbs", @"343 lbs", @"344 lbs", @"345 lbs", @"346 lbs", @"347 lbs", @"348 lbs", @"349 lbs", @"350 lbs", @"351 lbs", @"352 lbs", @"353 lbs", @"354 lbs", @"355 lbs", @"356 lbs", @"357 lbs", @"358 lbs", @"359 lbs", @"360 lbs", @"361 lbs", @"362 lbs", @"363 lbs", @"364 lbs", @"365 lbs", @"366 lbs", @"367 lbs", @"368 lbs", @"369 lbs", @"370 lbs", @"371 lbs", @"372 lbs", @"373 lbs", @"374 lbs", @"375 lbs", @"376 lbs", @"377 lbs", @"378 lbs", @"379 lbs", @"380 lbs", @"381 lbs", @"382 lbs", @"383 lbs", @"384 lbs", @"385 lbs", @"386 lbs", @"387 lbs", @"388 lbs", @"389 lbs", @"390 lbs", @"391 lbs", @"392 lbs", @"393 lbs", @"394 lbs", @"395 lbs", @"396 lbs", @"397 lbs", @"398 lbs", @"399 lbs", @"400 lbs", nil], nil],
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino", @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil], nil],
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"Distance", @"Age Filter", @"w", nil], nil], nil],
-					[[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"15",@"16", @"1", nil], nil],
-					 [[NSArray alloc] initWithObjects:
-					  [[NSArray	alloc] initWithObjects:@"1", @"2", @"3", nil], nil], nil], nil];
-	
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Show", @"Hide", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Both", @"Women only", @"Men only", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"No min", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil],
+					   [[NSArray alloc] initWithObjects:@"No max", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil], nil], nil], nil];
+
 	components = [[pickerOptions objectAtIndex:0] objectAtIndex:1];
 
 //	NSLog(@"pickerOptions: %@", pickerOptions);
@@ -187,13 +192,11 @@
  [super viewDidDisappear:animated];
  }
  */
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
  // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
  }
- */
 
 
 #pragma mark -
@@ -216,7 +219,8 @@
 }
 
 #define VALUE_TAG 121
-#define ABOUT_TAG 122
+#define TEXT_VIEW_TAG 122
+#define TEXT_FIELD_TAG 123
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -224,8 +228,8 @@
 	NSString *valueText = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	UITableViewCell *cell;
 
-	if (indexPath.section == 0 && indexPath.row == 0) { // About Cell
-		static NSString *CellID = @"About";
+	if (indexPath.section == 0 && indexPath.row == 0) { // About textView Cell
+		static NSString *CellID = @"TextView";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
@@ -237,11 +241,26 @@
 			aboutInput.backgroundColor = [UIColor grayColor];
 			aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 			aboutInput.delegate = self;			
-			aboutInput.tag = ABOUT_TAG;
+			aboutInput.tag = TEXT_VIEW_TAG;
 			[cell.contentView addSubview:aboutInput];
 			[aboutInput release];
 		}
 		aboutInput.text = valueText;
+	} else if (indexPath.section == 0 && indexPath.row == 6) { // Facebook textField Cell
+		static NSString *CellID = @"TextField";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			valueInput = [[UITextField alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 30.0f)];
+			valueInput.clearsContextBeforeDrawing = NO;
+			valueInput.font = [UIFont systemFontOfSize:14.0];
+			valueInput.backgroundColor = [UIColor lightGrayColor];
+			valueInput.delegate = self;			
+			valueInput.tag = TEXT_FIELD_TAG;
+			[cell.contentView addSubview:valueInput];
+			[valueInput release];
+		}
+		valueInput.text = valueText;
 	} else {
 		static NSString *CellID = @"Default";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
@@ -258,7 +277,7 @@
 
 //	else {
 //		value = (UILabel *)[cell.contentView viewWithTag:VALUE_TAG];
-//		aboutInput = (UITextView *)[cell.contentView viewWithTag:ABOUT_TAG];		
+//		aboutInput = (UITextView *)[cell.contentView viewWithTag:TEXT_VIEW_TAG];		
 //	}
 	cell.textLabel.text = fieldText;
 
@@ -325,6 +344,7 @@
 	editIndexPath = indexPath;
 	components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[valueSelect reloadAllComponents];
+	[valueSelect selectRow:0 inComponent:0 animated:NO]; // This should be dynamic
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
@@ -353,6 +373,24 @@
 	NSLog(@"object: %@", [[components objectAtIndex:component] objectAtIndex:row]);
 	return [[components objectAtIndex:component] objectAtIndex:row];
 }
+
+// Add to TableView (I think by subclassing UITableView, i.e.,
+// @interface TouchableTableView : UITableView
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//	UITouch *touch = [touches anyObject];
+//	
+//	// pass touches up to viewController
+//	[self.nextResponder touchesBegan:touches withEvent:event];
+//}
+//
+// Then, put this in this file (UIViewController)
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    UITouch *touch = [[event allTouches] anyObject];
+//    if ([valueInput isFirstResponder] && [touch view] != valueInput) {
+//        [valueInput resignFirstResponder];
+//    }
+//    [super touchesBegan:touches withEvent:event];
+//}
 
 
 #pragma mark -
