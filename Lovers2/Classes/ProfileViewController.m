@@ -74,8 +74,8 @@
 
 //	int height = 22.0f;
 	profileFields = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"About",@"Age",@"Height",@"Weight",@"Ethnicity",@"Facebook",nil],
-					 [[NSArray alloc] initWithObjects:@"Distance",@"Age Filter",nil], nil];
+					 [[NSArray alloc] initWithObjects:@"About", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
+					 [[NSArray alloc] initWithObjects:@"Distance", @"Age Filter", nil], nil];
 	
 //	profileValues =	[[NSArray alloc] initWithObjects:
 //					 [[NSArray alloc] initWithObjects:
@@ -89,6 +89,11 @@
 //					  [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)],
 //				      [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)], nil], nil];
 
+	// This should be sqlite or something persistent
+	profileValues = [[NSArray alloc] initWithObjects:
+					 [[NSArray alloc] initWithObjects:@"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", nil],
+					 [[NSArray alloc] initWithObjects:@"Show", @"All Ages", nil], nil];
+	
 	pickerOptions = [[NSArray alloc] initWithObjects:
 					[[NSArray alloc] initWithObjects:
 					 [[NSArray alloc] initWithObjects:
@@ -214,15 +219,16 @@
 #define ABOUT_TAG 122
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {	
-	UILabel *value;
-    static NSString *CellID = @"Attribute";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellID] autorelease];
-//		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *fieldText = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	NSString *valueText = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell;
 
-		if (indexPath.section == 0 && indexPath.row == 0) {
+	if (indexPath.section == 0 && indexPath.row == 0) { // About Cell
+		static NSString *CellID = @"About";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
 			aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
 			//	aboutInput.scrollEnabled = NO;
 			aboutInput.clearsContextBeforeDrawing = NO;
@@ -234,23 +240,30 @@
 			aboutInput.tag = ABOUT_TAG;
 			[cell.contentView addSubview:aboutInput];
 			[aboutInput release];
-		} else {
-			int height = 22.0f;
-			value = [[UILabel alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, height)];
-//			value = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-			value.tag = VALUE_TAG;
-			[cell.contentView addSubview:value];
-			[value release];
-//			[cell.contentView addSubview:[[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
 		}
-		[cell sendSubviewToBack:cell.textLabel];
+		aboutInput.text = valueText;
+	} else {
+		static NSString *CellID = @"Default";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+//		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//			int height = 22.0f;
+//			value = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+//			[cell.contentView addSubview:[[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+//			[cell sendSubviewToBack:cell.textLabel];
+		}
+		cell.detailTextLabel.text = valueText;
 	}
+
 //	else {
 //		value = (UILabel *)[cell.contentView viewWithTag:VALUE_TAG];
 //		aboutInput = (UITextView *)[cell.contentView viewWithTag:ABOUT_TAG];		
 //	}
-	cell.textLabel.text = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	cell.textLabel.text = fieldText;
+
 	NSLog(@"cell.textLabel: %@", cell.textLabel);
+	NSLog(@"cell.detailTextLabel: %@", cell.detailTextLabel);
     return cell;
 }
 
@@ -318,9 +331,11 @@
 	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
 	NSLog(@"editIndexPath: %@", editIndexPath);
 	
-	[(UILabel *)[[profileContent cellForRowAtIndexPath:editIndexPath].contentView viewWithTag:VALUE_TAG]
-	 setText:[[components objectAtIndex:component] objectAtIndex:row]]; // set text for UILabel
+	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row];
+	
+	[profileContent cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
 
+//	[[[profileValues objectAtIndex:editIndexPath.section] objectAtIndex:editIndexPath.row] setString:valueText];
 //	[[[profileValues objectAtIndex:editIndexPath.section]
 //	  objectAtIndex:editIndexPath.row] setText:[components objectAtIndex:row]];
 }
