@@ -1,13 +1,16 @@
 #import "ThumbnailDownload.h"
+#import "User.h"
+#import "HomeViewController.h"
 
 @implementation ThumbnailDownload
 
-@synthesize dataUrl, Image, workInProgress;
+@synthesize dataUrl, Image, workInProgress, user;
 
-- (id) initWithUrl:(NSString*)urlToData {
+- (id) initWithUrl:(NSString*)urlToData userInfo:(NSInteger)user_i {
 	self = [super init];
 	if (self) {
 		self.dataUrl = urlToData;
+		self.user = user_i;
 	}
 	return self;
 }
@@ -72,9 +75,9 @@
 		// Create the image with the downloaded data
 		NSLog(@"internetImage: connectiondidfinishloading: thumbnail");
 		UIImage* downloadedImage = [[UIImage alloc] initWithData:m_ImageRequestData];
-		if ([m_Delegate respondsToSelector:@selector(internetImageReady:)]) {
+		if ([m_Delegate respondsToSelector:@selector(internetImageReady: userinfo:)]) {
 			// Call the delegate method and pass ourselves along.
-			[m_Delegate internetImageReady:downloadedImage];
+			[m_Delegate internetImageReady:downloadedImage userinfo:self.user];
 		}
 		
 		[downloadedImage release];
@@ -98,6 +101,7 @@
 }
 
 - (void)dealloc {
+	//[user release];
     [imageConnection release];
 	[dataUrl release];
 	[Image release];

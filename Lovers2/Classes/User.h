@@ -2,6 +2,13 @@
 	NSString *uid;
 	uint32_t fbid;
 	NSString *name;
+	NSString *about;
+	NSString *aboutHead;
+	NSString *ethnic;
+	uint32_t height;
+	uint32_t weight;
+	uint32_t age;
+	NSString *likes;
 }
 
 //	NSString*   head;
@@ -63,8 +70,17 @@
 @property (nonatomic, copy) NSString *uid;
 @property (nonatomic, assign) uint32_t fbid;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *about;
+@property (nonatomic, copy) NSString* aboutHead;
+@property (nonatomic, copy) NSString* ethnic;
+@property (nonatomic, copy) NSString* likes;
+@property (nonatomic, assign) uint32_t height;
+@property (nonatomic, assign) uint32_t weight;
+@property (nonatomic, assign) uint32_t age;
+
+
 
 - (id)initWithJsonDictionary:(NSDictionary *)dictionary;
-+ (NSArray *)findNearest;
+//+ (NSArray *)findNearest;
 
 @end

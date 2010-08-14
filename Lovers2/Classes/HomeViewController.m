@@ -118,7 +118,7 @@ static int colCounter = 0;
 static int rowCounter = 0;
 
 @implementation HomeViewController
-@synthesize selectedImage,asynchImage;
+@synthesize selectedImage,asynchImage, Users;
 
 const enum downloadType JSON = _json;
 static enum downloadType THUMBNAIL = _thumbnail;
@@ -166,15 +166,16 @@ static enum downloadType THUMBNAIL = _thumbnail;
 
 - (void) jsonReady: (NSMutableArray *)users {
 	NSLog(@"user count: %d",[users count]);
-
+	self.Users = users;
 // download thumbnail images from internet and feed into users
-	for (User * user in users){
+	for (int i=0; i< [self.Users count]; i++){
+		User * user = [self.Users objectAtIndex:i];
 		NSLog(@"user id %@", user.uid);
 		NSLog(@"user fbid %d", user.fbid);
 		NSString *imageUrl;
 		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", user.uid];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
-		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl];
+		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl userInfo:i];
 		[thumbnailLoad DownloadData:self];
 
 		//asynchImage.dataUrl = imageUrl;
@@ -185,9 +186,9 @@ static enum downloadType THUMBNAIL = _thumbnail;
 //	[users release];
 }
 
-- (void) internetImageReady:(UIImage *)downloadedImage {	
+- (void) internetImageReady:(UIImage *)downloadedImage userinfo:(NSInteger)user{	
 //	UIImage * userImage = scaleAndRotateImage(downloadedImage);
-	
+	//[user retain];
 	UIImage * userImage = downloadedImage;
 	
 	NSLog(@"homeviewcontroller: internetImageReady");
@@ -202,7 +203,7 @@ static enum downloadType THUMBNAIL = _thumbnail;
 //	{
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setImage: userImage forState:UIControlStateNormal];
-		button.tag = rCount + 100;
+		button.tag = user;
 		
 	UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 76, 10)];
 	name.font = [UIFont fontWithName:@"Arial" size:12];
@@ -221,6 +222,7 @@ static enum downloadType THUMBNAIL = _thumbnail;
 		[scroll addSubview:button];
 	rCount++;
 	//}
+	//[user release];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -258,10 +260,7 @@ static enum downloadType THUMBNAIL = _thumbnail;
 //	[aController release];
 }
 
-- (void)imageSelected:(id)sender {
-	PhotoViewController *aController = [[PhotoViewController alloc] init];
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
-	[aController release];
+- (IBAction)imageSelected:(id)sender {
 	
 	NSLog(@"Button Clicked");
 	if (selectedImage) {
@@ -269,6 +268,23 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	}
 	self.selectedImage = (UIButton*)sender;
 	[selectedImage setBackgroundColor:[UIColor colorWithRed:0.500f green:0.500f blue:0.500f alpha:0.50f]];
+	User * user = [self.Users objectAtIndex:selectedImage.tag];
+	NSString *photoviewUrl= [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture?type=large",user.uid];
+	
+	NSLog(@"%@", photoviewUrl);
+	
+	PhotoViewController *aController = [[PhotoViewController alloc] initWithUrl:photoviewUrl];
+	aController.userAbout = user.about;
+	aController.aboutHead = user.aboutHead;
+	aController.ethinic = user.ethnic;
+	aController.height = user.height;
+	aController.weight = user.weight;
+	aController.age = user.age;
+	aController.likes = user.likes;
+	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
+	[aController release];
+	[photoviewUrl release];
+	
 }
 
 - (void)goToProfile:(id)sender {

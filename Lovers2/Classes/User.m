@@ -6,7 +6,8 @@
 
 @synthesize uid;
 @synthesize fbid;
-@synthesize name;
+@synthesize name, about, aboutHead;
+@synthesize ethnic, likes, height, weight, age;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dictionary {
 	if (self = [super init]) {    
@@ -15,6 +16,13 @@
 		NSLog(@"user fbID %d", self.fbid);
 		self.name      = [dictionary objectForKey:@"name"];
 		NSLog(@"user fbID %@", self.name);
+		self.about	   = [dictionary objectForKey:@"about"];
+		self.aboutHead = [dictionary objectForKey:@"head"];
+		self.ethnic	   = [dictionary objectForKey:@"ethnic"];
+		self.likes     = [dictionary objectForKey:@"likes"];
+		self.height    = [[dictionary objectForKey:@"height"] longValue];
+		self.weight    = [[dictionary objectForKey:@"weight"] longValue];
+		self.age       = [[dictionary objectForKey:@"age"] longValue];
 	}
 	return self;
 }
@@ -47,8 +55,13 @@
 */ 
 
 - (void)dealloc {
+	[aboutHead release];
+	[likes release];
+	[ethnic release];
+	[about release];
 	[uid release];
 	[name release];
+	
    	[super dealloc];
 }
  
