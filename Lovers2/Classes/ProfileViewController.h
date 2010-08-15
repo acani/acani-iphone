@@ -1,6 +1,6 @@
 #define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
 
-@interface ProfileViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource> {
+@interface ProfileViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 	UINavigationController *navController;
 	UIView *profileHeader;
 	NSArray *profileFields;
@@ -16,6 +16,9 @@
 	UITextField *valueInput;
 	UIBarButtonItem *saveButton;
 	UIBarButtonItem *doneButton; // this button appears only when the picker is open
+	UIBarButtonItem *textDone;
+	UIButton *avatarImg;
+	UITextField *profileName;
 }
 
 @end

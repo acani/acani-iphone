@@ -56,6 +56,12 @@
 				  style:UIBarButtonItemStyleBordered
 				  target:self 
 				  action:@selector(doneAction:)];	
+	
+	textDone = [[UIBarButtonItem alloc] 
+				  initWithTitle:@"Done"
+				  style:UIBarButtonItemStyleBordered
+				  target:self 
+				  action:@selector(textAction:)];
 //	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 244.0f) style:UITableViewStyleGrouped];
 //	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
 //	profileContent.clearsContextBeforeDrawing = NO;
@@ -68,16 +74,26 @@
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
 
-	UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
-	avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
-	[profileHeader addSubview:avatar];
-	[avatar release];
+	//UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
+	//avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
+	avatarImg = [[UIButton buttonWithType:UIButtonTypeCustom] initWithFrame:CGRectMake(20.0f, 18.0f, 62, 62)];
+	[avatarImg addTarget:self action:@selector(imageButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	[avatarImg setBackgroundImage:[UIImage imageNamed:@"BlankAvatar.png"] forState:UIControlStateNormal];
+	//[avatar addSubview:avatarImg];
+	//[profileHeader addSubview:avatar];
+	[profileHeader addSubview:avatarImg];
+	//[avatar release];
+	
 
-	UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
+	profileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
+	
+	//UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
+	profileName.clearsContextBeforeDrawing = NO;
 	profileName.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0f];
 	profileName.adjustsFontSizeToFitWidth = YES;
 	profileName.minimumFontSize = 10.0f;
-	profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	//profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	profileName.delegate = self;
 	profileName.text = @"Matt Di Pasquale";
 	profileName.backgroundColor = [UIColor clearColor];
 	[profileHeader addSubview:profileName];
@@ -153,6 +169,10 @@
 //	// More views than you could dream of! 
 //	printf("\nAll window subviews:\n");
 //	NSLog(@"self.view.window: %@", allApplicationViews());
+
+	// Listen for keyboard
+	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -221,6 +241,39 @@
  [super viewDidDisappear:animated];
  }
  */
+-(IBAction)imageButtonClicked:(id)sender
+{
+	UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Choose existing photo",@"Take photo",nil];
+	[action showInView:self.view];
+}
+
+#pragma mark action sheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == 1)
+	{
+		NSLog(@"Take Picture");
+		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+		picker.delegate = self;
+		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+		[self presentModalViewController:picker animated:YES];
+	}
+	else if(buttonIndex == 0)
+	{
+		NSLog(@"Select Picture");
+		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+		picker.delegate = self;
+		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		[self presentModalViewController:picker animated:YES];
+	}
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo 
+{
+	[picker dismissModalViewControllerAnimated:YES];
+	[avatarImg setBackgroundImage:image forState:UIControlStateNormal];
+	//userImageView.contentMode = UIViewContentModeScaleAspectFit;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
  // Return YES for supported orientations
@@ -328,6 +381,15 @@
 	return YES;
 }
 
+//- (void)keyboardWillShow:(NSNotification *)notification {
+//	self.navigationItem.rightBarButtonItem = doneButton;
+//}
+//
+//// Expand textview on keyboard dismissal
+//- (void)keyboardWillHide:(NSNotification *)notification {
+//	self.navigationItem.rightBarButtonItem = saveButton;
+//}
+
 /*
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -405,6 +467,9 @@
 		
 		// add the "Done" button to the nav bar
 		self.navigationItem.rightBarButtonItem = doneButton;
+	
+
+	
 		
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
@@ -416,11 +481,18 @@
 	[valueSelect selectRow:0 inComponent:0 animated:NO]; // This should be dynamic
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	self.navigationItem.rightBarButtonItem = textDone;
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.navigationItem.rightBarButtonItem = textDone;
+}
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
 	NSLog(@"editIndexPath: %@", editIndexPath);
 	
-	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row];
+	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row]; // make this persistent
 	
 	[self.tableView cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
 
@@ -517,8 +589,17 @@
 	// deselect the current table row
 	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	
 }
 
+
+- (void)textAction:(id)sender{
+	[aboutInput resignFirstResponder];
+	[valueInput resignFirstResponder];
+	[profileName resignFirstResponder];
+	
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -532,6 +613,7 @@
 
 - (void)viewDidUnload {
 	profileHeader = nil;
+	//[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
 	// Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
 	// For example: self.myOutlet = nil;
@@ -540,6 +622,7 @@
 - (void)dealloc {
 	[profileHeader release];
 	[valueSelect release];
+	[avatarImg release];
     [super dealloc];
 }
 

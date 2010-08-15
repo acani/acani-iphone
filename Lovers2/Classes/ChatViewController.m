@@ -149,8 +149,7 @@
 }
 
 // Expand textview on keyboard dismissal
-- (void)keyboardWillHide:(NSNotification *)notification;
-{
+- (void)keyboardWillHide:(NSNotification *)notification {
 //	NSDictionary *userInfo = [notification userInfo];
 //	CGRect bounds;
 //	[(NSValue *)[userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&bounds];
