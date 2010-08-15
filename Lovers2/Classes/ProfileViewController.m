@@ -1,20 +1,16 @@
-#import "LoversAppDelegate.h"
 #import "ProfileViewController.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 
 @implementation ProfileViewController
 
-- (ProfileViewController *) init {
+- (id)init {
+	if (!(self = [super init])) return self;
 	self.title = @"Edit Profile";
-	return self;	
+	return self;
 }
 
-- (void)edit:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)back:(id)sender {
+- (void)goBack:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -24,22 +20,48 @@
 
 - (void)loadView {
 	[super loadView];
-	self.view.backgroundColor = [UIColor whiteColor];
 
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.wantsFullScreenLayout = YES;
+
+	NSLog(@"self.view.window: %@", self.view.window);
+	NSLog(@"self.view.superview: %@", self.view.superview);
+	NSLog(@"self.view: %@", self.view);
+
+	// I'm not sure how to initialize the default tableView as grouped, so create our own:
+	UITableView *groupedTable = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame style:UITableViewStyleGrouped];
+	groupedTable.delegate = self;
+	groupedTable.dataSource = self;
+	self.view = groupedTable;
+	NSLog(@"self.view.window: %@", self.view.window);
+	[groupedTable release];
+
+//	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
 								   initWithTitle:@"Lovers"
 								   style:UIBarButtonItemStyleBordered
 								   target:self 
-								   action:@selector(back:)];
+								   action:@selector(goBack:)];
 	self.navigationItem.leftBarButtonItem = backButton;
 	[backButton release];
 
-	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 244.0f) style:UITableViewStyleGrouped];
-	profileContent.clearsContextBeforeDrawing = NO;
-	profileContent.delegate = self;
-	profileContent.dataSource = self;
-	profileContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
+	saveButton = [[UIBarButtonItem alloc] 
+				  initWithTitle:@"Save"
+				  style:UIBarButtonItemStyleBordered
+				  target:self 
+				  action:@selector(saveProfile:)];
+	self.navigationItem.rightBarButtonItem = saveButton;
+
+	doneButton = [[UIBarButtonItem alloc] 
+				  initWithTitle:@"Done"
+				  style:UIBarButtonItemStyleBordered
+				  target:self 
+				  action:@selector(doneAction:)];	
+//	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 244.0f) style:UITableViewStyleGrouped];
+//	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
+//	profileContent.clearsContextBeforeDrawing = NO;
+//	profileContent.delegate = self;
+//	profileContent.dataSource = self;
+//	profileContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
 
 	// set up the table's header view based on our UIView 'myHeaderView' outlet
 	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 86.0f)];
@@ -61,16 +83,16 @@
 	[profileHeader addSubview:profileName];
 	[profileName release];
 
-	profileContent.tableHeaderView = profileHeader;	// note this overrides UITableView's 'sectionHeaderHeight' property
+	self.tableView.tableHeaderView = profileHeader;	// note this overrides UITableView's 'sectionHeaderHeight' property
 
-	[self.view addSubview:profileContent];
-	[profileContent release];
+//	[self.view addSubview:profileContent];
+//	[profileContent release];
 
-	valueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 220.0f)];
-//	valueSelect.clearsContextBeforeDrawing = NO;
+//	valueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 220.0f)];
+	valueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 0.0f)];
+	valueSelect.clearsContextBeforeDrawing = NO;
 	valueSelect.showsSelectionIndicator = YES;
 	valueSelect.delegate = self;
-	[self.view addSubview:valueSelect];
 
 //	int height = 22.0f;
 	profileFields = [[NSArray alloc] initWithObjects:
@@ -124,6 +146,13 @@
 
 //	NSLog(@"pickerOptions: %@", pickerOptions);
 	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
+	NSLog(@"self.view.window.subviews: %@", self.view.window.subviews);	
+	NSLog(@"self.view.subviews: %@", self.view.subviews);	
+	NSLog(@"self.view.window: %@", self.view.window);
+
+//	// More views than you could dream of! 
+//	printf("\nAll window subviews:\n");
+//	NSLog(@"self.view.window: %@", allApplicationViews());
 }
 
 
@@ -340,6 +369,46 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	// check if our date picker is already on screen
+	if (valueSelect.superview == nil) {
+		[[[UIApplication sharedApplication] keyWindow] addSubview:valueSelect];
+		
+		// size up the picker view to our screen and compute the start/end frame origin for our slide up animation
+		//
+		// compute the start frame
+		CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+		CGSize pickerSize = [valueSelect sizeThatFits:CGSizeZero];
+		CGRect startRect = CGRectMake(0.0,
+									  screenRect.origin.y + screenRect.size.height,
+									  pickerSize.width, pickerSize.height);
+		valueSelect.frame = startRect;
+		
+		// compute the end frame
+		CGRect pickerRect = CGRectMake(0.0,
+									   screenRect.origin.y + screenRect.size.height - pickerSize.height,
+									   pickerSize.width,
+									   pickerSize.height);
+		// start the slide up animation
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.3];
+		
+		// we need to perform some post operations after the animation is complete
+		[UIView setAnimationDelegate:self];
+		
+		valueSelect.frame = pickerRect;
+		
+		// shrink the table vertical size to make room for the date picker
+		CGRect newFrame = self.tableView.frame;
+		newFrame.size.height -= valueSelect.frame.size.height;
+		self.tableView.frame = newFrame;
+		[UIView commitAnimations];
+		
+		// add the "Done" button to the nav bar
+		self.navigationItem.rightBarButtonItem = doneButton;
+		
+		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
+	
 	NSLog(@"indexPath: %@", indexPath);
 	editIndexPath = indexPath;
 	components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -353,7 +422,7 @@
 	
 	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row];
 	
-	[profileContent cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
+	[self.tableView cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
 
 //	[[[profileValues objectAtIndex:editIndexPath.section] objectAtIndex:editIndexPath.row] setString:valueText];
 //	[[[profileValues objectAtIndex:editIndexPath.section]
@@ -374,6 +443,29 @@
 	return [[components objectAtIndex:component] objectAtIndex:row];
 }
 
+//- (void)shrinkTableView {
+//	[self slideFrame:YES];
+//}
+//
+//// Shorten height of UITableView when picker/keyboard pops up
+//- (void)slideFrame:(BOOL)up {
+//	const int movementDistance = 216.0f; // set to keyboard variable	
+//	int movement = (up ? -movementDistance : movementDistance);
+//	
+//	[UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:0.3];
+//
+//	CGRect viewFrame = self.tableView.frame;
+//	viewFrame.size.height += movement;
+//	self.tableView.frame = viewFrame;
+//
+//	CGRect pickerFrame = valueSelect.frame;
+//	pickerFrame.size.height -= movement;
+//	self.tableView.frame = viewFrame;
+//
+//	[UIView commitAnimations];
+//}
+
 // Add to TableView (I think by subclassing UITableView, i.e.,
 // @interface TouchableTableView : UITableView
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -391,6 +483,41 @@
 //    }
 //    [super touchesBegan:touches withEvent:event];
 //}
+
+- (void)slideDownDidStop
+{
+	[valueSelect removeFromSuperview];
+}
+
+- (void)doneAction:(id)sender
+{
+	CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+	CGRect endFrame = valueSelect.frame;
+	endFrame.origin.y = screenRect.origin.y + screenRect.size.height;
+	
+	// start the slide down animation
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	
+	// we need to perform some post operations after the animation is complete
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationDidStopSelector:@selector(slideDownDidStop)];
+	
+	valueSelect.frame = endFrame;
+	[UIView commitAnimations];
+	
+	// grow the table back again in vertical size to make room for the date picker
+	CGRect newFrame = self.tableView.frame;
+	newFrame.size.height += valueSelect.frame.size.height;
+	self.tableView.frame = newFrame;
+	
+	// remove the "Done" button in the nav bar
+	self.navigationItem.rightBarButtonItem = saveButton;
+	
+	// deselect the current table row
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 
 #pragma mark -

@@ -6,8 +6,6 @@
 #import "User.h"
 #import "ThumbnailDownload.h"
 
-#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
-
 UIImage *scaleAndRotateImage(UIImage *image) {
 	int kMaxResolution = 75; // or whatever
 	

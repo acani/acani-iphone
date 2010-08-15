@@ -284,16 +284,16 @@
 	}
 }
 
-- (void) slideFrameUp {
+- (void)slideFrameUp {
 	[self slideFrame:YES];
 }
 
-- (void) slideFrameDown {
+- (void)slideFrameDown {
 	[self slideFrame:NO];
 }
 
 // Shorten height of UIView when keyboard pops up
-- (void) slideFrame:(BOOL)up {
+- (void)slideFrame:(BOOL)up {
 	const int movementDistance = 216; // set to keyboard variable	
 	int movement = (up ? -movementDistance : movementDistance);
 
