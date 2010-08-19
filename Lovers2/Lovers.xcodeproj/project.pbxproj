@@ -43,6 +43,7 @@
 		C9F19403121CB1BA00CAB471 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */; };
 		C9F19404121CB1BA00CAB471 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */; };
 		C9F19405121CB1BA00CAB471 /* changes.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9F19401121CB1BA00CAB471 /* changes.txt */; };
+		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
 		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
@@ -109,6 +110,7 @@
 		C9F193FF121CB1BA00CAB471 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
 		C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
 		C9F19401121CB1BA00CAB471 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
+		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F56D024311886CF000F2A797 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F56D02621188743D00F2A797 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */,
+				C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +213,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				C9F1923D121B60E700CAB471 /* CFNetwork.framework */,
+				C9F19474121CCD8300CAB471 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
