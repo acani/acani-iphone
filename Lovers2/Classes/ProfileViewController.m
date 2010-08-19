@@ -343,6 +343,20 @@
 			[valueInput release];
 		}
 		valueInput.text = valueText;
+
+	} else if (indexPath.section == 1 && indexPath.row == 0) {//Distance Filter Cell
+		static NSString *CellID = @"Switch";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			filter = [[UISwitch alloc] initWithFrame:CGRectMake(195.0f, (tableView.rowHeight - 27.0f)/2, 95.0f, 27.0f)];
+			[filter setOn:YES animated:NO];
+			[cell.contentView addSubview:filter];
+			[filter release];
+	
+
+		}
+
 	} else {
 		static NSString *CellID = @"Default";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
