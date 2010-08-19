@@ -3,6 +3,7 @@
 #import "ColorUtils.h"
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>
+#import "ZTWebSocket.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 #define BARBUTTON(TITLE, SELECTOR)	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
@@ -30,6 +31,8 @@
 	sendButton.titleLabel.alpha = ALPHA
 
 @implementation ChatViewController
+
+@synthesize webSocket;
 
 #pragma mark -
 #pragma mark Initialization
@@ -163,6 +166,9 @@
 - (void)loadView {
 	[super loadView];
 
+	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
+    [webSocket open];
+
 	self.title = @"Joanna";
 
 	// create messages
@@ -260,27 +266,40 @@
 }
 
 - (void)sendMSG:(id)sender {
-	if ([chatInput hasText]) {
-		Message *msg = [[Message alloc] init];
-		msg.text = chatInput.text;
-		chatInput.text = @"";
-		if (lastContentHeight > 22.0f) {
-			RESET_CHAT_BAR_HEIGHT;
-			chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
-			chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
-		}		
-		time_t now; time(&now);
-		if (now < latestTimestamp+780) { // show timestamp every 15 mins
-			msg.timestamp = 0;
-		} else {
-			msg.timestamp = latestTimestamp = now;
-		}
-		[messages addObject: msg];
-		[msg release];
-		[chatContent reloadData];
-		NSUInteger index = [messages count] - 1;
-		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	if (![chatInput hasText]) {
+		NSLog(@"Cannot send message, no text");
+		return;
 	}
+
+	Message *msg = [[Message alloc] init];
+	msg.text = chatInput.text;
+	
+	if (!webSocket.connected) {
+		NSLog(@"Cannot send message, not connected");
+		return;
+	} 
+	
+	//			[activityIndicator startAnimating];
+	[webSocket send:[NSString stringWithFormat:
+					 @"{\"content\":\"%@\",\"to_uid_public\":\"bob\"}", msg.text]];
+
+	chatInput.text = @"";
+	if (lastContentHeight > 22.0f) {
+		RESET_CHAT_BAR_HEIGHT;
+		chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
+		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
+	}		
+	time_t now; time(&now);
+	if (now < latestTimestamp+780) { // show timestamp every 15 mins
+		msg.timestamp = 0;
+	} else {
+		msg.timestamp = latestTimestamp = now;
+	}
+	[messages addObject: msg];
+	[msg release];
+	[chatContent reloadData];
+	NSUInteger index = [messages count] - 1;
+	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)slideFrameUp {
@@ -468,7 +487,7 @@ CGFloat msgTimestampHeight;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = [messages objectAtIndex:indexPath.row];
 	msgTimestampHeight = msg.timestamp ? 20.0f : 0.0f;
-	CGSize size = [msg.text sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
 
@@ -524,6 +543,50 @@ CGFloat msgTimestampHeight;
 	 [self.navigationController pushViewController:detailViewController animated:YES];
 	 [detailViewController release];
 	 */
+}
+
+
+#pragma mark -
+#pragma mark WebSocket delegate
+
+-(void)webSocketDidClose:(ZTWebSocket *)webSocket {
+    NSLog(@"Connection closed");
+}
+
+-(void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
+    if (error.code == ZTWebSocketErrorConnectionFailed) {
+		NSLog(@"Connection failed");
+    } else if (error.code == ZTWebSocketErrorHandshakeFailed) {
+		NSLog(@"Handshake failed");
+    } else {
+		NSLog(@"Error");
+    }
+}
+
+-(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)message {
+	NSLog(@"Received message: %@", message);
+	Message *msg = [[Message alloc] init];
+	msg.text = message;
+	[messages addObject: msg];
+	[msg release];
+	[chatContent reloadData];
+	NSUInteger index = [messages count] - 1;
+	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];	
+}
+
+-(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
+	NSLog(@"Connected");
+
+	// should be mongodb _id for user, not device id.
+	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
+					 [UIDevice currentDevice].uniqueIdentifier]];
+}
+
+-(void)webSocketDidSendMessage:(ZTWebSocket *)webSocket {
+//    messages--;
+//    if (messages == 0) {
+//        [activityIndicator stopAnimating];
+//    }
 }
 
 

@@ -3,12 +3,12 @@
 
 @implementation LoversAppDelegate
 
-@synthesize window,controller,navigationController;
+@synthesize window, navigationController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 	homeViewController = [[HomeViewController alloc] init];
 	navigationController= [[UINavigationController alloc] initWithRootViewController:homeViewController];
@@ -19,11 +19,8 @@
 }
 
 
-
-
 - (void)dealloc {
     [window release];
-	[controller release];
 	[navigationController release];
     [super dealloc];
 }

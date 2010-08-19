@@ -37,6 +37,12 @@
 		ADB02B341204AFDB006FD53D /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2F1204AFDB006FD53D /* ChatBubbleGray.png */; };
 		ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B851204CA15006FD53D /* ProfileViewController.m */; };
 		ADB02CB4120E1FEC006FD53D /* blankprofile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */; };
+		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
+		C9F193F3121CB14E00CAB471 /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */; };
+		C9F19402121CB1BA00CAB471 /* AsyncSocket Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */; };
+		C9F19403121CB1BA00CAB471 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */; };
+		C9F19404121CB1BA00CAB471 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */; };
+		C9F19405121CB1BA00CAB471 /* changes.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9F19401121CB1BA00CAB471 /* changes.txt */; };
 		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
@@ -93,6 +99,16 @@
 		ADB02B841204CA15006FD53D /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		ADB02B851204CA15006FD53D /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blankprofile.jpg; sourceTree = "<group>"; };
+		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		C9F193F0121CB14E00CAB471 /* ZTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTLog.h; sourceTree = "<group>"; };
+		C9F193F1121CB14E00CAB471 /* ZTWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTWebSocket.h; sourceTree = "<group>"; };
+		C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
+		C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AsyncSocket Documentation.html"; sourceTree = "<group>"; };
+		C9F193FD121CB1BA00CAB471 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		C9F193FF121CB1BA00CAB471 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
+		C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
+		C9F19401121CB1BA00CAB471 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
 		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F56D024311886CF000F2A797 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		F56D02621188743D00F2A797 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
@@ -109,6 +125,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +172,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C9F193FB121CB1BA00CAB471 /* AsyncSocket */,
+				C9F193F5121CB15F00CAB471 /* Zimt */,
 				AD5EFCF311E52E2200F86E5B /* JSON */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -190,6 +209,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				C9F1923D121B60E700CAB471 /* CFNetwork.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -212,6 +232,29 @@
 				AD5EFD0011E52E2200F86E5B /* SBJsonWriter.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		C9F193F5121CB15F00CAB471 /* Zimt */ = {
+			isa = PBXGroup;
+			children = (
+				C9F193F0121CB14E00CAB471 /* ZTLog.h */,
+				C9F193F1121CB14E00CAB471 /* ZTWebSocket.h */,
+				C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */,
+			);
+			name = Zimt;
+			sourceTree = "<group>";
+		};
+		C9F193FB121CB1BA00CAB471 /* AsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */,
+				C9F193FD121CB1BA00CAB471 /* AsyncSocket.h */,
+				C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */,
+				C9F193FF121CB1BA00CAB471 /* AsyncUdpSocket.h */,
+				C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */,
+				C9F19401121CB1BA00CAB471 /* changes.txt */,
+			);
+			path = AsyncSocket;
 			sourceTree = "<group>";
 		};
 		F56D02911188781800F2A797 /* images */ = {
@@ -260,7 +303,6 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */;
 			compatibilityVersion = "Xcode 3.1";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -295,6 +337,8 @@
 				AD71627B1217415700351B3D /* red-x.png in Resources */,
 				AD71627C1217415700351B3D /* gold-star-2.jpg in Resources */,
 				AD7162BB1217477500351B3D /* BlockButton.png in Resources */,
+				C9F19402121CB1BA00CAB471 /* AsyncSocket Documentation.html in Resources */,
+				C9F19405121CB1BA00CAB471 /* changes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +367,9 @@
 				ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */,
 				ADB02B2A1204AF9A006FD53D /* Message.m in Sources */,
 				ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */,
+				C9F193F3121CB14E00CAB471 /* ZTWebSocket.m in Sources */,
+				C9F19403121CB1BA00CAB471 /* AsyncSocket.m in Sources */,
+				C9F19404121CB1BA00CAB471 /* AsyncUdpSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +385,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Lovers_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Lovers-Info.plist";
 				PRODUCT_NAME = Lovers;
 			};
@@ -362,8 +411,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../zimt/src/**";
 				PREBINDING = NO;
 				SDKROOT = iphonesimulator3.2;
 			};

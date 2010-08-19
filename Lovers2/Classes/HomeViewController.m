@@ -314,14 +314,14 @@ const enum downloadType JSON = _json;
 }
 
 
-- (IBAction) reloadButtonAction: (id)sender{
+- (IBAction)reloadButtonAction:(id)sender{
 	NSLog(@"reload Button Action");
 	//[self.view release];
 	//[self loadView];
 }
 
 
-- (IBAction) loadMoreButtonAction: (id)sender{
+- (IBAction)loadMoreButtonAction:(id)sender{
 	NSLog(@"load more button called");
 
 
