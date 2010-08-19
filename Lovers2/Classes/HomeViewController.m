@@ -102,7 +102,6 @@ UIImage *scaleAndRotateImage(UIImage *image) {
 	}
 	
 	CGContextConcatCTM(context, transform);
-	
 	CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
 	UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
@@ -114,23 +113,40 @@ UIImage *scaleAndRotateImage(UIImage *image) {
 static int rCount = 1;
 static int colCounter = 0;
 static int rowCounter = 0;
+BOOL buttonLayerPresent = NO;
 
 @implementation HomeViewController
 @synthesize selectedImage,asynchImage, Users;
+@synthesize location;
+@synthesize buttonLayer;
+@synthesize scroll;
+@synthesize locNoticelabel;
 
 const enum downloadType JSON = _json;
-static enum downloadType THUMBNAIL = _thumbnail;
+//static enum downloadType THUMBNAIL = _thumbnail;
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 
+- (void)setLocation:(CLLocation *)_location{
+
+	if (self.location != _location) {
+		[location release];
+		location = [_location retain];
+	}
+	NSLog(@"loc %6d", location.horizontalAccuracy);
+	self.locNoticelabel.text = [[NSString alloc] initWithFormat: @"Accuracy +-%.1f mts",location.horizontalAccuracy] ;
+	NSString * tempUrl = [[NSString alloc]initWithFormat:@"http://localhost:4567/users/123/123/%f/%f",location.coordinate.latitude, location.coordinate.longitude];
+	[self downloadJsonFromInternet: tempUrl];
+	NSLog(@"%@", tempUrl);
+}
 
 -(void)loadView{
 
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor lightGrayColor];
-	scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	self.scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	
 	self.view = contentView;
-	[self.view addSubview:scroll];
+	[self.view addSubview:self.scroll];
 	[contentView release];
 	
 }
@@ -144,18 +160,34 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Profile", @selector(goToProfile:));
 	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:));
-
-	//[self prepareImageList];
-	//[self downloadJSON];
-	// TODO: init with user
-	// TODO: download image from facebook containing fbid from user
-
+	indicatorView = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
+	
+	UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[indicatorView addSubview:activityIndicator];
+	self.locNoticelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 400, 110, 20)];
+	self.locNoticelabel.font =  [UIFont systemFontOfSize:10.0];
+	self.locNoticelabel.textAlignment = UITextAlignmentCenter;
+	self.locNoticelabel.text = @"Finding Location";
+	self.locNoticelabel.textColor = [UIColor whiteColor];
+	self.locNoticelabel.backgroundColor = [UIColor blackColor];
+	self.locNoticelabel.alpha = 0.65;
+	
+	//[indicatorView addSubview:locNoticelabel];
+	[self.view addSubview: self.locNoticelabel];
+	[self.view addSubview:indicatorView];
+	[activityIndicator startAnimating];
+	
+	[activityIndicator release];
+	[self.locNoticelabel release];
+	[indicatorView release];
 	//[self downloadImageFromInternet:@"http://graph.facebook.com/5/picture"];
-	[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
+	//[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
 }
 
 - (void) downloadJsonFromInternet:(NSString*) urlToJson {
 	// Create a instance of InternetImage
+	[indicatorView removeFromSuperview];
+	
 	asynchImage = [[InternetImage alloc] initWithUrl:urlToJson];
 
 	// Start downloading the image with self as delegate receiver
@@ -168,8 +200,8 @@ static enum downloadType THUMBNAIL = _thumbnail;
 // download thumbnail images from internet and feed into users
 	for (int i=0; i< [self.Users count]; i++){
 		User * user = [self.Users objectAtIndex:i];
-		NSLog(@"user id %@", user.uid);
-		NSLog(@"user fbid %d", user.fbid);
+		//NSLog(@"user id %@", user.uid);
+		//NSLog(@"user fbid %d", user.fbid);
 		NSString *imageUrl;
 		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", user.uid];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
@@ -177,10 +209,46 @@ static enum downloadType THUMBNAIL = _thumbnail;
 		[thumbnailLoad DownloadData:self];
 
 		//asynchImage.dataUrl = imageUrl;
-		NSLog(@"checkpoint1");
+		//NSLog(@"checkpoint1");
 		//[self.asynchImage DownloadData:self datatype:THUMBNAIL];
 		[imageUrl release];
+				
 	}
+	
+	double tempY = ([self.Users count]/4)* 80;
+	self.scroll.contentSize = CGSizeMake(320,((100/4) * 80));
+	NSLog(@"tempY : %f", tempY);
+	//TODO: feed in the load more and refresh button
+	if (buttonLayerPresent == YES) {
+		//[self removeFromSuperview];
+		NSLog(@"removing button layer");
+	}
+	
+	self.buttonLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 400, 320, 40)];
+	self.buttonLayer.backgroundColor = [UIColor clearColor];
+	
+	UIButton * reloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	reloadButton.frame = CGRectMake(0, tempY, 150, 40);
+	reloadButton.backgroundColor = [UIColor whiteColor];
+	[reloadButton addTarget:self action:@selector(reloadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	[reloadButton setTitle:@"reload" forState:UIControlStateNormal];
+	reloadButton.titleLabel.textColor = [UIColor blackColor];
+	
+	UIButton * loadMoreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	loadMoreButton.frame = CGRectMake(170, tempY, 150, 40);
+	
+	loadMoreButton.backgroundColor = [UIColor whiteColor];
+	[loadMoreButton setTitle:@"load more" forState:UIControlStateNormal];
+	[loadMoreButton addTarget:self action:@selector(loadMoreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	[self.scroll addSubview:loadMoreButton];
+	[self.scroll addSubview:reloadButton];
+	//[self.buttonLayer addSubview: reloadButton];
+	//[self.buttonLayer addSubview: loadMoreButton];
+	
+	//[self.scroll addSubview: self.buttonLayer];
+	
+	[self.buttonLayer release];
+	
 //	[users release];
 }
 
@@ -191,14 +259,13 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	
 	NSLog(@"homeviewcontroller: internetImageReady");
 	// The image has been downloaded. Put the image into the UIImageView
-	int totalImages = 100;
-	scroll.contentSize = CGSizeMake(320,(totalImages/4 * 80));
+	//int totalImages = 100;
+	
 	int xOffset = 76;
 	int yOffset = 76;
 //	int colCounter = 0;
 //	int rowCounter = 0;
-	//for(int i = 1 ; i < totalImages ; ++i)
-//	{
+
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setImage: userImage forState:UIControlStateNormal];
 		button.tag = user;
@@ -246,17 +313,20 @@ static enum downloadType THUMBNAIL = _thumbnail;
 	[asynchImage release];
 }
 
-- (void)ProfileClicked:(id)sender {
-//	ProfileEditController *aController = [[ProfileEditController alloc] initWithNibName:@"ProfileEditview" bundle:nil];
-//	UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aController];
-//	[self presentModalViewController:navC animated:YES];
-//	[aController release];
-//	[navC release];
-	
-//	ProfileViewController *aController = [[ProfileViewController alloc] initWithNibName:@"ProfileView" bundle:nil];
-//	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
-//	[aController release];
+
+- (IBAction) reloadButtonAction: (id)sender{
+	NSLog(@"reload Button Action");
+	//[self.view release];
+	//[self loadView];
 }
+
+
+- (IBAction) loadMoreButtonAction: (id)sender{
+	NSLog(@"load more button called");
+
+
+}
+
 
 - (IBAction)imageSelected:(id)sender {
 	

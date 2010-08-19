@@ -74,8 +74,23 @@ NSMutableData *picData;
 	UILabel *userAboutHead = [[UILabel alloc] initWithFrame:CGRectMake(25, 5, 280, 30)];
 	userAboutHead.text = self.aboutHead;
 	userAboutHead.backgroundColor = [UIColor clearColor];
+	userAboutHead.shadowColor = [UIColor blackColor];
 	userAboutHead.textColor = [UIColor whiteColor];
 	[overlay addSubview: userAboutHead];
+	
+	CGSize aboutLabelSize = [self.userAbout sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(280.0f, 100.0f) lineBreakMode:UILineBreakModeWordWrap];
+	
+	UILabel *aboutLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, aboutLabelSize.width, aboutLabelSize.height)];
+	aboutLabel.lineBreakMode = UILineBreakModeWordWrap;
+	aboutLabel.numberOfLines = 0;
+	aboutLabel.text = self.userAbout;
+	aboutLabel.font = [UIFont systemFontOfSize:12.0];
+	aboutLabel.backgroundColor = [UIColor clearColor];
+	aboutLabel.shadowColor = [UIColor blackColor];
+	aboutLabel.textColor = [UIColor whiteColor];
+	[overlay addSubview: aboutLabel];
+	
+/*	
 	UITextView * aboutTextview = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, 280, 100)];
 	aboutTextview.backgroundColor = [UIColor clearColor];
 	aboutTextview.editable = NO;
@@ -84,7 +99,7 @@ NSMutableData *picData;
 	aboutTextview.text = self.userAbout;
 	[overlay addSubview:aboutTextview];
 	
-	
+*/	
 	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(210, 10, 100, 310 )];
 	overlaySide.backgroundColor = [UIColor clearColor];
 	
@@ -103,6 +118,17 @@ NSMutableData *picData;
 	weightLabel.backgroundColor =   [UIColor clearColor];
 	ageLabel.backgroundColor =      [UIColor clearColor];
 	ethinicLabel.backgroundColor =  [UIColor clearColor];
+	
+	
+	
+	locationLabel.shadowColor = [UIColor blackColor];
+	lastonLabel.shadowColor =   [UIColor blackColor];
+	likesLabel.shadowColor =    [UIColor blackColor];
+	heightLabel.shadowColor =   [UIColor blackColor];
+	weightLabel.shadowColor =   [UIColor blackColor];
+	ageLabel.shadowColor =      [UIColor blackColor];
+	ethinicLabel.shadowColor =  [UIColor blackColor];
+	
 	
 	
 	locationLabel.textColor = [UIColor whiteColor];
