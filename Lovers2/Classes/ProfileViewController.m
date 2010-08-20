@@ -113,7 +113,7 @@
 //	int height = 22.0f;
 	profileFields = [[NSArray alloc] initWithObjects:
 					 [[NSArray alloc] initWithObjects:@"About", @"Sex", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
-					 [[NSArray alloc] initWithObjects:@"Distance", @"Sex Filter", @"Age Filter", nil], nil];
+					 [[NSArray alloc] initWithObjects:@"Show Distance", @"Sex Filter", @"Age Filter", nil], nil];
 	
 //	profileValues =	[[NSArray alloc] initWithObjects:
 //					 [[NSArray alloc] initWithObjects:
@@ -151,7 +151,7 @@
 					   [[NSArray alloc] initWithObjects:@"", nil], nil], nil],
 					 [[NSArray alloc] initWithObjects:
 					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Show", @"Hide", nil], nil],
+					   [[NSArray alloc] initWithObjects:@"", nil], nil],
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"Both", @"Women only", @"Men only", nil], nil],
 					  [[NSArray alloc] initWithObjects:
@@ -295,7 +295,6 @@
     return [profileFields count];
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [[profileFields objectAtIndex:section] count];
 }
@@ -308,13 +307,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *fieldText = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	NSString *valueText = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	static NSString *CellID;
 	UITableViewCell *cell;
 
 	if (indexPath.section == 0 && indexPath.row == 0) { // About textView Cell
-		static NSString *CellID = @"TextView";
+		CellID = @"TextView";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
 			//	aboutInput.scrollEnabled = NO;
 			aboutInput.clearsContextBeforeDrawing = NO;
@@ -329,10 +330,11 @@
 		}
 		aboutInput.text = valueText;
 	} else if (indexPath.section == 0 && indexPath.row == 6) { // Facebook textField Cell
-		static NSString *CellID = @"TextField";
+		CellID = @"TextField";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			valueInput = [[UITextField alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 30.0f)];
 			valueInput.clearsContextBeforeDrawing = NO;
 			valueInput.font = [UIFont systemFontOfSize:14.0];
@@ -345,23 +347,22 @@
 		valueInput.text = valueText;
 
 	} else if (indexPath.section == 1 && indexPath.row == 0) {//Distance Filter Cell
-		static NSString *CellID = @"Switch";
+		CellID = @"Switch";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			filter = [[UISwitch alloc] initWithFrame:CGRectMake(195.0f, (tableView.rowHeight - 27.0f)/2, 95.0f, 27.0f)];
 			[filter setOn:YES animated:NO];
 			[cell.contentView addSubview:filter];
 			[filter release];
-	
-
 		}
-
-	} else {
-		static NSString *CellID = @"Default";
+	} else if (indexPath.section == 0) {
+		CellID = @"Default2";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 //		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //			int height = 22.0f;
 //			value = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -369,8 +370,15 @@
 //			[cell sendSubviewToBack:cell.textLabel];
 		}
 		cell.detailTextLabel.text = valueText;
+	} else {
+		CellID = @"Default1";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+		}
+		cell.detailTextLabel.text = valueText;
 	}
-
 //	else {
 //		value = (UILabel *)[cell.contentView viewWithTag:VALUE_TAG];
 //		aboutInput = (UITextView *)[cell.contentView viewWithTag:TEXT_VIEW_TAG];		
@@ -446,7 +454,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// check if our date picker is already on screen
-	if (valueSelect.superview == nil) {
+	if (valueSelect.superview == nil &&
+		!(indexPath.section == 0 && indexPath.row == 0) &&
+		!(indexPath.section == 0 && indexPath.row == 6) &&
+		!(indexPath.section == 1 && indexPath.row == 0)) {
+			
 		[[[UIApplication sharedApplication] keyWindow] addSubview:valueSelect];
 		
 		// size up the picker view to our screen and compute the start/end frame origin for our slide up animation
@@ -481,10 +493,6 @@
 		
 		// add the "Done" button to the nav bar
 		self.navigationItem.rightBarButtonItem = doneButton;
-	
-
-	
-		
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
 	
@@ -505,9 +513,9 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
 	NSLog(@"editIndexPath: %@", editIndexPath);
-	
+
 	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row]; // make this persistent
-	
+
 	[self.tableView cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
 
 //	[[[profileValues objectAtIndex:editIndexPath.section] objectAtIndex:editIndexPath.row] setString:valueText];
