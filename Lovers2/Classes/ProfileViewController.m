@@ -55,13 +55,13 @@
 				  initWithTitle:@"Done"
 				  style:UIBarButtonItemStyleBordered
 				  target:self 
-				  action:@selector(doneAction:)];	
+				  action:@selector(donePickingValue:)];	
 	
 	textDone = [[UIBarButtonItem alloc] 
 				  initWithTitle:@"Done"
 				  style:UIBarButtonItemStyleBordered
 				  target:self 
-				  action:@selector(textAction:)];
+				  action:@selector(doneEditingText:)];
 //	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 244.0f) style:UITableViewStyleGrouped];
 //	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
 //	profileContent.clearsContextBeforeDrawing = NO;
@@ -171,8 +171,8 @@
 //	NSLog(@"self.view.window: %@", allApplicationViews());
 
 	// Listen for keyboard
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -241,25 +241,20 @@
  [super viewDidDisappear:animated];
  }
  */
--(IBAction)imageButtonClicked:(id)sender
-{
+-(IBAction)imageButtonClicked:(id)sender {
 	UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Choose existing photo",@"Take photo",nil];
 	[action showInView:self.view];
 }
 
 #pragma mark action sheet delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if(buttonIndex == 1)
-	{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if(buttonIndex == 1) {
 		NSLog(@"Take Picture");
 		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
 		picker.delegate = self;
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		[self presentModalViewController:picker animated:YES];
-	}
-	else if(buttonIndex == 0)
-	{
+	} else if (buttonIndex == 0) {
 		NSLog(@"Select Picture");
 		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
 		picker.delegate = self;
@@ -268,8 +263,7 @@
 	}
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo 
-{
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
 	[picker dismissModalViewControllerAnimated:YES];
 	[avatarImg setBackgroundImage:image forState:UIControlStateNormal];
 	//userImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -278,7 +272,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
  // Return YES for supported orientations
  return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
- }
+}
 
 
 #pragma mark -
@@ -403,14 +397,17 @@
 	return YES;
 }
 
-//- (void)keyboardWillShow:(NSNotification *)notification {
-//	self.navigationItem.rightBarButtonItem = doneButton;
-//}
-//
-//// Expand textview on keyboard dismissal
-//- (void)keyboardWillHide:(NSNotification *)notification {
-//	self.navigationItem.rightBarButtonItem = saveButton;
-//}
+- (void)keyboardWillShow:(NSNotification *)notification {
+	if (valueSelect.superview != nil) {
+		[self donePickingValue:self];
+	}
+	self.navigationItem.rightBarButtonItem = textDone;
+}
+
+// Expand textview on keyboard dismissal
+- (void)keyboardWillHide:(NSNotification *)notification {
+	self.navigationItem.rightBarButtonItem = saveButton;
+}
 
 /*
  // Override to support conditional editing of the table view.
@@ -458,7 +455,9 @@
 		!(indexPath.section == 0 && indexPath.row == 0) &&
 		!(indexPath.section == 0 && indexPath.row == 6) &&
 		!(indexPath.section == 1 && indexPath.row == 0)) {
-			
+
+		[self doneEditingText:self];
+
 		[[[UIApplication sharedApplication] keyWindow] addSubview:valueSelect];
 		
 		// size up the picker view to our screen and compute the start/end frame origin for our slide up animation
@@ -493,9 +492,8 @@
 		
 		// add the "Done" button to the nav bar
 		self.navigationItem.rightBarButtonItem = doneButton;
-		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionBottom animated:YES];
 	}
-	
+	[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionTop animated:YES];
 	NSLog(@"indexPath: %@", indexPath);
 	editIndexPath = indexPath;
 	components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -503,12 +501,13 @@
 	[valueSelect selectRow:0 inComponent:0 animated:NO]; // This should be dynamic
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-	self.navigationItem.rightBarButtonItem = textDone;
-}
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.navigationItem.rightBarButtonItem = textDone;
-}
+//- (void)textViewDidBeginEditing:(UITextView *)textView {
+//	self.navigationItem.rightBarButtonItem = textDone;
+//}
+//
+//- (void)textFieldDidBeginEditing:(UITextField *)textField {
+//	self.navigationItem.rightBarButtonItem = textDone;
+//}
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
@@ -578,13 +577,11 @@
 //    [super touchesBegan:touches withEvent:event];
 //}
 
-- (void)slideDownDidStop
-{
+- (void)slideDownDidStop {
 	[valueSelect removeFromSuperview];
 }
 
-- (void)doneAction:(id)sender
-{
+- (void)donePickingValue:(id)sender {
 	CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
 	CGRect endFrame = valueSelect.frame;
 	endFrame.origin.y = screenRect.origin.y + screenRect.size.height;
@@ -611,16 +608,12 @@
 	// deselect the current table row
 	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	
 }
 
-
-- (void)textAction:(id)sender{
+- (void)doneEditingText:(id)sender {
+	[profileName resignFirstResponder];
 	[aboutInput resignFirstResponder];
 	[valueInput resignFirstResponder];
-	[profileName resignFirstResponder];
-	
 }
 
 #pragma mark -
@@ -635,7 +628,7 @@
 
 - (void)viewDidUnload {
 	profileHeader = nil;
-	//[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
 	// Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
 	// For example: self.myOutlet = nil;

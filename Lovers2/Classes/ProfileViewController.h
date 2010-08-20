@@ -22,4 +22,6 @@
 	UISwitch *filter;
 }
 
+- (void)doneEditingText:(id)sender;
+
 @end
