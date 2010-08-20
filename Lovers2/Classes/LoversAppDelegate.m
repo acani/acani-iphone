@@ -25,8 +25,8 @@
     [super dealloc];
 }
 
-#pragma mark Location Manager Interactions
-
+#pragma mark -
+#pragma mark Location manager interactions
 
 - (void) findLocation {
 	//ask matt if we should use presentModelviewcontroller like urbanspoon to use last location
@@ -39,13 +39,11 @@
 	
 }
 
-
-
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    
-	if (locationMeasurements == nil)
-	self.locationMeasurements = [NSMutableArray array];
-    [locationMeasurements addObject:newLocation];
+	if (locationMeasurements == nil) {
+		self.locationMeasurements = [NSMutableArray array];
+	}
+	[locationMeasurements addObject:newLocation];
 	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
     if (locationAge > 5.0) return;
 	if (newLocation.horizontalAccuracy < 0) return;
@@ -59,13 +57,9 @@
 			// [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:nil];
         }
     }
-       
 }
 
-
-
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    
     if ([error code] != kCLErrorLocationUnknown) {
         [manager stopUpdatingLocation];
     }

@@ -2,8 +2,6 @@
 
 @class HomeViewController;
 
-
-
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate,  CLLocationManagerDelegate> {
 	UIWindow *window;
 	UINavigationController *navigationController;
@@ -18,7 +16,6 @@
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSMutableArray *locationMeasurements;
 @property (nonatomic, retain) CLLocation *bestEffortAtLocation;
-
 
 - (void) findLocation;
 

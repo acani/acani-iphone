@@ -266,15 +266,15 @@ const enum downloadType JSON = _json;
 //	int colCounter = 0;
 //	int rowCounter = 0;
 
-		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-		[button setImage: userImage forState:UIControlStateNormal];
-		button.tag = user;
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	[button setImage: userImage forState:UIControlStateNormal];
+	button.tag = user;
 		
 	UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 76, 10)];
 	name.font = [UIFont fontWithName:@"Arial" size:12];
 	name.textColor = [UIColor whiteColor];
 	name.backgroundColor = [UIColor clearColor];
-		name.text = @"mike";
+	name.text = @"mike";
 	
 	[button addSubview:name];
 	UIImageView * onlineIndicator = [[UIImageView alloc] initWithFrame:CGRectMake(69, 69, 6, 6)];
@@ -303,7 +303,6 @@ const enum downloadType JSON = _json;
     // e.g. self.myOutlet = nil;
 }
 
-
 - (void)dealloc {
     [super dealloc];
 	[selectedImage release];
@@ -313,23 +312,17 @@ const enum downloadType JSON = _json;
 	[asynchImage release];
 }
 
-
-- (IBAction)reloadButtonAction:(id)sender{
+- (void)reloadButtonAction:(id)sender{
 	NSLog(@"reload Button Action");
 	//[self.view release];
 	//[self loadView];
 }
 
-
-- (IBAction)loadMoreButtonAction:(id)sender{
+- (void)loadMoreButtonAction:(id)sender{
 	NSLog(@"load more button called");
-
-
 }
 
-
-- (IBAction)imageSelected:(id)sender {
-	
+- (void)imageSelected:(id)sender {
 	NSLog(@"Button Clicked");
 	if (selectedImage) {
 		selectedImage.backgroundColor = [UIColor clearColor];
@@ -352,7 +345,6 @@ const enum downloadType JSON = _json;
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
 	[photoviewUrl release];
-	
 }
 
 - (void)goToProfile:(id)sender {
