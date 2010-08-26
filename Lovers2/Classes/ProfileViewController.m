@@ -241,22 +241,24 @@
  [super viewDidDisappear:animated];
  }
  */
--(IBAction)imageButtonClicked:(id)sender {
-	UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Choose existing photo",@"Take photo",nil];
+-(void)imageButtonClicked:(id)sender {
+	UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo", @"Choose Photo", nil];
 	[action showInView:self.view];
 }
 
-#pragma mark action sheet delegate
+
+#pragma mark Action sheet delegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if(buttonIndex == 1) {
-		NSLog(@"Take Picture");
-		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+		NSLog(@"Take Photo");
+		UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 		picker.delegate = self;
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		[self presentModalViewController:picker animated:YES];
 	} else if (buttonIndex == 0) {
-		NSLog(@"Select Picture");
-		UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+		NSLog(@"Choose Photo");
+		UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 		picker.delegate = self;
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 		[self presentModalViewController:picker animated:YES];
@@ -269,10 +271,11 @@
 	//userImageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
+// Fix with show UIPicker first. Then, uncomment.
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+// // Return YES for supported orientations
+// return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+//}
 
 
 #pragma mark -

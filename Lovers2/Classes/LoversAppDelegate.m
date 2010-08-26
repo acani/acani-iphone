@@ -1,42 +1,48 @@
 #import "LoversAppDelegate.h"
 #import "HomeViewController.h"
+#import "ChatViewController.h"
 
 @implementation LoversAppDelegate
 
-@synthesize window, navigationController;
+@synthesize window;
+@synthesize navigationController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
+@synthesize homeViewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 	homeViewController = [[HomeViewController alloc] init];
-	navigationController= [[UINavigationController alloc] initWithRootViewController:homeViewController];
+	navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
 	[window addSubview:navigationController.view];	
     [window makeKeyAndVisible];	
 	[self findLocation];
 	return YES;
 }
 
-
 - (void)dealloc {
     [window release];
 	[navigationController release];
+	[locationManager release];
+	[locationMeasurements release];
+	[bestEffortAtLocation release];
+	[homeViewController release];
     [super dealloc];
 }
+
 
 #pragma mark -
 #pragma mark Location manager interactions
 
-- (void) findLocation {
-	//ask matt if we should use presentModelviewcontroller like urbanspoon to use last location
+- (void)findLocation {
+	// Should we use presentModelviewcontroller like urbanspoon to use last location?
 	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
     locationManager.delegate = self;
    
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
 	[locationManager startUpdatingLocation];
     //[self performSelector:@selector(stopUpdatingLocation:) withObject:@"Timed Out" afterDelay:[[setupInfo objectForKey:kSetupInfoKeyTimeout] doubleValue]];
-	
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
@@ -64,6 +70,5 @@
         [manager stopUpdatingLocation];
     }
 }
-
 
 @end

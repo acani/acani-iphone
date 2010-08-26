@@ -237,16 +237,16 @@ NSMutableData *picData;
 
 
 
-- (IBAction)backButtonClicked:(id)sender {
+- (void)backButtonClicked:(id)sender {
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)favoriteAction:(id)sender{
+- (void)favoriteAction:(id)sender{
 //TODO: implement favorite functionality
 
 }
 
-- (IBAction)blockAction:(id)sender{
+- (void)blockAction:(id)sender{
 
 //TODO: implement block functionality
 
@@ -254,7 +254,7 @@ NSMutableData *picData;
 
 
 
-- (IBAction)moveOverlay:(id)sender {
+- (void)moveOverlay:(id)sender {
 	if (self.view.window!=nil) {
 		[UIView beginAnimations: @"move_Overlay" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];

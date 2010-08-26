@@ -37,12 +37,9 @@
 		ADB02B341204AFDB006FD53D /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2F1204AFDB006FD53D /* ChatBubbleGray.png */; };
 		ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B851204CA15006FD53D /* ProfileViewController.m */; };
 		ADB02CB4120E1FEC006FD53D /* blankprofile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */; };
+		C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7441225F6D7003C266E /* AsyncSocket.m */; };
+		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
-		C9F193F3121CB14E00CAB471 /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */; };
-		C9F19402121CB1BA00CAB471 /* AsyncSocket Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */; };
-		C9F19403121CB1BA00CAB471 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */; };
-		C9F19404121CB1BA00CAB471 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */; };
-		C9F19405121CB1BA00CAB471 /* changes.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9F19401121CB1BA00CAB471 /* changes.txt */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
 		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
@@ -100,16 +97,12 @@
 		ADB02B841204CA15006FD53D /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		ADB02B851204CA15006FD53D /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blankprofile.jpg; sourceTree = "<group>"; };
+		C91FE7431225F6D7003C266E /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		C91FE7441225F6D7003C266E /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		C91FE7661225FEAC003C266E /* ZTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTLog.h; sourceTree = "<group>"; };
+		C91FE7671225FEAC003C266E /* ZTWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTWebSocket.h; sourceTree = "<group>"; };
+		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		C9F193F0121CB14E00CAB471 /* ZTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTLog.h; sourceTree = "<group>"; };
-		C9F193F1121CB14E00CAB471 /* ZTWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTWebSocket.h; sourceTree = "<group>"; };
-		C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
-		C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "AsyncSocket Documentation.html"; sourceTree = "<group>"; };
-		C9F193FD121CB1BA00CAB471 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
-		C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
-		C9F193FF121CB1BA00CAB471 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
-		C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
-		C9F19401121CB1BA00CAB471 /* changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changes.txt; sourceTree = "<group>"; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		F56D024311886CF000F2A797 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -241,9 +234,9 @@
 		C9F193F5121CB15F00CAB471 /* Zimt */ = {
 			isa = PBXGroup;
 			children = (
-				C9F193F0121CB14E00CAB471 /* ZTLog.h */,
-				C9F193F1121CB14E00CAB471 /* ZTWebSocket.h */,
-				C9F193F2121CB14E00CAB471 /* ZTWebSocket.m */,
+				C91FE7661225FEAC003C266E /* ZTLog.h */,
+				C91FE7671225FEAC003C266E /* ZTWebSocket.h */,
+				C91FE7681225FEAC003C266E /* ZTWebSocket.m */,
 			);
 			name = Zimt;
 			sourceTree = "<group>";
@@ -251,12 +244,8 @@
 		C9F193FB121CB1BA00CAB471 /* AsyncSocket */ = {
 			isa = PBXGroup;
 			children = (
-				C9F193FC121CB1BA00CAB471 /* AsyncSocket Documentation.html */,
-				C9F193FD121CB1BA00CAB471 /* AsyncSocket.h */,
-				C9F193FE121CB1BA00CAB471 /* AsyncSocket.m */,
-				C9F193FF121CB1BA00CAB471 /* AsyncUdpSocket.h */,
-				C9F19400121CB1BA00CAB471 /* AsyncUdpSocket.m */,
-				C9F19401121CB1BA00CAB471 /* changes.txt */,
+				C91FE7431225F6D7003C266E /* AsyncSocket.h */,
+				C91FE7441225F6D7003C266E /* AsyncSocket.m */,
 			);
 			path = AsyncSocket;
 			sourceTree = "<group>";
@@ -341,8 +330,6 @@
 				AD71627B1217415700351B3D /* red-x.png in Resources */,
 				AD71627C1217415700351B3D /* gold-star-2.jpg in Resources */,
 				AD7162BB1217477500351B3D /* BlockButton.png in Resources */,
-				C9F19402121CB1BA00CAB471 /* AsyncSocket Documentation.html in Resources */,
-				C9F19405121CB1BA00CAB471 /* changes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,9 +358,8 @@
 				ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */,
 				ADB02B2A1204AF9A006FD53D /* Message.m in Sources */,
 				ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */,
-				C9F193F3121CB14E00CAB471 /* ZTWebSocket.m in Sources */,
-				C9F19403121CB1BA00CAB471 /* AsyncSocket.m in Sources */,
-				C9F19404121CB1BA00CAB471 /* AsyncUdpSocket.m in Sources */,
+				C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */,
+				C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

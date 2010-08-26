@@ -1,13 +1,13 @@
 @interface Message : NSObject {
-	NSString* text;
+	NSString *channel; // uid1_uid2
 	time_t timestamp;
-//	uint32_t sender_id;
-//	uint32_t receiver_id;
+	NSString *text;
 }
 
-@property (nonatomic, retain) NSString* text;
+@property (nonatomic, retain) NSString *channel;
 @property (nonatomic, assign) time_t timestamp;
-//@property (nonatomic, assign) uint32_t sender_id;
-//@property (nonatomic, assign) uint32_t receiver_id;
+@property (nonatomic, retain) NSString *text;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

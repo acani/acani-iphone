@@ -109,25 +109,27 @@ UIImage *scaleAndRotateImage(UIImage *image) {
 	return imageCopy;
 }
 
-#define offset 5
+#define OFFSET 5
 static int rCount = 1;
 static int colCounter = 0;
 static int rowCounter = 0;
 BOOL buttonLayerPresent = NO;
 
 @implementation HomeViewController
-@synthesize selectedImage,asynchImage, Users;
-@synthesize location;
-@synthesize buttonLayer;
+
 @synthesize scroll;
+@synthesize selectedImage;
+@synthesize asynchImage;
+@synthesize Users;
+@synthesize location;
+@synthesize indicatorView;
+@synthesize buttonLayer;
 @synthesize locNoticelabel;
 
 const enum downloadType JSON = _json;
 //static enum downloadType THUMBNAIL = _thumbnail;
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 
 - (void)setLocation:(CLLocation *)_location{
-
 	if (self.location != _location) {
 		[location release];
 		location = [_location retain];
@@ -139,8 +141,7 @@ const enum downloadType JSON = _json;
 	NSLog(@"%@", tempUrl);
 }
 
--(void)loadView{
-
+-(void)loadView {
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor lightGrayColor];
 	self.scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -148,9 +149,7 @@ const enum downloadType JSON = _json;
 	self.view = contentView;
 	[self.view addSubview:self.scroll];
 	[contentView release];
-	
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -184,7 +183,7 @@ const enum downloadType JSON = _json;
 	//[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
 }
 
-- (void) downloadJsonFromInternet:(NSString*) urlToJson {
+- (void)downloadJsonFromInternet:(NSString*) urlToJson {
 	// Create a instance of InternetImage
 	[indicatorView removeFromSuperview];
 	
@@ -194,11 +193,11 @@ const enum downloadType JSON = _json;
 	[asynchImage DownloadData:self datatype:JSON ];
 }
 
-- (void) jsonReady: (NSMutableArray *)users {
+- (void)jsonReady:(NSMutableArray *)users {
 	NSLog(@"user count: %d",[users count]);
 	self.Users = users;
 // download thumbnail images from internet and feed into users
-	for (int i=0; i< [self.Users count]; i++){
+	for (int i = 0; i < [self.Users count]; i++){
 		User * user = [self.Users objectAtIndex:i];
 		//NSLog(@"user id %@", user.uid);
 		//NSLog(@"user fbid %d", user.fbid);
@@ -212,7 +211,6 @@ const enum downloadType JSON = _json;
 		//NSLog(@"checkpoint1");
 		//[self.asynchImage DownloadData:self datatype:THUMBNAIL];
 		[imageUrl release];
-				
 	}
 	
 	double tempY = ([self.Users count]/4)* 80;
@@ -270,7 +268,7 @@ const enum downloadType JSON = _json;
 	[button setImage: userImage forState:UIControlStateNormal];
 	button.tag = user;
 		
-	UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 76, 10)];
+	UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 76, 10)];
 	name.font = [UIFont fontWithName:@"Arial" size:12];
 	name.textColor = [UIColor whiteColor];
 	name.backgroundColor = [UIColor clearColor];
@@ -281,7 +279,7 @@ const enum downloadType JSON = _json;
 	onlineIndicator.image = [UIImage imageNamed:@"greendot.jpg" ];
 	[button addSubview:onlineIndicator];
 		[button addTarget:self action:@selector(imageSelected:) forControlEvents:UIControlEventTouchUpInside];
-		button.frame = CGRectMake(offset + xOffset*colCounter, offset + yOffset*rowCounter,76 ,76);
+		button.frame = CGRectMake(OFFSET + xOffset*colCounter, OFFSET + yOffset*rowCounter,76 ,76);
 		rowCounter = rCount%4 == 0 ? ++rowCounter:rowCounter;
 		colCounter = (colCounter+1)%4;
 		[scroll addSubview:button];
@@ -304,12 +302,17 @@ const enum downloadType JSON = _json;
 }
 
 - (void)dealloc {
-    [super dealloc];
+	[scroll release];
 	[selectedImage release];
-	// Abort the download. Doesn't do anything if the image has been downloaded already.
+	// Abort download. Doesn't do anything if image has been downloaded already.
 	[asynchImage abortDownload];
-	// Then release.
-	[asynchImage release];
+	[asynchImage release]; // then release.
+	[Users release];
+	[location release];
+	[indicatorView release];
+	[buttonLayer release];
+	[locNoticelabel release];
+    [super dealloc];
 }
 
 - (void)reloadButtonAction:(id)sender{

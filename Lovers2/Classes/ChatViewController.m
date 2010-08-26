@@ -4,6 +4,7 @@
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ZTWebSocket.h"
+#import "SBJSON.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 #define BARBUTTON(TITLE, SELECTOR)	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
@@ -280,6 +281,7 @@
 	} 
 	
 	//			[activityIndicator startAnimating];
+	// escape " ' first.
 	[webSocket send:[NSString stringWithFormat:
 					 @"{\"content\":\"%@\",\"to_uid_public\":\"bob\"}", msg.text]];
 
@@ -563,15 +565,22 @@ CGFloat msgTimestampHeight;
     }
 }
 
--(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)message {
-	NSLog(@"Received message: %@", message);
-	Message *msg = [[Message alloc] init];
-	msg.text = message;
-	[messages addObject: msg];
+-(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
+	NSLog(@"Received jsonMessage: %@", msgJson);
+	
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON alloc] init];
+	NSDictionary *msgDict = [json objectWithString:msgJson error:&error];
+	[json release];
+
+	NSLog(@"Message dictionary: %@", msgDict);
+
+	Message *msg = [[Message alloc] initWithDictionary:msgDict];
+	[messages addObject:msg];
 	[msg release];
+
 	[chatContent reloadData];
-	NSUInteger index = [messages count] - 1;
-	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];	
+	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[messages count]-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];	
 }
 
 -(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {

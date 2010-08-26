@@ -28,13 +28,13 @@
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *laston;
 
-- (IBAction)backButtonClicked:(id)sender;
-- (IBAction)moveOverlay:(id)sender;
+- (void)backButtonClicked:(id)sender;
+- (void)moveOverlay:(id)sender;
 - (void)goToChat:(id)sender;
 - (id)initWithUrl:(NSString*)urlToImage;
 - (void) profilePicReady: (UIImage*) downloadedImage; 
 - (void) handleSingleTap;
-- (IBAction)favoriteAction:(id)sender;
-- (IBAction)blockAction:(id)sender;
+- (void)favoriteAction:(id)sender;
+- (void)blockAction:(id)sender;
 
 @end
