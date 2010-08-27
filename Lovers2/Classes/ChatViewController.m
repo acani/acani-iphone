@@ -1,5 +1,5 @@
 #import "ChatViewController.h"
-#import "Message.h"
+#import "MessageOld.h"
 #import "ColorUtils.h"
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>

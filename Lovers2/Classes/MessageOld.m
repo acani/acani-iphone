@@ -1,14 +1,17 @@
-#import "Message.h"
+#import "MessageOld.h"
 #import "SBJSON.h"
 
 @implementation Message
 
+@synthesize sender;
 @synthesize channel;
 @synthesize timestamp;
 @synthesize text;
 
 - (void)dealloc {
+    [sender release];
     [channel release];
+    [timestamp release];
     [text release];
 	// how do we dealloc timestamp (time_t)?
 	[super dealloc];

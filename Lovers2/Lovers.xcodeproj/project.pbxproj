@@ -29,7 +29,7 @@
 		ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* ThumbnailDownload.m */; };
 		ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B231204AE76006FD53D /* ChatViewController.m */; };
 		ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B261204AEDF006FD53D /* ColorUtils.m */; };
-		ADB02B2A1204AF9A006FD53D /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B291204AF9A006FD53D /* Message.m */; };
+		ADB02B2A1204AF9A006FD53D /* MessageOld.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B291204AF9A006FD53D /* MessageOld.m */; };
 		ADB02B301204AFDB006FD53D /* BlankAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2B1204AFDB006FD53D /* BlankAvatar.png */; };
 		ADB02B311204AFDB006FD53D /* ChatBar.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2C1204AFDB006FD53D /* ChatBar.png */; };
 		ADB02B321204AFDB006FD53D /* SendButton.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2D1204AFDB006FD53D /* SendButton.png */; };
@@ -39,6 +39,7 @@
 		ADB02CB4120E1FEC006FD53D /* blankprofile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */; };
 		C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7441225F6D7003C266E /* AsyncSocket.m */; };
 		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
+		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
 		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
@@ -87,8 +88,8 @@
 		ADB02B231204AE76006FD53D /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		ADB02B251204AEDF006FD53D /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
 		ADB02B261204AEDF006FD53D /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
-		ADB02B281204AF9A006FD53D /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		ADB02B291204AF9A006FD53D /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		ADB02B281204AF9A006FD53D /* MessageOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageOld.h; sourceTree = "<group>"; };
+		ADB02B291204AF9A006FD53D /* MessageOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageOld.m; sourceTree = "<group>"; };
 		ADB02B2B1204AFDB006FD53D /* BlankAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlankAvatar.png; sourceTree = "<group>"; };
 		ADB02B2C1204AFDB006FD53D /* ChatBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBar.png; sourceTree = "<group>"; };
 		ADB02B2D1204AFDB006FD53D /* SendButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SendButton.png; sourceTree = "<group>"; };
@@ -102,6 +103,7 @@
 		C91FE7661225FEAC003C266E /* ZTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTLog.h; sourceTree = "<group>"; };
 		C91FE7671225FEAC003C266E /* ZTWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTWebSocket.h; sourceTree = "<group>"; };
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
+		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */,
 				C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */,
+				C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,8 +136,8 @@
 			children = (
 				AD5EFCEA11E52C0800F86E5B /* User.h */,
 				AD5EFCEB11E52C0800F86E5B /* User.m */,
-				ADB02B281204AF9A006FD53D /* Message.h */,
-				ADB02B291204AF9A006FD53D /* Message.m */,
+				ADB02B281204AF9A006FD53D /* MessageOld.h */,
+				ADB02B291204AF9A006FD53D /* MessageOld.m */,
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
 				ADB02B231204AE76006FD53D /* ChatViewController.m */,
 				ADB02B251204AEDF006FD53D /* ColorUtils.h */,
@@ -176,6 +179,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				C91FE81512274DB3003C266E /* CoreData.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -356,7 +360,7 @@
 				ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */,
 				ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */,
 				ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */,
-				ADB02B2A1204AF9A006FD53D /* Message.m in Sources */,
+				ADB02B2A1204AF9A006FD53D /* MessageOld.m in Sources */,
 				ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */,
 				C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */,
 				C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */,
