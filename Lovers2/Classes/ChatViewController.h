@@ -20,4 +20,22 @@
 
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 
+@property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, assign) time_t latestTimestamp;
+
+@property (nonatomic, retain) UITableView *chatContent;
+@property (nonatomic, retain) UILabel *msgTimestamp;
+@property (nonatomic, retain) UIImageView *msgBackground;
+@property (nonatomic, retain) UILabel *msgText;
+
+@property (nonatomic, retain) UIImageView *chatBar;
+@property (nonatomic, retain) UITextView *chatInput;
+@property (nonatomic, assign) CGFloat lastContentHeight;
+@property (nonatomic, assign) Boolean chatInputHadText;
+@property (nonatomic, retain) UIButton *sendButton;
+
+- (void)slideFrame:(BOOL)up;
+- (void)slideFrameUp;
+- (void)slideFrameDown;
+
 @end

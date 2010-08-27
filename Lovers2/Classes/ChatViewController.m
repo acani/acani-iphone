@@ -35,6 +35,20 @@
 
 @synthesize webSocket;
 
+@synthesize messages;
+@synthesize latestTimestamp;
+
+@synthesize chatContent;
+@synthesize msgTimestamp;
+@synthesize msgBackground;
+@synthesize msgText;
+
+@synthesize chatBar;
+@synthesize chatInput;
+@synthesize lastContentHeight;
+@synthesize chatInputHadText;
+@synthesize sendButton;
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -443,7 +457,7 @@ CGFloat msgTimestampHeight;
 		[messageView release];		
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
-		msgBackground = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag: BACKGROUND_TAG];
+		msgBackground = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag:BACKGROUND_TAG];
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
@@ -612,11 +626,36 @@ CGFloat msgTimestampHeight;
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	self.messages = nil;
+
+	self.msgTimestamp = nil;
+	self.msgBackground = nil;
+	self.msgText = nil;
+	self.chatContent = nil;
+
+	self.sendButton = nil;
+	self.chatInput = nil;
+	self.chatBar = nil;
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 - (void)dealloc {
+	[webSocket release];
+
+// This crashes for some reason...
+//	[messages release];
+//
+//	[msgTimestamp release];
+//	[msgBackground release];
+//	[msgText release];
+//	[chatContent release];
+//
+//	[sendButton release];
+//	[chatInput release];
+//	[chatBar release];
+
 	[super dealloc];
 }
 
