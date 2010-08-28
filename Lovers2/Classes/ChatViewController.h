@@ -16,6 +16,7 @@
 			CGFloat lastContentHeight;
 			Boolean chatInputHadText;
 		UIButton *sendButton;
+	UIBarButtonItem *doneButton;
 }
 
 @property (nonatomic, retain) ZTWebSocket *webSocket;
@@ -33,6 +34,7 @@
 @property (nonatomic, assign) CGFloat lastContentHeight;
 @property (nonatomic, assign) Boolean chatInputHadText;
 @property (nonatomic, retain) UIButton *sendButton;
+@property (nonatomic, retain) UIBarButtonItem *doneButton;
 
 - (void)slideFrame:(BOOL)up;
 - (void)slideFrameUp;

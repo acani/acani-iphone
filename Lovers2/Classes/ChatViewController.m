@@ -8,7 +8,7 @@
 #import "SBJSON.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
-#define BARBUTTON(TITLE, SELECTOR)	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
+#define BARBUTTON(TITLE, SELECTOR)	[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
 
 #define CHAT_BAR_HEIGHT_1	40.0f
 #define CHAT_BAR_HEIGHT_4	94.0f
@@ -49,10 +49,11 @@
 @synthesize lastContentHeight;
 @synthesize chatInputHadText;
 @synthesize sendButton;
+@synthesize doneButton;
+
 
 #pragma mark -
 #pragma mark Initialization
-
 
 //- (id)initWithStyle:(UITableViewStyle)style {
 //    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -87,11 +88,12 @@
 
 - (void)done:(id)sender {
 	[chatInput resignFirstResponder]; // temporary
+	self.navigationItem.rightBarButtonItem = nil;
 }
 
 // Reveal a Done button when editing starts
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Done", @selector(done:));
+	self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -294,6 +296,8 @@
 	[chatBar addSubview:sendButton];
 	[sendButton release];
 
+	doneButton = BARBUTTON(@"Done", @selector(done:));
+
 	[self.view addSubview:chatBar];
 	[self.view sendSubviewToBack:chatBar];
 	[chatBar release];
@@ -495,7 +499,11 @@ CGFloat msgTimestampHeight;
 	}
 
 	time_t now; time(&now);
-	if (now < ([[msg timestamp] doubleValue]+780)) {
+
+//	if (now < latestTimestamp+780) // show timestamp every 15 mins
+//		msg.timestamp = 0;
+			
+	if (false) { // latestTimestamp > ([[msg timestamp] longValue]+780)) {
 		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
@@ -536,7 +544,7 @@ CGFloat msgTimestampHeight;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
-	msgTimestampHeight = [msg timestamp] ? 20.0f : 0.0f;
+	msgTimestampHeight = 0.0f; // [msg timestamp] ? 20.0f : 0.0f;
 	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
@@ -670,6 +678,7 @@ CGFloat msgTimestampHeight;
 	self.sendButton = nil;
 	self.chatInput = nil;
 	self.chatBar = nil;
+	self.doneButton = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -689,6 +698,7 @@ CGFloat msgTimestampHeight;
 //	[sendButton release];
 //	[chatInput release];
 //	[chatBar release];
+	[doneButton release];
 
 	[super dealloc];
 }
