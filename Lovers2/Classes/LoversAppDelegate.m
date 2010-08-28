@@ -26,9 +26,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 	homeViewController = [[HomeViewController alloc] init];
+	
+	NSManagedObjectContext *context = [self managedObjectContext];
+    if (!context) {
+        // Handle the error.
+		NSLog(@"managedObjectContext error!");
+    }
+	
 	navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
 	[window addSubview:navigationController.view];	
-    [window makeKeyAndVisible];	
+    [window makeKeyAndVisible];
+//	[homeViewController release];
+//	[navigationController release];
 	[self findLocation];
 	return YES;
 }
