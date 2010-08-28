@@ -244,6 +244,7 @@
 	[request release];
 
 	// create chatContent
+	NSLog(@"Create chatContent");
 	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, VIEW_WIDTH, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
@@ -301,13 +302,56 @@
 	[self.view addSubview:chatBar];
 	[self.view sendSubviewToBack:chatBar];
 	[chatBar release];
-	
+
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
+/*
+ - (void)viewDidLoad {
+ [super viewDidLoad];
+ 
+ // Uncomment the following line to preserve selection between presentations.
+ self.clearsSelectionOnViewWillAppear = NO;
+ 
+ // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+ // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+ }
+ */
+
+/*
+ - (void)viewWillAppear:(BOOL)animated {
+ [super viewWillAppear:animated];
+ }
+ */
+
+//- (void)viewDidAppear:(BOOL)animated {
+//	[super viewDidAppear:animated];
+//	[self scrollToBottomAnimated:NO]; 
+//}
+
+/*
+ - (void)viewWillDisappear:(BOOL)animated {
+ [super viewWillDisappear:animated];
+ }
+ */
+/*
+ - (void)viewDidDisappear:(BOOL)animated {
+ [super viewDidDisappear:animated];
+ }
+ */
+/*
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
+
 - (void)sendMSG:(id)sender {
+	// This is not really necessary since we disable the
+	// "Send" button unless the chatInput has text.
 	if (![chatInput hasText]) {
 		NSLog(@"Cannot send message, no text");
 		return;
@@ -347,12 +391,15 @@
 	}
 	
 	[messages addObject:msg];
-//	[msg release]; // this crashes
-	[chatContent reloadData]; // do below method instead. seems more efficient.
-	//	[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-	//						  withRowAnimation:UITableViewRowAnimationFade];
-	NSUInteger index = [messages count] - 1;
-	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
+	[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationNone];
+	[self scrollToBottomAnimated:YES]; 
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated {
+	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[messages count]-1 inSection:0]
+					   atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 - (void)slideFrameUp {
@@ -382,46 +429,6 @@
 	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 	chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
 }
-
-/*
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-*/
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark -
@@ -526,7 +533,7 @@ CGFloat msgTimestampHeight;
 	
 	UIImage *balloon;
 
-	if (indexPath.row % 2 == 0) {
+	if ([[msg sender] isEqualToString:@"me"]) {
 		msgBackground.frame = CGRectMake(320.0f - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 		msgText.frame = CGRectMake(298.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);

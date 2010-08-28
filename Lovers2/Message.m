@@ -7,20 +7,19 @@
 @dynamic sender;
 @dynamic text;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+		[self setTimestamp:[dictionary valueForKey:@"timestamp"]];
+		[self setChannel:[dictionary valueForKey:@"channel"]];
+		[self setSender:[dictionary valueForKey:@"sender"]];
+		[self setText:[dictionary valueForKey:@"text"]];
+    }
+    return self;
+}
+
 @end
 
-//MessageOld.m
-//
-//#import "MessageOld.h"
-//#import "SBJSON.h"
-//
-//@implementation Message
-//
-//@synthesize sender;
-//@synthesize channel;
-//@synthesize timestamp;
-//@synthesize text;
-//
+//// Is dealloc necessary for CoreData entities?
 //- (void)dealloc {
 //    [sender release];
 //    [channel release];
@@ -30,13 +29,3 @@
 //	[super dealloc];
 //}
 //
-//- (id)initWithDictionary:(NSDictionary *)dictionary {
-//    if (self = [super init]) {
-//		self.channel   = [dictionary valueForKey:@"channel"];
-//		self.timestamp = (time_t)[dictionary valueForKey:@"timestamp"];
-//		self.text      = [dictionary valueForKey:@"content"];
-//    }
-//    return self;
-//}
-//
-//@end

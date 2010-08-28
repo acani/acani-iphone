@@ -36,6 +36,7 @@
 @property (nonatomic, retain) UIButton *sendButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;
 
+- (void)scrollToBottomAnimated:(BOOL)animated;
 - (void)slideFrame:(BOOL)up;
 - (void)slideFrameUp;
 - (void)slideFrameDown;
