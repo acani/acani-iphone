@@ -19,7 +19,6 @@
 @synthesize locationManager;
 @synthesize homeViewController;
 
-
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -32,7 +31,10 @@
         // Handle the error.
 		NSLog(@"managedObjectContext error!");
     }
-	
+
+//	// Pass the managed object context to the view controller.
+//    homeViewController.managedObjectContext = context;
+
 	navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
 	[window addSubview:navigationController.view];	
     [window makeKeyAndVisible];

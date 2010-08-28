@@ -1,5 +1,6 @@
 #import "ChatViewController.h"
-#import "MessageOld.h"
+#import "LoversAppDelegate.h"
+#import "Message.h"
 #import "ColorUtils.h"
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>
@@ -186,37 +187,59 @@
 
 	self.title = @"Joanna";
 
-	// create messages
-	time_t now; time(&now);
-	latestTimestamp = 0;
-	Message *msg1 = [[Message alloc] init];
-	msg1.text = @"text 1";
-	msg1.timestamp = now - 10000;
-	Message *msg2 = [[Message alloc] init];
-	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
-	msg2.timestamp = 0;
-	Message *msg3 = [[Message alloc] init];
-	msg3.text = @"text 3 a shorter message";
-	msg3.timestamp = now - 7200;
-	Message *msg4 = [[Message alloc] init];
-	msg4.text = @"text 4 i want to add more messages here to see if the table view collapses nicely";
-	msg4.timestamp = now - 4000;
-	Message *msg5 = [[Message alloc] init];
-	msg5.text = @"text 5 does it scroll well too?";
-	msg5.timestamp = now - 2000;
-	Message *msg6 = [[Message alloc] init];
-	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
-	msg6.timestamp = now - 1500;
+//	// create messages
+//	time_t now; time(&now);
+//	latestTimestamp = 0;
+//	Message *msg1 = [[Message alloc] init];
+//	msg1.text = @"text 1";
+//	msg1.timestamp = now - 10000;
+//	Message *msg2 = [[Message alloc] init];
+//	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
+//	msg2.timestamp = 0;
+//	Message *msg3 = [[Message alloc] init];
+//	msg3.text = @"text 3 a shorter message";
+//	msg3.timestamp = now - 7200;
+//	Message *msg4 = [[Message alloc] init];
+//	msg4.text = @"text 4 i want to add more messages here to see if the table view collapses nicely";
+//	msg4.timestamp = now - 4000;
+//	Message *msg5 = [[Message alloc] init];
+//	msg5.text = @"text 5 does it scroll well too?";
+//	msg5.timestamp = now - 2000;
+//	Message *msg6 = [[Message alloc] init];
+//	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
+//	msg6.timestamp = now - 1500;
+//
+//	latestTimestamp = msg6.timestamp;
+//
+//	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
+//	[msg1 release];
+//	[msg2 release];
+//	[msg3 release];
+//	[msg4 release];
+//	[msg5 release];
+//	[msg6 release];
 
-	latestTimestamp = msg6.timestamp;
+	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 
-	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
-	[msg1 release];
-	[msg2 release];
-	[msg3 release];
-	[msg4 release];
-	[msg5 release];
-	[msg6 release];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	[request setEntity:entity];
+	
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	[request setSortDescriptors:sortDescriptors];
+	[sortDescriptors release];
+	[sortDescriptor release];
+	
+	NSError *error;
+	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	if (mutableFetchResults == nil) {
+		// Handle the error.
+	}
+	
+	[self setMessages:mutableFetchResults];
+	[mutableFetchResults release];
+	[request release];
 
 	// create chatContent
 	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, VIEW_WIDTH, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1)];
@@ -285,15 +308,20 @@
 		NSLog(@"Cannot send message, no text");
 		return;
 	}
-
-	Message *msg = [[Message alloc] init];
-	msg.text = chatInput.text;
 	
+	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+
+	// Create and configure a new instance of the Event entity
+	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	[msg setText:chatInput.text];
+	[msg setSender:@"me"];
+	[msg setChannel:@"default_channel"];
+
 	if (!webSocket.connected) {
 		NSLog(@"Cannot send message, not connected");
 		return;
 	} 
-	
+
 	//			[activityIndicator startAnimating];
 	// escape " ' first.
 	[webSocket send:[NSString stringWithFormat:
@@ -306,14 +334,19 @@
 		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 	}		
 	time_t now; time(&now);
-	if (now < latestTimestamp+780) { // show timestamp every 15 mins
-		msg.timestamp = 0;
-	} else {
-		msg.timestamp = latestTimestamp = now;
+	latestTimestamp = now;
+	[msg setTimestamp:[NSNumber numberWithInt:now]];
+
+	NSError *error;
+	if (![managedObjectContext save:&error]) {
+		// Handle the error.
 	}
-	[messages addObject: msg];
-	[msg release];
-	[chatContent reloadData];
+	
+	[messages addObject:msg];
+//	[msg release]; // this crashes
+	[chatContent reloadData]; // do below method instead. seems more efficient.
+	//	[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+	//						  withRowAnimation:UITableViewRowAnimationFade];
 	NSUInteger index = [messages count] - 1;
 	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
@@ -411,7 +444,7 @@ CGFloat msgTimestampHeight;
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	Message *msg = [messages objectAtIndex:indexPath.row];
+	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
 
     static NSString *CellIdentifier = @"MessageCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -461,13 +494,14 @@ CGFloat msgTimestampHeight;
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
-	if (msg.timestamp) {
+	time_t now; time(&now);
+	if (now < ([[msg timestamp] doubleValue]+780)) {
 		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
 		
-		NSDate *date = [NSDate dateWithTimeIntervalSince1970:msg.timestamp];
+		NSDate *date = [NSDate dateWithTimeIntervalSince1970:[[msg timestamp] doubleValue]];
 		
 		NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
 		[dateFormatter setLocale:usLocale];
@@ -480,7 +514,7 @@ CGFloat msgTimestampHeight;
 		msgTimestamp.text = @"";
 	}	
 
-	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
+	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UIImage *balloon;
 
@@ -495,15 +529,15 @@ CGFloat msgTimestampHeight;
 	}
 
 	msgBackground.image = balloon;
-	msgText.text = msg.text;
+	msgText.text = [msg text];
 	
 	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	Message *msg = [messages objectAtIndex:indexPath.row];
-	msgTimestampHeight = msg.timestamp ? 20.0f : 0.0f;
-	CGSize size = [msg.text sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
+	msgTimestampHeight = [msg timestamp] ? 20.0f : 0.0f;
+	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
 
