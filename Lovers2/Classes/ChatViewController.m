@@ -373,8 +373,9 @@
 
 //	[activityIndicator startAnimating];
 	
-	NSString *escapedMsg = [[[msg text] // escape " and \n
-							stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+	NSString *escapedMsg = [[[[msg text] // escape chars: \ " \n
+							  stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
+							 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
 							stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	NSLog(@"escapedMSG: %@", escapedMsg);
 	
@@ -653,9 +654,10 @@ CGFloat msgTimestampHeight;
 
 	[msg setChannel:[msgDict valueForKey:@"channel"]];
 	[msg setSender:[msgDict valueForKey:@"sender"]];
-	[msg setText:[[[msgDict valueForKey:@"text"]
-				  stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
-				  stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]];
+	[msg setText:[[[[msgDict valueForKey:@"text"]
+					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
+				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
+				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
 	error = nil;
 	if (![managedObjectContext save:&error]) {
 		// Handle the error.
@@ -713,7 +715,7 @@ CGFloat msgTimestampHeight;
 
 
 - (void)dealloc {
-	[webSocket release];
+//	[webSocket release];
 
 // This crashes for some reason...
 //	[messages release];
@@ -726,7 +728,7 @@ CGFloat msgTimestampHeight;
 //	[sendButton release];
 //	[chatInput release];
 //	[chatBar release];
-	[doneButton release];
+//	[doneButton release];
 
 	[super dealloc];
 }
