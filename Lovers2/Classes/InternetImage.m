@@ -1,5 +1,5 @@
 #import "InternetImage.h"
-#import "User.h"
+#import "UserOld.h"
 #import "SBJSON.h"
 
 static enum downloadType _data = _json; 

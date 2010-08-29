@@ -3,7 +3,7 @@
 #import "LoversAppDelegate.h"
 #import "ProfileViewController.h"
 #import "InternetImage.h"
-#import "User.h"
+#import "UserOld.h"
 #import "ThumbnailDownload.h"
 
 UIImage *scaleAndRotateImage(UIImage *image) {

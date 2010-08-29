@@ -14,7 +14,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		AD5EFCEC11E52C0800F86E5B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCEB11E52C0800F86E5B /* User.m */; };
+		AD5EFCEC11E52C0800F86E5B /* UserOld.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCEB11E52C0800F86E5B /* UserOld.m */; };
 		AD5EFD0111E52E2200F86E5B /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCF611E52E2200F86E5B /* NSObject+SBJSON.m */; };
 		AD5EFD0211E52E2200F86E5B /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCF811E52E2200F86E5B /* NSString+SBJSON.m */; };
 		AD5EFD0311E52E2200F86E5B /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = AD5EFCFA11E52E2200F86E5B /* SBJSON.m */; };
@@ -62,8 +62,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Lovers_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lovers_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Lovers-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lovers-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		AD5EFCEA11E52C0800F86E5B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		AD5EFCEB11E52C0800F86E5B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		AD5EFCEA11E52C0800F86E5B /* UserOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserOld.h; sourceTree = "<group>"; };
+		AD5EFCEB11E52C0800F86E5B /* UserOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserOld.m; sourceTree = "<group>"; };
 		AD5EFCF411E52E2200F86E5B /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		AD5EFCF511E52E2200F86E5B /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		AD5EFCF611E52E2200F86E5B /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -136,8 +136,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				AD5EFCEA11E52C0800F86E5B /* User.h */,
-				AD5EFCEB11E52C0800F86E5B /* User.m */,
+				AD5EFCEA11E52C0800F86E5B /* UserOld.h */,
+				AD5EFCEB11E52C0800F86E5B /* UserOld.m */,
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
 				ADB02B231204AE76006FD53D /* ChatViewController.m */,
 				ADB02B251204AEDF006FD53D /* ColorUtils.h */,
@@ -352,7 +352,7 @@
 				F56D024411886CF000F2A797 /* HomeViewController.m in Sources */,
 				F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */,
 				137342BE118F1D66006CCB0E /* InternetImage.m in Sources */,
-				AD5EFCEC11E52C0800F86E5B /* User.m in Sources */,
+				AD5EFCEC11E52C0800F86E5B /* UserOld.m in Sources */,
 				AD5EFD0111E52E2200F86E5B /* NSObject+SBJSON.m in Sources */,
 				AD5EFD0211E52E2200F86E5B /* NSString+SBJSON.m in Sources */,
 				AD5EFD0311E52E2200F86E5B /* SBJSON.m in Sources */,
