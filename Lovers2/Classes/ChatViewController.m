@@ -715,7 +715,7 @@ CGFloat msgTimestampHeight;
 
 
 - (void)dealloc {
-//	[webSocket release];
+	[webSocket release];
 
 // This crashes for some reason...
 //	[messages release];

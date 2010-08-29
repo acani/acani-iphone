@@ -23,5 +23,6 @@
 }
 
 - (void)doneEditingText:(id)sender;
+- (void)donePickingValue:(id)sender;
 
 @end

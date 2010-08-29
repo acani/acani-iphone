@@ -1,4 +1,5 @@
 #import "ProfileViewController.h"
+#import "LoversAppDelegate.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
 
@@ -69,7 +70,7 @@
 //	profileContent.dataSource = self;
 //	profileContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
 
-	// set up the table's header view based on our UIView 'myHeaderView' outlet
+	// set up the table's header view
 	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 86.0f)];
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
@@ -100,6 +101,21 @@
 	[profileName release];
 
 	self.tableView.tableHeaderView = profileHeader;	// note this overrides UITableView's 'sectionHeaderHeight' property
+
+	// set up the table's header view
+	UIView *profileFooter = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 60.0f)];
+	profileFooter.clearsContextBeforeDrawing = NO;
+	profileFooter.backgroundColor = [UIColor clearColor];
+	
+	UIButton *clearChatsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	clearChatsButton.frame = CGRectMake(9.0f, 0.0f, 302.0f, 48.0f);
+	clearChatsButton.clearsContextBeforeDrawing = NO;
+	clearChatsButton.backgroundColor = [UIColor clearColor];
+	[clearChatsButton setTitle:@"Clear All Chats" forState:UIControlStateNormal];
+	[clearChatsButton addTarget:self action:@selector(clearChats:) forControlEvents:UIControlEventTouchUpInside];
+	[profileFooter addSubview:clearChatsButton];
+
+	self.tableView.tableFooterView = profileFooter;
 
 //	[self.view addSubview:profileContent];
 //	[profileContent release];
@@ -618,6 +634,28 @@
 	[aboutInput resignFirstResponder];
 	[valueInput resignFirstResponder];
 }
+
+- (void)clearChats:(id)sender {
+	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setIncludesPropertyValues:NO];
+	
+    NSError *error;
+    NSArray *items = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [fetchRequest release];
+	
+    for (NSManagedObject *managedObject in items) {
+        [managedObjectContext deleteObject:managedObject];
+        NSLog(@"%@ object deleted", @"Message");
+    }
+    if (![managedObjectContext save:&error]) {
+        NSLog(@"Error deleting %@ - error: %@", @"Message", error);
+    }
+}
+
 
 #pragma mark -
 #pragma mark Memory management
