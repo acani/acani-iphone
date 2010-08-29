@@ -358,13 +358,14 @@
 	}
 	
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-
-	// Create and configure a new instance of the Event entity
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
 	[msg setSender:@"me"];
 	[msg setChannel:@"default_channel"];
-
+	time_t now; time(&now);
+	latestTimestamp = now;
+	[msg setTimestamp:[NSNumber numberWithInt:now]];
+	
 	if (!webSocket.connected) {
 		NSLog(@"Cannot send message, not connected");
 		return;
@@ -372,8 +373,15 @@
 
 	//			[activityIndicator startAnimating];
 	// escape " ' first.
-	[webSocket send:[NSString stringWithFormat:
-					 @"{\"content\":\"%@\",\"to_uid_public\":\"bob\"}", msg.text]];
+	NSString *escapedMsg = [[msg text]
+		stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+	escapedMsg = [escapedMsg stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+	NSLog(@"escapedMSG: %@", escapedMsg);
+	
+	NSString *msgJson = [NSString stringWithFormat:
+						 @"{\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
+						 [msg timestamp], [msg channel], [msg sender], escapedMsg];
+	[webSocket send:[msgJson stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 
 	chatInput.text = @"";
 	if (lastContentHeight > 22.0f) {
@@ -381,9 +389,6 @@
 		chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 	}		
-	time_t now; time(&now);
-	latestTimestamp = now;
-	[msg setTimestamp:[NSNumber numberWithInt:now]];
 
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
@@ -398,7 +403,8 @@
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[messages count]-1 inSection:0]
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
+	[chatContent scrollToRowAtIndexPath:indexPath
 					   atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
@@ -510,7 +516,7 @@ CGFloat msgTimestampHeight;
 //	if (now < latestTimestamp+780) // show timestamp every 15 mins
 //		msg.timestamp = 0;
 			
-	if (false) { // latestTimestamp > ([[msg timestamp] longValue]+780)) {
+	if (true) { // latestTimestamp > ([[msg timestamp] longValue]+780)) {
 		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
@@ -551,7 +557,7 @@ CGFloat msgTimestampHeight;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
 	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
-	msgTimestampHeight = 0.0f; // [msg timestamp] ? 20.0f : 0.0f;
+	msgTimestampHeight = 20.0f; // [msg timestamp] ? 20.0f : 0.0f;
 	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
@@ -629,8 +635,10 @@ CGFloat msgTimestampHeight;
 }
 
 -(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
-	NSLog(@"Received jsonMessage: %@", msgJson);
-	
+	NSLog(@"Received jsonMessage unescaped: %@", msgJson);
+	msgJson = [msgJson stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	NSLog(@"Received jsonMessage escaped: %@", msgJson);
+
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON alloc] init];
 	NSDictionary *msgDict = [json objectWithString:msgJson error:&error];
@@ -638,12 +646,24 @@ CGFloat msgTimestampHeight;
 
 	NSLog(@"Message dictionary: %@", msgDict);
 
-	Message *msg = [[Message alloc] initWithDictionary:msgDict];
+	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	[msg setTimestamp:[NSNumber numberWithLong:[msgDict valueForKey:@"timestamp"]]];
+	NSLog(@"msg timestamp: %@", [msg timestamp]);
+	[msg setChannel:[msgDict valueForKey:@"channel"]];
+	[msg setSender:[msgDict valueForKey:@"sender"]];
+	[msg setText:[[[msgDict valueForKey:@"text"]
+				  stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
+				  stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]];
+	error = nil;
+	if (![managedObjectContext save:&error]) {
+		// Handle the error.
+	}	
 	[messages addObject:msg];
-	[msg release];
-
-	[chatContent reloadData];
-	[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[messages count]-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];	
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
+	[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+					   withRowAnimation:UITableViewRowAnimationNone];
+	[self scrollToBottomAnimated:YES]; 
 }
 
 -(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {

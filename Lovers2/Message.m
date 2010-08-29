@@ -7,15 +7,15 @@
 @dynamic sender;
 @dynamic text;
 
-- (id)initWithDictionary:(NSDictionary *)dictionary {
-    if (self = [super init]) {
-		[self setTimestamp:[dictionary valueForKey:@"timestamp"]];
-		[self setChannel:[dictionary valueForKey:@"channel"]];
-		[self setSender:[dictionary valueForKey:@"sender"]];
-		[self setText:[dictionary valueForKey:@"text"]];
-    }
-    return self;
-}
+//- (id)initWithDictionary:(NSDictionary *)dictionary {
+//    if (self = [super init]) {
+//		[self setTimestamp:[dictionary valueForKey:@"timestamp"]];
+//		[self setChannel:[dictionary valueForKey:@"channel"]];
+//		[self setSender:[dictionary valueForKey:@"sender"]];
+//		[self setText:[dictionary valueForKey:@"text"]];
+//    }
+//    return self;
+//}
 
 @end
 
