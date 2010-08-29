@@ -364,24 +364,24 @@
 	[msg setChannel:@"default_channel"];
 	time_t now; time(&now);
 	latestTimestamp = now;
-	[msg setTimestamp:[NSNumber numberWithInt:now]];
+	[msg setTimestamp:[NSNumber numberWithLong:now]];
 	
 	if (!webSocket.connected) {
 		NSLog(@"Cannot send message, not connected");
 		return;
 	} 
 
-	//			[activityIndicator startAnimating];
-	// escape " ' first.
-	NSString *escapedMsg = [[msg text]
-		stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-	escapedMsg = [escapedMsg stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+//	[activityIndicator startAnimating];
+	
+	NSString *escapedMsg = [[[msg text] // escape " and \n
+							stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+							stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	NSLog(@"escapedMSG: %@", escapedMsg);
 	
 	NSString *msgJson = [NSString stringWithFormat:
 						 @"{\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
 						 [msg timestamp], [msg channel], [msg sender], escapedMsg];
-	[webSocket send:[msgJson stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	[webSocket send:msgJson];
 
 	chatInput.text = @"";
 	if (lastContentHeight > 22.0f) {
@@ -511,8 +511,7 @@ CGFloat msgTimestampHeight;
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
-	time_t now; time(&now);
-
+//	time_t now; time(&now);
 //	if (now < latestTimestamp+780) // show timestamp every 15 mins
 //		msg.timestamp = 0;
 			
@@ -635,9 +634,7 @@ CGFloat msgTimestampHeight;
 }
 
 -(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
-	NSLog(@"Received jsonMessage unescaped: %@", msgJson);
-	msgJson = [msgJson stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	NSLog(@"Received jsonMessage escaped: %@", msgJson);
+	NSLog(@"Received jsonMessage: %@", msgJson);
 
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON alloc] init];
@@ -648,8 +645,12 @@ CGFloat msgTimestampHeight;
 
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
-	[msg setTimestamp:[NSNumber numberWithLong:[msgDict valueForKey:@"timestamp"]]];
-	NSLog(@"msg timestamp: %@", [msg timestamp]);
+	[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
+//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
+//	NSLog(@"[[msg timestamp] class]: %@", [[msg timestamp] class]);
+//	NSLog(@"msg timestamp: %@", [msg timestamp]);
+//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
+
 	[msg setChannel:[msgDict valueForKey:@"channel"]];
 	[msg setSender:[msgDict valueForKey:@"sender"]];
 	[msg setText:[[[msgDict valueForKey:@"text"]
@@ -658,7 +659,7 @@ CGFloat msgTimestampHeight;
 	error = nil;
 	if (![managedObjectContext save:&error]) {
 		// Handle the error.
-	}	
+	}
 	[messages addObject:msg];
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
 	[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
