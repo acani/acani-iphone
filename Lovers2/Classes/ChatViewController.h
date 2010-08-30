@@ -1,8 +1,4 @@
-#import "ZTWebSocket.h"
-
-@interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ZTWebSocketDelegate> {
-	ZTWebSocket *webSocket;
-
+@interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
 	NSMutableArray *messages;
 		time_t	latestTimestamp;
 
@@ -18,8 +14,6 @@
 		UIButton *sendButton;
 	UIBarButtonItem *doneButton;
 }
-
-@property (nonatomic, retain) ZTWebSocket *webSocket;
 
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, assign) time_t latestTimestamp;

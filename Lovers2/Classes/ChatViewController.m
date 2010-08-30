@@ -34,8 +34,6 @@
 
 @implementation ChatViewController
 
-@synthesize webSocket;
-
 @synthesize messages;
 @synthesize latestTimestamp;
 
@@ -184,9 +182,6 @@
 - (void)loadView {
 	[super loadView];
 
-	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
-    [webSocket open];
-
 	self.title = @"Joanna";
 
 //	// create messages
@@ -326,10 +321,10 @@
  }
  */
 
-//- (void)viewDidAppear:(BOOL)animated {
-//	[super viewDidAppear:animated];
-//	[self scrollToBottomAnimated:NO]; 
-//}
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[self scrollToBottomAnimated:YES]; 
+}
 
 /*
  - (void)viewWillDisappear:(BOOL)animated {
@@ -365,8 +360,9 @@
 	time_t now; time(&now);
 	latestTimestamp = now;
 	[msg setTimestamp:[NSNumber numberWithLong:now]];
-	
-	if (!webSocket.connected) {
+
+	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+	if (![webSocket connected]) {
 		NSLog(@"Cannot send message, not connected");
 		return;
 	} 
@@ -618,74 +614,6 @@ CGFloat msgTimestampHeight;
 
 
 #pragma mark -
-#pragma mark WebSocket delegate
-
--(void)webSocketDidClose:(ZTWebSocket *)webSocket {
-    NSLog(@"Connection closed");
-}
-
--(void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
-    if (error.code == ZTWebSocketErrorConnectionFailed) {
-		NSLog(@"Connection failed");
-    } else if (error.code == ZTWebSocketErrorHandshakeFailed) {
-		NSLog(@"Handshake failed");
-    } else {
-		NSLog(@"Error");
-    }
-}
-
--(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
-	NSLog(@"Received jsonMessage: %@", msgJson);
-
-	NSError *error = nil;
-	SBJSON *json = [[SBJSON alloc] init];
-	NSDictionary *msgDict = [json objectWithString:msgJson error:&error];
-	[json release];
-
-	NSLog(@"Message dictionary: %@", msgDict);
-
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
-	[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
-//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
-//	NSLog(@"[[msg timestamp] class]: %@", [[msg timestamp] class]);
-//	NSLog(@"msg timestamp: %@", [msg timestamp]);
-//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
-
-	[msg setChannel:[msgDict valueForKey:@"channel"]];
-	[msg setSender:[msgDict valueForKey:@"sender"]];
-	[msg setText:[[[[msgDict valueForKey:@"text"]
-					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
-				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
-				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
-	error = nil;
-	if (![managedObjectContext save:&error]) {
-		// Handle the error.
-	}
-	[messages addObject:msg];
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
-	[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-					   withRowAnimation:UITableViewRowAnimationNone];
-	[self scrollToBottomAnimated:YES]; 
-}
-
--(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
-	NSLog(@"Connected");
-
-	// should be mongodb _id for user, not device id.
-	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
-					 [UIDevice currentDevice].uniqueIdentifier]];
-}
-
--(void)webSocketDidSendMessage:(ZTWebSocket *)webSocket {
-//    messages--;
-//    if (messages == 0) {
-//        [activityIndicator stopAnimating];
-//    }
-}
-
-
-#pragma mark -
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
@@ -715,7 +643,6 @@ CGFloat msgTimestampHeight;
 
 
 - (void)dealloc {
-	[webSocket release];
 
 // This crashes for some reason...
 //	[messages release];

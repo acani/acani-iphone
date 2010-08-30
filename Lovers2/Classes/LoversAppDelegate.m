@@ -1,6 +1,9 @@
 #import "LoversAppDelegate.h"
 #import "HomeViewController.h"
 #import "ChatViewController.h"
+#import "Message.h"
+#import "ZTWebSocket.h"
+#import "SBJSON.h"
 
 
 @interface LoversAppDelegate (PrivateCoreDataStack)
@@ -18,6 +21,7 @@
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
 @synthesize homeViewController;
+@synthesize webSocket;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -34,6 +38,9 @@
 
 //	// Pass the managed object context to the view controller.
 //    homeViewController.managedObjectContext = context;
+
+	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
+    [webSocket open];
 
 	navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
 	[window addSubview:navigationController.view];	
@@ -102,6 +109,78 @@
 			abort();
         } 
     }
+}
+
+
+#pragma mark -
+#pragma mark WebSocket delegate
+
+-(void)webSocketDidClose:(ZTWebSocket *)webSocket {
+    NSLog(@"Connection closed");
+}
+
+-(void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
+    if (error.code == ZTWebSocketErrorConnectionFailed) {
+		NSLog(@"Connection failed");
+    } else if (error.code == ZTWebSocketErrorHandshakeFailed) {
+		NSLog(@"Handshake failed");
+    } else {
+		NSLog(@"Error");
+    }
+}
+
+-(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
+	NSLog(@"Received jsonMessage: %@", msgJson);
+	
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON alloc] init];
+	NSDictionary *msgDict = [json objectWithString:msgJson error:&error];
+	[json release];
+	
+	NSLog(@"Message dictionary: %@", msgDict);
+	
+	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
+	//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
+	//	NSLog(@"[[msg timestamp] class]: %@", [[msg timestamp] class]);
+	//	NSLog(@"msg timestamp: %@", [msg timestamp]);
+	//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
+	
+	[msg setChannel:[msgDict valueForKey:@"channel"]];
+	[msg setSender:[msgDict valueForKey:@"sender"]];
+	[msg setText:[[[[msgDict valueForKey:@"text"]
+					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
+				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
+				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
+	error = nil;
+	if (![managedObjectContext save:&error]) {
+		// Handle the error.
+	}
+	
+	if ([navigationController.visibleViewController isKindOfClass:[ChatViewController class]]) {
+		ChatViewController *chatViewController = (ChatViewController *)navigationController.visibleViewController;
+//		[chatViewController addMessage];
+		[chatViewController.messages addObject:msg];
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[chatViewController.messages count]-1 inSection:0];
+		[chatViewController.chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						   withRowAnimation:UITableViewRowAnimationNone];
+		[chatViewController scrollToBottomAnimated:YES];
+	}
+}
+
+-(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
+	NSLog(@"Connected");
+	
+	// should be mongodb _id for user, not device id.
+	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
+					 [UIDevice currentDevice].uniqueIdentifier]];
+}
+
+-(void)webSocketDidSendMessage:(ZTWebSocket *)webSocket {
+	//    messages--;
+	//    if (messages == 0) {
+	//        [activityIndicator stopAnimating];
+	//    }
 }
 
 
@@ -189,6 +268,8 @@
 #pragma mark Memory management
 
 - (void)dealloc {
+	[webSocket release];
+
 	[managedObjectContext release];
     [managedObjectModel release];
     [persistentStoreCoordinator release];
