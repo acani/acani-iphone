@@ -1,5 +1,5 @@
 #import "LoversAppDelegate.h"
-#import "HomeViewController.h"
+#import "UsersViewController.h"
 #import "ChatViewController.h"
 #import "Message.h"
 #import "ZTWebSocket.h"
@@ -20,7 +20,7 @@
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
-@synthesize homeViewController;
+@synthesize usersViewController;
 @synthesize webSocket;
 
 #pragma mark -
@@ -28,7 +28,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-	homeViewController = [[HomeViewController alloc] init];
+	usersViewController = [[UsersViewController alloc] init];
 	
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
@@ -37,15 +37,15 @@
     }
 
 //	// Pass the managed object context to the view controller.
-//    homeViewController.managedObjectContext = context;
+//    usersViewController.managedObjectContext = context;
 
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
     [webSocket open];
 
-	navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+	navigationController = [[UINavigationController alloc] initWithRootViewController:usersViewController];
 	[window addSubview:navigationController.view];	
     [window makeKeyAndVisible];
-//	[homeViewController release];
+//	[usersViewController release];
 //	[navigationController release];
 	[self findLocation];
 	return YES;
@@ -74,9 +74,9 @@
     if (locationAge > 5.0) return;
 	if (newLocation.horizontalAccuracy < 0) return;
     if (bestEffortAtLocation == nil || bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
-        // store the location as the "best effort" as well as setting HomeViewController's CLlocation
+        // store the location as the "best effort" as well as setting UsersViewController's CLlocation
         self.bestEffortAtLocation = newLocation;
-		homeViewController.location = newLocation;
+		usersViewController.location = newLocation;
                 if (newLocation.horizontalAccuracy <= manager.desiredAccuracy) {
 					[manager stopUpdatingLocation];
             // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
@@ -278,7 +278,7 @@
 	[locationMeasurements release];
 	[bestEffortAtLocation release];
 
-	[homeViewController release];
+	[usersViewController release];
 	[navigationController release];
 	[window release];
     [super dealloc];

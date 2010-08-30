@@ -4,7 +4,7 @@
 @class User;
 @class LoversAppDelegate;
 
-@interface HomeViewController : UIViewController {
+@interface UsersViewController : UIViewController {
 	UIScrollView *scroll;
 	UIButton *selectedImage;
 	InternetImage *asynchImage;

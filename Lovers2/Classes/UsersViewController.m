@@ -1,4 +1,4 @@
-#import "HomeViewController.h"
+#import "UsersViewController.h"
 #import "PhotoViewController.h"
 #import "LoversAppDelegate.h"
 #import "ProfileViewController.h"
@@ -115,7 +115,7 @@ static int colCounter = 0;
 static int rowCounter = 0;
 BOOL buttonLayerPresent = NO;
 
-@implementation HomeViewController
+@implementation UsersViewController
 
 @synthesize scroll;
 @synthesize selectedImage;

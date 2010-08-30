@@ -33,11 +33,8 @@ NSMutableData *picData;
 		[picData retain];
 		
 	}
-	
 	return self;
-
 }
-
 
 - (void)goToChat:(id)sender {
 	ChatViewController *chatView = [[[ChatViewController alloc] init] autorelease];
@@ -55,12 +52,10 @@ NSMutableData *picData;
 	[self.navigationController setNavigationBarHidden:NO];
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Chat", @selector(goToChat:));
 	
-	
 	UITapGestureRecognizer *singleFingerDTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     singleFingerDTap.numberOfTapsRequired = 1;
 	[self.view addGestureRecognizer:singleFingerDTap];
     [singleFingerDTap release];
-	
 	
 	[contentView release];
 }
@@ -89,17 +84,7 @@ NSMutableData *picData;
 	aboutLabel.shadowColor = [UIColor blackColor];
 	aboutLabel.textColor = [UIColor whiteColor];
 	[overlay addSubview: aboutLabel];
-	
-/*	
-	UITextView * aboutTextview = [[UITextView alloc] initWithFrame:CGRectMake(20, 35, 280, 100)];
-	aboutTextview.backgroundColor = [UIColor clearColor];
-	aboutTextview.editable = NO;
-	aboutTextview.textColor = [UIColor whiteColor];
-	aboutTextview.alpha = 1.0;
-	aboutTextview.text = self.userAbout;
-	[overlay addSubview:aboutTextview];
-	
-*/	
+
 	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(210, 10, 100, 310 )];
 	overlaySide.backgroundColor = [UIColor clearColor];
 	
@@ -118,9 +103,7 @@ NSMutableData *picData;
 	weightLabel.backgroundColor =   [UIColor clearColor];
 	ageLabel.backgroundColor =      [UIColor clearColor];
 	ethinicLabel.backgroundColor =  [UIColor clearColor];
-	
-	
-	
+
 	locationLabel.shadowColor = [UIColor blackColor];
 	lastonLabel.shadowColor =   [UIColor blackColor];
 	likesLabel.shadowColor =    [UIColor blackColor];
@@ -128,9 +111,7 @@ NSMutableData *picData;
 	weightLabel.shadowColor =   [UIColor blackColor];
 	ageLabel.shadowColor =      [UIColor blackColor];
 	ethinicLabel.shadowColor =  [UIColor blackColor];
-	
-	
-	
+
 	locationLabel.textColor = [UIColor whiteColor];
 	lastonLabel.textColor =   [UIColor whiteColor];
 	likesLabel.textColor =    [UIColor whiteColor];
@@ -139,7 +120,6 @@ NSMutableData *picData;
 	ageLabel.textColor =      [UIColor whiteColor];
 	ethinicLabel.textColor =  [UIColor whiteColor];
 	
-	
 	locationLabel.font = [UIFont systemFontOfSize:15.0];
 	lastonLabel.font = [UIFont systemFontOfSize:12.0];
 	likesLabel.font = [UIFont systemFontOfSize:15.0];
@@ -147,7 +127,6 @@ NSMutableData *picData;
 	weightLabel.font = [UIFont systemFontOfSize:15.0];
 	ageLabel.font = [UIFont systemFontOfSize:15.0];
 	ethinicLabel.font = [UIFont systemFontOfSize:15.0];
-	
 	
 	locationLabel.textAlignment = UITextAlignmentRight;
 	lastonLabel.textAlignment =   UITextAlignmentRight;
@@ -166,7 +145,6 @@ NSMutableData *picData;
 	ageLabel.text =      [[NSString alloc] initWithFormat:@"%d yrs",self.age];;
 	ethinicLabel.text =  self.ethinic;
 	
-	
 	[overlaySide addSubview: locationLabel];
 	[overlaySide addSubview: lastonLabel];
 	[overlaySide addSubview: likesLabel];
@@ -174,11 +152,7 @@ NSMutableData *picData;
 	[overlaySide addSubview: weightLabel];
 	[overlaySide addSubview: ageLabel];
 	[overlaySide addSubview: ethinicLabel];
-	
 	[self.view addSubview:overlaySide];
-	
-	
-	
 	
 	UIButton * favorite = [UIButton buttonWithType:UIButtonTypeCustom];
 	favorite.frame = CGRectMake(70, 230, 30, 30);
@@ -202,7 +176,6 @@ NSMutableData *picData;
 	blockLabel.textColor = [UIColor whiteColor];
 	blockLabel.font =  [UIFont systemFontOfSize:10.0];
 	
-	
 //	moveMe.backgroundColor = [UIColor whiteColor];
 //	moveMe.titleLabel.text = @"move";
 //	moveMe.titleLabel.textColor = [UIColor blackColor];
@@ -214,7 +187,6 @@ NSMutableData *picData;
 	[overlaySide addSubview:blockLabel];
 	//UILabel *userInfo = [UILabel alloc] initwithFrame: CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
 	[self.view addSubview:overlay];
-	
 }
 
 
@@ -235,8 +207,6 @@ NSMutableData *picData;
     // e.g. self.myOutlet = nil;
 }
 
-
-
 - (void)backButtonClicked:(id)sender {
 	[self.navigationController popViewControllerAnimated:YES];
 }
@@ -252,8 +222,6 @@ NSMutableData *picData;
 
 }
 
-
-
 - (void)moveOverlay:(id)sender {
 	if (self.view.window!=nil) {
 		[UIView beginAnimations: @"move_Overlay" context:nil];
@@ -267,6 +235,7 @@ NSMutableData *picData;
 		[UIView commitAnimations];
 	}
 }
+
 
 #pragma mark singlFingerTap methods
 
@@ -302,10 +271,10 @@ NSMutableData *picData;
 			
 			[UIView commitAnimations];
 			overlayHide = NO;
-			
 		}
 	}
 }
+
 
 #pragma mark Internet access methods
 
@@ -364,8 +333,6 @@ NSMutableData *picData;
 	[profilePicConnection release];
 	
     [super dealloc];
-	
 }
-
 
 @end

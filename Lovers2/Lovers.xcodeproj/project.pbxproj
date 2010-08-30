@@ -43,7 +43,7 @@
 		C91FE8BB122898D8003C266E /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8BA122898D8003C266E /* Message.m */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
-		F56D024411886CF000F2A797 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* HomeViewController.m */; };
+		F56D024411886CF000F2A797 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* UsersViewController.m */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
 		F56D02CC1188869B00F2A797 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02C51188869B00F2A797 /* refresh.png */; };
@@ -108,8 +108,8 @@
 		C91FE8BA122898D8003C266E /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		F56D024211886CF000F2A797 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		F56D024311886CF000F2A797 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		F56D024211886CF000F2A797 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
+		F56D024311886CF000F2A797 /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		F56D02621188743D00F2A797 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		F56D02631188743D00F2A797 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		F56D02981188790900F2A797 /* lovers-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lovers-text.png"; sourceTree = "<group>"; };
@@ -144,8 +144,8 @@
 				ADB02B261204AEDF006FD53D /* ColorUtils.m */,
 				1D3623240D0F684500981E51 /* LoversAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
-				F56D024211886CF000F2A797 /* HomeViewController.h */,
-				F56D024311886CF000F2A797 /* HomeViewController.m */,
+				F56D024211886CF000F2A797 /* UsersViewController.h */,
+				F56D024311886CF000F2A797 /* UsersViewController.m */,
 				137342BC118F1D66006CCB0E /* InternetImage.h */,
 				137342BD118F1D66006CCB0E /* InternetImage.m */,
 				ADB02B841204CA15006FD53D /* ProfileViewController.h */,
@@ -349,7 +349,7 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* LoversAppDelegate.m in Sources */,
-				F56D024411886CF000F2A797 /* HomeViewController.m in Sources */,
+				F56D024411886CF000F2A797 /* UsersViewController.m in Sources */,
 				F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */,
 				137342BE118F1D66006CCB0E /* InternetImage.m in Sources */,
 				AD5EFCEC11E52C0800F86E5B /* UserOld.m in Sources */,

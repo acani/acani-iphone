@@ -3,7 +3,7 @@
 #import <CoreData/CoreData.h>
 #import "ZTWebSocket.h"
 
-@class HomeViewController;
+@class UsersViewController;
 
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate> {
 	ZTWebSocket *webSocket;
@@ -18,14 +18,14 @@
 
 	UIWindow *window;
 	UINavigationController *navigationController;
-	HomeViewController *homeViewController;
+	UsersViewController *usersViewController;
 }
 
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) HomeViewController *homeViewController;
+@property (nonatomic, retain) UsersViewController *usersViewController;
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSMutableArray *locationMeasurements;

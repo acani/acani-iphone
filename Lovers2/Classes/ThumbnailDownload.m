@@ -1,6 +1,6 @@
 #import "ThumbnailDownload.h"
 #import "UserOld.h"
-#import "HomeViewController.h"
+#import "UsersViewController.h"
 
 @implementation ThumbnailDownload
 
