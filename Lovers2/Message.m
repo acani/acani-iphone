@@ -2,9 +2,10 @@
 
 @implementation Message 
 
-@dynamic timestamp;
-@dynamic channel;
 @dynamic sender;
+@dynamic channel;
+@dynamic timestamp;
+@dynamic unread;
 @dynamic text;
 
 //- (id)initWithDictionary:(NSDictionary *)dictionary {

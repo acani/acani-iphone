@@ -184,8 +184,8 @@
 
 	self.title = @"Joanna";
 
-	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
-//	contentView.backgroundColor = [UIColor lightGrayColor];
+//	UIView *self.view = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+//	self.view.backgroundColor = [UIColor lightGrayColor];
 
 //	// create messages
 //	time_t now; time(&now);
@@ -250,7 +250,7 @@
 	chatContent.backgroundColor = [UIColor chatBackgroundColor];
 	chatContent.separatorStyle = UITableViewCellSeparatorStyleNone;
 	chatContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-	[contentView addSubview:chatContent];
+	[self.view addSubview:chatContent];
 	[chatContent release];
 
 	// create chatBar
@@ -297,12 +297,12 @@
 
 	doneButton = BARBUTTON(@"Done", @selector(done:));
 
-	[contentView addSubview:chatBar];
-	[contentView sendSubviewToBack:chatBar];
+	[self.view addSubview:chatBar];
+	[self.view sendSubviewToBack:chatBar];
 	[chatBar release];
 
-	self.view = contentView;
-	[contentView release];
+//	self.view = contentView;
+//	[contentView release];
 
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];

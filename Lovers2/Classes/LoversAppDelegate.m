@@ -144,12 +144,12 @@
 					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
 				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
 				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
-	error = nil;
-	if (![managedObjectContext save:&error]) {
-		// Handle the error.
-	}
+
+	NSLog(@"Message unread: %@", [msg unread]);
 	
 	if ([navigationController.visibleViewController isKindOfClass:[ChatViewController class]]) {
+		[msg setUnread:[NSNumber numberWithBool:NO]];
+		NSLog(@"Message unread: %@", [msg unread]);
 		ChatViewController *chatViewController = (ChatViewController *)navigationController.visibleViewController;
 //		[chatViewController addMessage];
 		[chatViewController.messages addObject:msg];
@@ -157,6 +157,20 @@
 		[chatViewController.chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						   withRowAnimation:UITableViewRowAnimationNone];
 		[chatViewController scrollToBottomAnimated:YES];
+	}
+
+	// Play sound or buzz, depending on user settings.
+	NSString *sndpath = [[NSBundle mainBundle] pathForResource:@"basicsound" ofType:@"wav"];
+	CFURLRef baseURL = (CFURLRef)[NSURL fileURLWithPath:sndpath];
+	AudioServicesCreateSystemSoundID (baseURL, &receiveMessageSound);
+	AudioServicesPlaySystemSound(receiveMessageSound);
+//	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); // explicit vibrate
+
+	// Save message to database
+	error = nil;
+	if (![managedObjectContext save:&error]) {
+		// Handle the error.
+		NSLog(@"Error saving message! %@", error);
 	}
 }
 
@@ -197,7 +211,6 @@
     return managedObjectContext;
 }
 
-
 /**
  Returns the managed object model for the application.
  If the model doesn't already exist, it is created by merging all of the models found in the application bundle.
@@ -211,7 +224,6 @@
     return managedObjectModel;
 }
 
-
 /**
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
@@ -222,7 +234,7 @@
         return persistentStoreCoordinator;
     }
 	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Locations.sqlite"]];
+    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"]];
 	
 	NSError *error = nil;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -260,6 +272,8 @@
 #pragma mark Memory management
 
 - (void)dealloc {
+	if (receiveMessageSound) AudioServicesDisposeSystemSoundID(receiveMessageSound);
+
 	[webSocket release];
 
 	[managedObjectContext release];
