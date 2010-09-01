@@ -27,6 +27,10 @@
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) UsersViewController *usersViewController;
 
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSMutableArray *locationMeasurements;
 @property (nonatomic, retain) CLLocation *bestEffortAtLocation;

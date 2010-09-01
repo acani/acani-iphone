@@ -5,14 +5,6 @@
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
 
-
-@interface LoversAppDelegate (PrivateCoreDataStack)
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@end
-
-
 @implementation LoversAppDelegate
 
 @synthesize window;

@@ -145,9 +145,10 @@ const enum downloadType JSON = _json;
 	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor lightGrayColor];
 	self.scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	
+	[contentView addSubview:self.scroll];
+//	[scroll release]; // Should this go here or in dealloc?
+
 	self.view = contentView;
-	[self.view addSubview:self.scroll];
 	[contentView release];
 }
 

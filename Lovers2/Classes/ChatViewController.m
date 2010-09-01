@@ -184,6 +184,9 @@
 
 	self.title = @"Joanna";
 
+	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+//	contentView.backgroundColor = [UIColor lightGrayColor];
+
 //	// create messages
 //	time_t now; time(&now);
 //	latestTimestamp = 0;
@@ -247,7 +250,7 @@
 	chatContent.backgroundColor = [UIColor chatBackgroundColor];
 	chatContent.separatorStyle = UITableViewCellSeparatorStyleNone;
 	chatContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-	[self.view addSubview:chatContent];
+	[contentView addSubview:chatContent];
 	[chatContent release];
 
 	// create chatBar
@@ -286,34 +289,37 @@
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
 	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
-	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
-	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
+//	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
+//	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
 	DISABLE_SEND_BUTTON; // initially
 	[chatBar addSubview:sendButton];
 	[sendButton release];
 
 	doneButton = BARBUTTON(@"Done", @selector(done:));
 
-	[self.view addSubview:chatBar];
-	[self.view sendSubviewToBack:chatBar];
+	[contentView addSubview:chatBar];
+	[contentView sendSubviewToBack:chatBar];
 	[chatBar release];
+
+	self.view = contentView;
+	[contentView release];
 
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-/*
- - (void)viewDidLoad {
- [super viewDidLoad];
- 
- // Uncomment the following line to preserve selection between presentations.
- self.clearsSelectionOnViewWillAppear = NO;
- 
- // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
- // self.navigationItem.rightBarButtonItem = self.editButtonItem;
- }
- */
+
+// - (void)viewDidLoad {
+// [super viewDidLoad];
+// 
+// // Uncomment the following line to preserve selection between presentations.
+// // self.clearsSelectionOnViewWillAppear = NO;
+// 
+// // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+// // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+// }
+
 
 /*
  - (void)viewWillAppear:(BOOL)animated {
