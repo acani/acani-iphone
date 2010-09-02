@@ -1,4 +1,5 @@
 @interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
+	NSString *channel;
 	NSMutableArray *messages;
 		time_t	latestTimestamp;
 
@@ -15,6 +16,7 @@
 	UIBarButtonItem *doneButton;
 }
 
+@property (nonatomic, retain) NSString *channel;
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, assign) time_t latestTimestamp;
 

@@ -144,12 +144,9 @@
 					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
 				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
 				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
-
-	NSLog(@"Message unread: %@", [msg unread]);
 	
 	if ([navigationController.visibleViewController isKindOfClass:[ChatViewController class]]) {
 		[msg setUnread:[NSNumber numberWithBool:NO]];
-		NSLog(@"Message unread: %@", [msg unread]);
 		ChatViewController *chatViewController = (ChatViewController *)navigationController.visibleViewController;
 //		[chatViewController addMessage];
 		[chatViewController.messages addObject:msg];

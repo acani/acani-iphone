@@ -333,12 +333,9 @@ const enum downloadType JSON = _json;
 	}
 	self.selectedImage = (UIButton*)sender;
 	[selectedImage setBackgroundColor:[UIColor colorWithRed:0.500f green:0.500f blue:0.500f alpha:0.50f]];
-	User * user = [self.Users objectAtIndex:selectedImage.tag];
-	NSString *photoviewUrl= [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture?type=large",user.uid];
+	User *user = [self.Users objectAtIndex:selectedImage.tag];
 	
-	NSLog(@"%@", photoviewUrl);
-	
-	PhotoViewController *aController = [[PhotoViewController alloc] initWithUrl:photoviewUrl];
+	PhotoViewController *aController = [[PhotoViewController alloc] initWithUser:user];
 	aController.userAbout = user.about;
 	aController.aboutHead = user.aboutHead;
 	aController.ethinic = user.ethnic;
@@ -348,7 +345,6 @@ const enum downloadType JSON = _json;
 	aController.likes = user.likes;
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
-	[photoviewUrl release];
 }
 
 - (void)goToProfile:(id)sender {

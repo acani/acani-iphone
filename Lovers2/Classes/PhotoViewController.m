@@ -1,10 +1,11 @@
 #import "PhotoViewController.h"
 #import "ChatViewController.h"
+#import "UserOld.h"
 
 @implementation PhotoViewController
 
 @synthesize profileImage;
-@synthesize picUrl, userAbout, aboutHead;
+@synthesize targetUser, picUrl, userAbout, aboutHead;
 @synthesize laston, location, height, weight, ethinic, likes, age;  
 
 BOOL overlayHide;
@@ -13,11 +14,11 @@ NSMutableData *picData;
 
 #define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
 
-- (id)initWithUrl: (NSString *) urlToImage{
-	
-	self = [super init];
-	if (self) {
-		self.picUrl = urlToImage;
+- (id)initWithUser:(User *)user {
+	if (self = [super init]) {
+		self.targetUser = user;
+		self.title = user.name;
+		self.picUrl = [NSString stringWithFormat:@"http://localhost:4567/%@/picture?type=large", targetUser.uid];
 	}
 	
 	NSURL *picUrl_t = [NSURL URLWithString:self.picUrl];
@@ -31,13 +32,14 @@ NSMutableData *picData;
 			picData = [NSMutableData data];
 		}
 		[picData retain];
-		
 	}
 	return self;
 }
 
 - (void)goToChat:(id)sender {
 	ChatViewController *chatView = [[[ChatViewController alloc] init] autorelease];
+	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", targetUser.uid];
+	chatView.title = targetUser.name;
 	[self.navigationController pushViewController:chatView animated:YES];
 }
 

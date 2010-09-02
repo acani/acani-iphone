@@ -1,6 +1,9 @@
+@class User;
+
 @interface PhotoViewController : UIViewController {
-	UIView * overlay;
-	UIView * overlaySide;
+	User *targetUser;
+	UIView *overlay;
+	UIView *overlaySide;
 	UIImageView *profileImage;
 	NSURLConnection *profilePicConnection;
 	NSString *picUrl;
@@ -13,9 +16,9 @@
 	NSString *location;
 	NSString *laston;
 	uint32_t age;
-	
 }
 
+@property (nonatomic, retain) User *targetUser;
 @property (nonatomic, retain) UIImageView *profileImage;
 @property (nonatomic, retain) NSString *picUrl;
 @property (nonatomic, retain) NSString *userAbout;
@@ -31,9 +34,9 @@
 - (void)backButtonClicked:(id)sender;
 - (void)moveOverlay:(id)sender;
 - (void)goToChat:(id)sender;
-- (id)initWithUrl:(NSString*)urlToImage;
-- (void) profilePicReady: (UIImage*) downloadedImage; 
-- (void) handleSingleTap;
+- (id)initWithUser:(User *)user;
+- (void)profilePicReady:(UIImage *)downloadedImage; 
+- (void)handleSingleTap;
 - (void)favoriteAction:(id)sender;
 - (void)blockAction:(id)sender;
 

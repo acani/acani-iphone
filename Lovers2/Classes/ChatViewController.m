@@ -34,6 +34,7 @@
 
 @implementation ChatViewController
 
+@synthesize channel;
 @synthesize messages;
 @synthesize latestTimestamp;
 
@@ -181,8 +182,6 @@
 
 - (void)loadView {
 	[super loadView];
-
-	self.title = @"Joanna";
 
 //	UIView *self.view = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 //	self.view.backgroundColor = [UIColor lightGrayColor];
