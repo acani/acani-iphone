@@ -553,6 +553,16 @@ CGFloat msgTimestampHeight;
 	msgBackground.image = balloon;
 	msgText.text = [msg text];
 	
+	if ([msg unread]) { // then save as read
+		[msg setUnread:[NSNumber numberWithBool:NO]];
+		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+		NSError *error = nil;
+		if (![managedObjectContext save:&error]) {
+			// Handle the error.
+			NSLog(@"Error saving message as read! %@", error);
+		}		
+	}
+
 	return cell;
 }
 
