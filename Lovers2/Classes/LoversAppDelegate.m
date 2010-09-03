@@ -19,9 +19,14 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 	usersViewController = [[UsersViewController alloc] init];
-	
+	navigationController = [[UINavigationController alloc]
+							initWithRootViewController:usersViewController];
+
+    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [window addSubview:navigationController.view];
+    [window makeKeyAndVisible];
+
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
         // Handle the error.
@@ -34,9 +39,6 @@
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
     [webSocket open];
 
-	navigationController = [[UINavigationController alloc] initWithRootViewController:usersViewController];
-	[window addSubview:navigationController.view];	
-    [window makeKeyAndVisible];
 //	[usersViewController release];
 //	[navigationController release];
 	[self findLocation];

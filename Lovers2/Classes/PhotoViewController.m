@@ -19,6 +19,9 @@ NSMutableData *picData;
 		self.targetUser = user;
 		self.title = user.name;
 		self.picUrl = [NSString stringWithFormat:@"http://localhost:4567/%@/picture?type=large", targetUser.uid];
+		[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
+		self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+		self.wantsFullScreenLayout = YES;
 	}
 	
 	NSURL *picUrl_t = [NSURL URLWithString:self.picUrl];
@@ -37,28 +40,30 @@ NSMutableData *picData;
 }
 
 - (void)goToChat:(id)sender {
-	ChatViewController *chatView = [[[ChatViewController alloc] init] autorelease];
+	ChatViewController *chatView = [[ChatViewController alloc] init];
 	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", targetUser.uid];
 	chatView.title = targetUser.name;
 	[self.navigationController pushViewController:chatView animated:YES];
+	[chatView release];
 }
 
 - (void)loadView {
-	UIView *contentView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320, 480)];
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	contentView.backgroundColor = [UIColor cyanColor];
-	profileImage = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 320, 480)];
+	profileImage = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	profileImage.image = [UIImage imageNamed:@"blankprofile.jpg"];
 	[contentView addSubview:profileImage];
 	NSLog(@"view is loading");
-	self.view = contentView;
-	[self.navigationController setNavigationBarHidden:NO];
+//	[self.navigationController setNavigationBarHidden:NO];
+
 	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Chat", @selector(goToChat:));
 	
 	UITapGestureRecognizer *singleFingerDTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     singleFingerDTap.numberOfTapsRequired = 1;
-	[self.view addGestureRecognizer:singleFingerDTap];
+	[contentView addGestureRecognizer:singleFingerDTap];
     [singleFingerDTap release];
 	
+	self.view = contentView;
 	[contentView release];
 }
 
@@ -73,8 +78,9 @@ NSMutableData *picData;
 	userAboutHead.backgroundColor = [UIColor clearColor];
 	userAboutHead.shadowColor = [UIColor blackColor];
 	userAboutHead.textColor = [UIColor whiteColor];
-	[overlay addSubview: userAboutHead];
-	
+	[overlay addSubview:userAboutHead];
+	[userAboutHead release];
+
 	CGSize aboutLabelSize = [self.userAbout sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(280.0f, 100.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UILabel *aboutLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, aboutLabelSize.width, aboutLabelSize.height)];
@@ -85,9 +91,11 @@ NSMutableData *picData;
 	aboutLabel.backgroundColor = [UIColor clearColor];
 	aboutLabel.shadowColor = [UIColor blackColor];
 	aboutLabel.textColor = [UIColor whiteColor];
-	[overlay addSubview: aboutLabel];
+	[overlay addSubview:aboutLabel];
+	[aboutLabel release];
+	[self.view addSubview:overlay];
 
-	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(210, 10, 100, 310 )];
+	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(210, 10, 100, 310)];
 	overlaySide.backgroundColor = [UIColor clearColor];
 	
 	UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
@@ -146,21 +154,12 @@ NSMutableData *picData;
 	weightLabel.text =   [[NSString alloc] initWithFormat:@"%d lbs",self.weight];
 	ageLabel.text =      [[NSString alloc] initWithFormat:@"%d yrs",self.age];;
 	ethinicLabel.text =  self.ethinic;
-	
-	[overlaySide addSubview: locationLabel];
-	[overlaySide addSubview: lastonLabel];
-	[overlaySide addSubview: likesLabel];
-	[overlaySide addSubview: heightLabel];
-	[overlaySide addSubview: weightLabel];
-	[overlaySide addSubview: ageLabel];
-	[overlaySide addSubview: ethinicLabel];
-	[self.view addSubview:overlaySide];
-	
+
 	UIButton * favorite = [UIButton buttonWithType:UIButtonTypeCustom];
 	favorite.frame = CGRectMake(70, 230, 30, 30);
 	[favorite setImage:[UIImage imageNamed:@"gold-star-2.jpg" ] forState:UIControlStateNormal];
 	[favorite addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	UILabel *favoriteLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 260, 50, 10)];
 	favoriteLabel.text =@"favorite";
 	favoriteLabel.backgroundColor = [UIColor clearColor];
@@ -182,15 +181,29 @@ NSMutableData *picData;
 //	moveMe.titleLabel.text = @"move";
 //	moveMe.titleLabel.textColor = [UIColor blackColor];
 //	[moveMe addTarget:self action:@selector(moveOverlay:) forControlEvents:UIControlEventTouchUpInside];
-//	
+
+	[overlaySide addSubview:locationLabel];
+	[locationLabel release];
+	[overlaySide addSubview:lastonLabel];
+	[lastonLabel release];
+	[overlaySide addSubview:likesLabel];
+	[likesLabel release];
+	[overlaySide addSubview:heightLabel];
+	[heightLabel release];
+	[overlaySide addSubview:weightLabel];
+	[weightLabel release];
+	[overlaySide addSubview:ageLabel];
+	[ageLabel release];
+	[overlaySide addSubview:ethinicLabel];
+	[ethinicLabel release];
 	[overlaySide addSubview:favorite];
 	[overlaySide addSubview:favoriteLabel];
+	[favoriteLabel release];
 	[overlaySide addSubview:block];
 	[overlaySide addSubview:blockLabel];
-	//UILabel *userInfo = [UILabel alloc] initwithFrame: CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
-	[self.view addSubview:overlay];
+	[blockLabel release];
+	[self.view addSubview:overlaySide];
 }
-
 
 - (void) profilePicReady: (UIImage*) downloadedImage {
 	self.profileImage.image = downloadedImage; 
@@ -243,7 +256,7 @@ NSMutableData *picData;
 
 - (void) handleSingleTap {
 	NSLog(@"handleSingleTap");
-	if (self.view.window!=nil) {
+	if (self.view.window != nil) {
 		if (overlayHide == NO) {
 		[UIView beginAnimations: @"move_Overlay" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -281,7 +294,6 @@ NSMutableData *picData;
 #pragma mark Internet access methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    
     [picData setLength:0];
 }
 
@@ -332,8 +344,9 @@ NSMutableData *picData;
 }
 
 - (void)dealloc {
+	[overlay release];
+	[overlaySide release];
 	[profilePicConnection release];
-	
     [super dealloc];
 }
 

@@ -182,6 +182,7 @@
 
 - (void)loadView {
 	[super loadView];
+	NSLog(@"channel: %@", channel);
 
 //	UIView *self.view = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 //	self.view.backgroundColor = [UIColor lightGrayColor];
@@ -223,13 +224,16 @@
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[request setEntity:entity];
-	
+
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@", channel];
+	[request setPredicate:predicate];
+
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[request setSortDescriptors:sortDescriptors];
 	[sortDescriptors release];
 	[sortDescriptor release];
-	
+
 	NSError *error;
 	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
@@ -326,10 +330,11 @@
  }
  */
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	[self scrollToBottomAnimated:YES]; 
-}
+// This causes exception if there are no cells
+//- (void)viewDidAppear:(BOOL)animated {
+//	[super viewDidAppear:animated];
+//	[self scrollToBottomAnimated:YES]; 
+//}
 
 /*
  - (void)viewWillDisappear:(BOOL)animated {
@@ -361,7 +366,7 @@
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
 	[msg setSender:@"me"];
-	[msg setChannel:@"default_channel"];
+	[msg setChannel:channel];
 	time_t now; time(&now);
 	latestTimestamp = now;
 	[msg setTimestamp:[NSNumber numberWithLong:now]];
@@ -553,6 +558,7 @@ CGFloat msgTimestampHeight;
 	msgBackground.image = balloon;
 	msgText.text = [msg text];
 	
+	// Let's instead do this (asynchronously) from loadView and iterate over all messages
 	if ([msg unread]) { // then save as read
 		[msg setUnread:[NSNumber numberWithBool:NO]];
 		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -562,7 +568,6 @@ CGFloat msgTimestampHeight;
 			NSLog(@"Error saving message as read! %@", error);
 		}		
 	}
-
 	return cell;
 }
 
@@ -641,6 +646,7 @@ CGFloat msgTimestampHeight;
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	self.channel = nil;
 	self.messages = nil;
 
 	self.msgTimestamp = nil;

@@ -359,8 +359,13 @@ const enum downloadType JSON = _json;
 }
 
 - (void)logout:(id)sender {
-	// Discoonect
-	NSLog(@"Logout");
+	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Login", @selector(login:)); // release manually
+}
+
+- (void)login:(id)sender {
+	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
+	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:)); // release manually
 }
 
 @end
