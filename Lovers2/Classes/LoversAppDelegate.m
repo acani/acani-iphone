@@ -4,6 +4,7 @@
 #import "Message.h"
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
+#import "Constants.h"
 
 @implementation LoversAppDelegate
 
@@ -51,7 +52,7 @@
 
 - (void)findLocation {
 	// Should we use presentModelviewcontroller like urbanspoon to use last location?
-	self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+	self.locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
    
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
@@ -109,11 +110,28 @@
 #pragma mark -
 #pragma mark WebSocket delegate
 
--(void)webSocketDidClose:(ZTWebSocket *)webSocket {
-    NSLog(@"Connection closed");
+- (void)webSocketDidClose:(ZTWebSocket *)webSocket {
+	NSLog(@"Disconnected");
+	if (usersViewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", usersViewController, @selector(login:));
+		usersViewController.navigationItem.leftBarButtonItem = logButton;
+		[logButton release];
+	}
 }
 
--(void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
+- (void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
+	NSLog(@"Connected");
+	if (usersViewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", usersViewController, @selector(logout:));
+		usersViewController.navigationItem.leftBarButtonItem = logButton;
+		[logButton release];
+	}
+	// should be mongodb _id for user, not device id.
+	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
+					 [UIDevice currentDevice].uniqueIdentifier]];
+}
+
+- (void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
     if (error.code == ZTWebSocketErrorConnectionFailed) {
 		NSLog(@"Connection failed");
     } else if (error.code == ZTWebSocketErrorHandshakeFailed) {
@@ -123,7 +141,7 @@
     }
 }
 
--(void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
+- (void)webSocket:(ZTWebSocket *)webSocket didReceiveMessage:(NSString*)msgJson {
 	NSLog(@"Received jsonMessage: %@", msgJson);
 	
 	NSError *error = nil;
@@ -171,14 +189,6 @@
 		// Handle the error.
 		NSLog(@"Error saving message! %@", error);
 	}
-}
-
--(void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
-	NSLog(@"Connected");
-	
-	// should be mongodb _id for user, not device id.
-	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
-					 [UIDevice currentDevice].uniqueIdentifier]];
 }
 
 -(void)webSocketDidSendMessage:(ZTWebSocket *)webSocket {

@@ -13,7 +13,6 @@
 			CGFloat lastContentHeight;
 			Boolean chatInputHadText;
 		UIButton *sendButton;
-	UIBarButtonItem *doneButton;
 }
 
 @property (nonatomic, retain) NSString *channel;
@@ -30,7 +29,6 @@
 @property (nonatomic, assign) CGFloat lastContentHeight;
 @property (nonatomic, assign) Boolean chatInputHadText;
 @property (nonatomic, retain) UIButton *sendButton;
-@property (nonatomic, retain) UIBarButtonItem *doneButton;
 
 - (void)scrollToBottomAnimated:(BOOL)animated;
 - (void)slideFrame:(BOOL)up;

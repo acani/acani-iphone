@@ -1,6 +1,7 @@
 #import "PhotoViewController.h"
 #import "ChatViewController.h"
 #import "UserOld.h"
+#import "Constants.h"
 
 @implementation PhotoViewController
 
@@ -11,8 +12,6 @@
 BOOL overlayHide;
 BOOL workInProgress;
 NSMutableData *picData;
-
-#define BARBUTTON(TITLE, SELECTOR) 	[[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR] autorelease]
 
 - (id)initWithUser:(User *)user {
 	if (self = [super init]) {
@@ -56,7 +55,9 @@ NSMutableData *picData;
 	NSLog(@"view is loading");
 //	[self.navigationController setNavigationBarHidden:NO];
 
-	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Chat", @selector(goToChat:));
+	UIBarButtonItem *chatButton = BAR_BUTTON(@"Chat", @selector(goToChat:));
+	self.navigationItem.rightBarButtonItem = chatButton;
+	[chatButton release];
 	
 	UITapGestureRecognizer *singleFingerDTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     singleFingerDTap.numberOfTapsRequired = 1;

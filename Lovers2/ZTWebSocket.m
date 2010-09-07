@@ -139,7 +139,7 @@ enum {
         if (runLoopModes) [socket setRunLoopModes:runLoopModes];
         
         // This will be queued up and sent by asyncsocket as soon as the TCP connection is
-        // established. 
+        // established.
         [self _sendWebSocketHandshake];
     }
 }

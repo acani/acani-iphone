@@ -28,7 +28,6 @@
 		ADA9560111F914430073D09A /* greendot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADA9560011F914430073D09A /* greendot.jpg */; };
 		ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* ThumbnailDownload.m */; };
 		ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B231204AE76006FD53D /* ChatViewController.m */; };
-		ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B261204AEDF006FD53D /* ColorUtils.m */; };
 		ADB02B301204AFDB006FD53D /* BlankAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2B1204AFDB006FD53D /* BlankAvatar.png */; };
 		ADB02B311204AFDB006FD53D /* ChatBar.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2C1204AFDB006FD53D /* ChatBar.png */; };
 		ADB02B321204AFDB006FD53D /* SendButton.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2D1204AFDB006FD53D /* SendButton.png */; };
@@ -40,7 +39,7 @@
 		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
-		C96BCFB1122DFBC9002CCDE0 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C96BCFB0122DFBC9002CCDE0 /* Message.m */; };
+		C93532E61235AE2800AC54F8 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C93532D71235AE2800AC54F8 /* Message.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
@@ -89,8 +88,7 @@
 		ADA9564B11FA09930073D09A /* ThumbnailDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailDownload.m; sourceTree = "<group>"; };
 		ADB02B221204AE76006FD53D /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		ADB02B231204AE76006FD53D /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
-		ADB02B251204AEDF006FD53D /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
-		ADB02B261204AEDF006FD53D /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
+		ADB02B251204AEDF006FD53D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		ADB02B2B1204AFDB006FD53D /* BlankAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlankAvatar.png; sourceTree = "<group>"; };
 		ADB02B2C1204AFDB006FD53D /* ChatBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatBar.png; sourceTree = "<group>"; };
 		ADB02B2D1204AFDB006FD53D /* SendButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SendButton.png; sourceTree = "<group>"; };
@@ -106,8 +104,8 @@
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Lovers.xcdatamodel; path = Classes/Lovers.xcdatamodel; sourceTree = "<group>"; };
-		C96BCFAF122DFBC9002CCDE0 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		C96BCFB0122DFBC9002CCDE0 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		C93532D61235AE2800AC54F8 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		C93532D71235AE2800AC54F8 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -145,8 +143,7 @@
 				AD5EFCEB11E52C0800F86E5B /* UserOld.m */,
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
 				ADB02B231204AE76006FD53D /* ChatViewController.m */,
-				ADB02B251204AEDF006FD53D /* ColorUtils.h */,
-				ADB02B261204AEDF006FD53D /* ColorUtils.m */,
+				ADB02B251204AEDF006FD53D /* Constants.h */,
 				1D3623240D0F684500981E51 /* LoversAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
 				F56D024211886CF000F2A797 /* UsersViewController.h */,
@@ -202,9 +199,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93532D61235AE2800AC54F8 /* Message.h */,
+				C93532D71235AE2800AC54F8 /* Message.m */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
-				C96BCFAF122DFBC9002CCDE0 /* Message.h */,
-				C96BCFB0122DFBC9002CCDE0 /* Message.m */,
 				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
 				1331AC1B11906025004ABBC6 /* logo_bg.png */,
 				F56D02911188781800F2A797 /* images */,
@@ -370,12 +367,11 @@
 				AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */,
 				ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */,
 				ADB02B241204AE76006FD53D /* ChatViewController.m in Sources */,
-				ADB02B271204AEDF006FD53D /* ColorUtils.m in Sources */,
 				ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */,
 				C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */,
 				C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */,
 				C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */,
-				C96BCFB1122DFBC9002CCDE0 /* Message.m in Sources */,
+				C93532E61235AE2800AC54F8 /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

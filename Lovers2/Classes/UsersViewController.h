@@ -30,6 +30,7 @@
 - (void)loadMoreButtonAction:(id)sender;
 - (void)imageSelected:(id)sender;
 - (void)goToProfile:(id)sender;
+- (void)login:(id)sender;
 - (void)logout:(id)sender;
 
 @end

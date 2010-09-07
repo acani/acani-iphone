@@ -158,8 +158,25 @@ const enum downloadType JSON = _json;
 	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	self.navigationItem.rightBarButtonItem = BARBUTTON(@"Profile", @selector(goToProfile:));
-	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:));
+
+	UIBarButtonItem *profileButton = BAR_BUTTON(@"Profile", @selector(goToProfile:));
+	self.navigationItem.rightBarButtonItem = profileButton;
+	[profileButton release];
+
+//	self.loginButton = BAR_BUTTON(@"Login", @selector(login:));
+//	self.logoutButton = BAR_BUTTON(@"Logout", @selector(login:));
+	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+
+	
+	UIBarButtonItem *logButton;
+	if ([webSocket connected]) {
+		logButton = BAR_BUTTON(@"Logout", @selector(logout:));
+	} else {
+		logButton = BAR_BUTTON(@"Login", @selector(login:));
+	}
+	self.navigationItem.leftBarButtonItem = logButton;
+	[logButton release];
+
 	indicatorView = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
 	
 	UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -358,14 +375,52 @@ const enum downloadType JSON = _json;
 	NSLog(@"GoToProfile!");
 }
 
+#define	LOGOUT_ALERT 901
+#define LOGOUT 1
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)index {
+	printf("User selected button %d\n", index);
+	switch (alertView.tag) {
+		case LOGOUT_ALERT:
+			if (index == LOGOUT) {
+				[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+			}
+			break;
+	}
+	[alertView release];
+}
+	
+/*
+// Flash alertView on first login:
+Terms of Service
+ * I am a male at least 18 years old.
+ * I understand that acani allows other users to see my relative distance. I can choose to hide my distance if I prefer not to have this information displayed.
+ * I will not post any adult/sexual photos or text in my profile.
+ * I will not post any profane/foul language in my profile.
+ * I will not post or exchange any content that is unlawful, harassing, abusive, or threatening in any way.
+ * I will not solicit, advertise, or offer any commercial services.
+ * I have reviewed the acani Terms of Service and understand that any violation of any of these terms will result in the immediate banning of my acani account.
+Review | Agree
+*/
+
+- (void)showAlert:(NSString *)message {
+	UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Logout" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Logout", nil];
+	av.tag = LOGOUT_ALERT;
+	[av show];
+}
+
 - (void)logout:(id)sender {
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
-	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Login", @selector(login:)); // release manually
+	// Only display this alert on first logout.
+	if (YES) {
+		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other users."];
+	} else {
+		[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+		// Then go to loginView like Facebook iPhone app does.
+	}
 }
 
 - (void)login:(id)sender {
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
-	self.navigationItem.leftBarButtonItem = BARBUTTON(@"Logout", @selector(logout:)); // release manually
 }
 
 @end

@@ -1,14 +1,13 @@
 #import "ChatViewController.h"
 #import "LoversAppDelegate.h"
 #import "Message.h"
-#import "ColorUtils.h"
+#import "Constants.h"
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
 
 #define MAINLABEL	((UILabel *)self.navigationItem.titleView)
-#define BARBUTTON(TITLE, SELECTOR)	[[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
 
 #define CHAT_BAR_HEIGHT_1	40.0f
 #define CHAT_BAR_HEIGHT_4	94.0f
@@ -48,7 +47,6 @@
 @synthesize lastContentHeight;
 @synthesize chatInputHadText;
 @synthesize sendButton;
-@synthesize doneButton;
 
 
 #pragma mark -
@@ -92,7 +90,11 @@
 
 // Reveal a Done button when editing starts
 - (void)textViewDidBeginEditing:(UITextView *)textView {
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
+								   initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+								   target:self action:@selector(done:)];
 	self.navigationItem.rightBarButtonItem = doneButton;
+	[doneButton release];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -250,7 +252,7 @@
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
-	chatContent.backgroundColor = [UIColor chatBackgroundColor];
+	chatContent.backgroundColor = CHAT_BACKGROUND_COLOR;
 	chatContent.separatorStyle = UITableViewCellSeparatorStyleNone;
 	chatContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:chatContent];
@@ -298,8 +300,6 @@
 	[chatBar addSubview:sendButton];
 	[sendButton release];
 
-	doneButton = BARBUTTON(@"Done", @selector(done:));
-
 	[self.view addSubview:chatBar];
 	[self.view sendSubviewToBack:chatBar];
 	[chatBar release];
@@ -330,7 +330,8 @@
  }
  */
 
-// This causes exception if there are no cells
+//// This causes exception if there are no cells.
+//// Also, I want it to work like iPhone Messages.
 //- (void)viewDidAppear:(BOOL)animated {
 //	[super viewDidAppear:animated];
 //	[self scrollToBottomAnimated:YES]; 
@@ -487,7 +488,7 @@ CGFloat msgTimestampHeight;
 		msgTimestamp.font = [UIFont boldSystemFontOfSize:11.0f];
 		msgTimestamp.lineBreakMode = UILineBreakModeTailTruncation;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
-		msgTimestamp.backgroundColor = [UIColor chatBackgroundColor]; // clearColor slows performance
+		msgTimestamp.backgroundColor = CHAT_BACKGROUND_COLOR; // clearColor slows performance
 		msgTimestamp.textColor = [UIColor darkGrayColor];			
 		[messageView addSubview:msgTimestamp];
 		[msgTimestamp release];
@@ -644,8 +645,7 @@ CGFloat msgTimestampHeight;
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
+	[super viewDidUnload];
 	self.channel = nil;
 	self.messages = nil;
 
@@ -657,7 +657,6 @@ CGFloat msgTimestampHeight;
 	self.sendButton = nil;
 	self.chatInput = nil;
 	self.chatBar = nil;
-	self.doneButton = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -666,6 +665,7 @@ CGFloat msgTimestampHeight;
 - (void)dealloc {
 
 // This crashes for some reason...
+//	[channel release];
 //	[messages release];
 //
 //	[msgTimestamp release];
@@ -676,7 +676,6 @@ CGFloat msgTimestampHeight;
 //	[sendButton release];
 //	[chatInput release];
 //	[chatBar release];
-//	[doneButton release];
 
 	[super dealloc];
 }
