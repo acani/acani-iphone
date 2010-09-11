@@ -3,8 +3,8 @@
 #import "LoversAppDelegate.h"
 #import "ProfileViewController.h"
 #import "InternetImage.h"
-#import "UserOld.h"
 #import "ThumbnailDownload.h"
+#import "User.h"
 
 UIImage *scaleAndRotateImage(UIImage *image) {
 	int kMaxResolution = 75; // or whatever
@@ -216,11 +216,11 @@ const enum downloadType JSON = _json;
 	self.Users = users;
 // download thumbnail images from internet and feed into users
 	for (int i = 0; i < [self.Users count]; i++){
-		User * user = [self.Users objectAtIndex:i];
+		User *user = [self.Users objectAtIndex:i];
 		//NSLog(@"user id %@", user.uid);
 		//NSLog(@"user fbid %d", user.fbid);
 		NSString *imageUrl;
-		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", user.uid];
+		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", [user uid]];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
 		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl userInfo:i];
 		[thumbnailLoad DownloadData:self];
@@ -353,13 +353,13 @@ const enum downloadType JSON = _json;
 	User *user = [self.Users objectAtIndex:selectedImage.tag];
 	
 	PhotoViewController *aController = [[PhotoViewController alloc] initWithUser:user];
-	aController.userAbout = user.about;
-	aController.aboutHead = user.aboutHead;
-	aController.ethinic = user.ethnic;
-	aController.height = user.height;
-	aController.weight = user.weight;
-	aController.age = user.age;
-	aController.likes = user.likes;
+	aController.userAbout = [user about];
+	aController.aboutHead = [user headline];
+	aController.ethinicity = [user ethnicity];
+	aController.height = [user height];
+	aController.weight = [user weight];
+	aController.age = [user age];
+	aController.likes = [user likes];
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
 }
@@ -375,7 +375,9 @@ const enum downloadType JSON = _json;
 	NSLog(@"GoToProfile!");
 }
 
-#define	LOGOUT_ALERT 901
+#define TERMS_ALERT 901
+#define	REVIEW 1
+#define	LOGOUT_ALERT 902
 #define LOGOUT 1
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)index {
@@ -384,6 +386,12 @@ const enum downloadType JSON = _json;
 		case LOGOUT_ALERT:
 			if (index == LOGOUT) {
 				[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+			}
+			break;
+		case TERMS_ALERT:
+			if (index == REVIEW) {
+				UIApplication *app = [UIApplication sharedApplication];
+				[app openURL:[NSURL URLWithString:@"http://www.acani.com/terms"]];
 			}
 			break;
 	}

@@ -1,6 +1,7 @@
+#import "LoversAppDelegate.h"
 #import "InternetImage.h"
-#import "UserOld.h"
 #import "SBJSON.h"
+#import "User.h"
 
 static enum downloadType _data = _json; 
 
@@ -135,22 +136,41 @@ static enum downloadType _data = _json;
 
 
 - (NSMutableArray *)createUsers: (NSString *)jsonResponse {
-	NSError *error = nil;
 	NSMutableArray *users = [NSMutableArray array];
     if (jsonResponse) {
+		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		[df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"]; // 2010-03-14T21:20:14+0000
+		NSError *error = nil;
         SBJSON *json = [[SBJSON alloc] init];    
         NSArray *results = [json objectWithString:jsonResponse error:&error];
         [json release];
         NSLog(@"result count %d",[results count]);
         for (NSDictionary *dictionary in results) {
-            User *user = [[User alloc] initWithJsonDictionary:dictionary];
-            [users addObject:user];
+			User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
+			[user setAbout:[dictionary objectForKey:@"about"]];
+			[user setAge:[dictionary objectForKey:@"age"]];
+			[user setCreated:[df dateFromString:[dictionary valueForKey:@"created"]]];
+			[user setEthnicity:[dictionary objectForKey:@"ethnic"]];
+			[user setFbid:[dictionary objectForKey:@"fbid"]];
+			[user setFbLink:[dictionary objectForKey:@"fb_link"]];
+			[user setHeadline:[dictionary objectForKey:@"head"]];
+			[user setHeight:[dictionary objectForKey:@"height"]];
+			[user setLastOnline:[df dateFromString:[dictionary objectForKey:@"last_on"]]];
+			[user setLikes:[dictionary objectForKey:@"likes"]];
+			[user setName:[dictionary objectForKey:@"name"]];
+			[user setOnlineStatus:[dictionary objectForKey:@"on_stat"]];
+			[user setSex:[dictionary objectForKey:@"sex"]];
+			[user setShowDistance:[dictionary objectForKey:@"sdis"]];
+			[user setUpdated:[df dateFromString:[dictionary valueForKey:@"updated"]]];
+			[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
+			[user setWeight:[dictionary objectForKey:@"weight"]];
+			[users addObject:user];
             [user release];
         }
+		[df release];
     }
-	
 	return users;
-
 }
 
 - (void)dealloc 

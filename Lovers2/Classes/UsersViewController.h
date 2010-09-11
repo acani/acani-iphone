@@ -1,7 +1,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 @class InternetImage;
-@class User;
 @class LoversAppDelegate;
 
 @interface UsersViewController : UIViewController {

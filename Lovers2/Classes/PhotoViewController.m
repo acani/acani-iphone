@@ -1,13 +1,13 @@
 #import "PhotoViewController.h"
 #import "ChatViewController.h"
-#import "UserOld.h"
+#import "User.h"
 #import "Constants.h"
 
 @implementation PhotoViewController
 
 @synthesize profileImage;
 @synthesize targetUser, picUrl, userAbout, aboutHead;
-@synthesize laston, location, height, weight, ethinic, likes, age;  
+@synthesize lastOnline, location, height, weight, ethinicity, likes, age;  
 
 BOOL overlayHide;
 BOOL workInProgress;
@@ -16,8 +16,8 @@ NSMutableData *picData;
 - (id)initWithUser:(User *)user {
 	if (self = [super init]) {
 		self.targetUser = user;
-		self.title = user.name;
-		self.picUrl = [NSString stringWithFormat:@"http://localhost:4567/%@/picture?type=large", targetUser.uid];
+		self.title = [user name];
+		self.picUrl = [NSString stringWithFormat:@"http://localhost:4567/%@/picture?type=large", [targetUser uid]];
 		[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		self.wantsFullScreenLayout = YES;
@@ -100,7 +100,7 @@ NSMutableData *picData;
 	overlaySide.backgroundColor = [UIColor clearColor];
 	
 	UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
-	UILabel *lastonLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 100, 15)];
+	UILabel *lastOnlineLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 100, 15)];
 	UILabel *likesLabel =    [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 100, 15)];
 	UILabel *heightLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 100, 20)];
 	UILabel *weightLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 100, 20)];
@@ -108,7 +108,7 @@ NSMutableData *picData;
 	UILabel *ethinicLabel =  [[UILabel alloc] initWithFrame:CGRectMake(0, 120, 100, 20)];
 	
 	locationLabel.backgroundColor = [UIColor clearColor];
-	lastonLabel.backgroundColor =   [UIColor clearColor];
+	lastOnlineLabel.backgroundColor =   [UIColor clearColor];
 	likesLabel.backgroundColor =    [UIColor clearColor];
 	heightLabel.backgroundColor =   [UIColor clearColor];
 	weightLabel.backgroundColor =   [UIColor clearColor];
@@ -116,7 +116,7 @@ NSMutableData *picData;
 	ethinicLabel.backgroundColor =  [UIColor clearColor];
 
 	locationLabel.shadowColor = [UIColor blackColor];
-	lastonLabel.shadowColor =   [UIColor blackColor];
+	lastOnlineLabel.shadowColor =   [UIColor blackColor];
 	likesLabel.shadowColor =    [UIColor blackColor];
 	heightLabel.shadowColor =   [UIColor blackColor];
 	weightLabel.shadowColor =   [UIColor blackColor];
@@ -124,7 +124,7 @@ NSMutableData *picData;
 	ethinicLabel.shadowColor =  [UIColor blackColor];
 
 	locationLabel.textColor = [UIColor whiteColor];
-	lastonLabel.textColor =   [UIColor whiteColor];
+	lastOnlineLabel.textColor =   [UIColor whiteColor];
 	likesLabel.textColor =    [UIColor whiteColor];
 	heightLabel.textColor =   [UIColor whiteColor];
 	weightLabel.textColor =   [UIColor whiteColor];
@@ -132,7 +132,7 @@ NSMutableData *picData;
 	ethinicLabel.textColor =  [UIColor whiteColor];
 	
 	locationLabel.font = [UIFont systemFontOfSize:15.0];
-	lastonLabel.font = [UIFont systemFontOfSize:12.0];
+	lastOnlineLabel.font = [UIFont systemFontOfSize:12.0];
 	likesLabel.font = [UIFont systemFontOfSize:15.0];
 	heightLabel.font = [UIFont systemFontOfSize:15.0];
 	weightLabel.font = [UIFont systemFontOfSize:15.0];
@@ -140,7 +140,7 @@ NSMutableData *picData;
 	ethinicLabel.font = [UIFont systemFontOfSize:15.0];
 	
 	locationLabel.textAlignment = UITextAlignmentRight;
-	lastonLabel.textAlignment =   UITextAlignmentRight;
+	lastOnlineLabel.textAlignment =   UITextAlignmentRight;
 	likesLabel.textAlignment =    UITextAlignmentRight;
 	heightLabel.textAlignment =   UITextAlignmentRight;
 	weightLabel.textAlignment =   UITextAlignmentRight;
@@ -149,12 +149,12 @@ NSMutableData *picData;
 	//userAboutHead.textColor = [UIColor whiteColor];
 	
 	locationLabel.text = @"420 feet away";
-	lastonLabel.text =   @"Online 10 mins ago";
+	lastOnlineLabel.text =   @"Online 10 mins ago";
 	likesLabel.text =    self.likes;
 	heightLabel.text =   [[NSString alloc] initWithFormat:@"%d cm",self.height];
 	weightLabel.text =   [[NSString alloc] initWithFormat:@"%d lbs",self.weight];
 	ageLabel.text =      [[NSString alloc] initWithFormat:@"%d yrs",self.age];;
-	ethinicLabel.text =  self.ethinic;
+	ethinicLabel.text =  self.ethinicity;
 
 	UIButton * favorite = [UIButton buttonWithType:UIButtonTypeCustom];
 	favorite.frame = CGRectMake(70, 230, 30, 30);
@@ -185,8 +185,8 @@ NSMutableData *picData;
 
 	[overlaySide addSubview:locationLabel];
 	[locationLabel release];
-	[overlaySide addSubview:lastonLabel];
-	[lastonLabel release];
+	[overlaySide addSubview:lastOnlineLabel];
+	[lastOnlineLabel release];
 	[overlaySide addSubview:likesLabel];
 	[likesLabel release];
 	[overlaySide addSubview:heightLabel];

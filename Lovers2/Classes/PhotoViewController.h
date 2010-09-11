@@ -9,13 +9,13 @@
 	NSString *picUrl;
 	NSString *userAbout;
 	NSString *aboutHead;
-	NSString *ethinic;
+	NSString *ethinicity;
 	NSString *likes;
-	uint32_t height;
-	uint32_t weight;
+	NSNumber *height;
+	NSNumber *weight;
 	NSString *location;
-	NSString *laston;
-	uint32_t age;
+	NSString *lastOnline;
+	NSNumber *age;
 }
 
 @property (nonatomic, retain) User *targetUser;
@@ -23,13 +23,13 @@
 @property (nonatomic, retain) NSString *picUrl;
 @property (nonatomic, retain) NSString *userAbout;
 @property (nonatomic, retain) NSString *aboutHead;
-@property (nonatomic, retain) NSString *ethinic;
+@property (nonatomic, retain) NSString *ethinicity;
 @property (nonatomic, retain) NSString *likes;
-@property (nonatomic, assign) uint32_t height;
-@property (nonatomic, assign) uint32_t weight;
-@property (nonatomic, assign) uint32_t age;
+@property (nonatomic, assign) NSNumber *height;
+@property (nonatomic, assign) NSNumber *weight;
+@property (nonatomic, assign) NSNumber *age;
 @property (nonatomic, retain) NSString *location;
-@property (nonatomic, retain) NSString *laston;
+@property (nonatomic, retain) NSString *lastOnline;
 
 - (void)backButtonClicked:(id)sender;
 - (void)moveOverlay:(id)sender;

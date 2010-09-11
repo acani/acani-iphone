@@ -1,5 +1,4 @@
 #import "ThumbnailDownload.h"
-#import "UserOld.h"
 #import "UsersViewController.h"
 
 @implementation ThumbnailDownload
