@@ -24,6 +24,7 @@
 @property (nonatomic, retain) UILabel *locNoticelabel;
  
 - (void)downloadJsonFromInternet:(NSString*) urlToImage;
+- (void)jsonReady:(NSMutableArray *)users;
 - (void)internetImageReady:(UIImage *)internetImage userinfo:(NSInteger)user;
 - (void)reloadButtonAction:(id)sender;
 - (void)loadMoreButtonAction:(id)sender;

@@ -2,6 +2,7 @@
 #import "InternetImage.h"
 #import "SBJSON.h"
 #import "User.h"
+#import "Location.h"
 
 static enum downloadType _data = _json; 
 
@@ -22,10 +23,9 @@ static enum downloadType _data = _json;
     m_Delegate = new_delegate;
 }	
 
-- (void)DownloadData:(id)delegate datatype: (enum downloadType) d_data {
+- (void)DownloadData:(id)delegate datatype:(enum downloadType)d_data {
 	m_Delegate = delegate;
-	
-	 _data = d_data;
+	_data = d_data;
 	
 	NSURLRequest *imageRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.dataUrl] 
 											   cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60.0];
@@ -70,7 +70,7 @@ static enum downloadType _data = _json;
     [m_ImageRequestData release];
 
     // inform the user
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] valueForKey:NSErrorFailingURLStringKey]);
 	workInProgress = NO;
 }
 
@@ -80,9 +80,10 @@ static enum downloadType _data = _json;
 		// Create the image with the downloaded data
 		if (_data == _json) {
 			NSString *responseBody = [[NSString alloc] initWithData:m_ImageRequestData encoding:NSUTF8StringEncoding];
-			NSLog(responseBody);
+			NSLog(@"responseBody: %@", responseBody);
 			// call create user function
 			NSMutableArray * users = [self createUsers: responseBody];
+			[responseBody release];
 			if ([m_Delegate respondsToSelector:@selector(jsonReady:)])
 			{
 				// Call the delegate method and pass ourselves along.
@@ -139,8 +140,8 @@ static enum downloadType _data = _json;
 	NSMutableArray *users = [NSMutableArray array];
     if (jsonResponse) {
 		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
-		[df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"]; // 2010-03-14T21:20:14+0000
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // 2010-06-21T08:26:46+0000 => 2010-06-21 08:26:46 -0400
 		NSError *error = nil;
         SBJSON *json = [[SBJSON alloc] init];    
         NSArray *results = [json objectWithString:jsonResponse error:&error];
@@ -148,27 +149,31 @@ static enum downloadType _data = _json;
         NSLog(@"result count %d",[results count]);
         for (NSDictionary *dictionary in results) {
 			User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
-			[user setAbout:[dictionary objectForKey:@"about"]];
-			[user setAge:[dictionary objectForKey:@"age"]];
-			[user setCreated:[df dateFromString:[dictionary valueForKey:@"created"]]];
-			[user setEthnicity:[dictionary objectForKey:@"ethnic"]];
-			[user setFbid:[dictionary objectForKey:@"fbid"]];
-			[user setFbLink:[dictionary objectForKey:@"fb_link"]];
-			[user setHeadline:[dictionary objectForKey:@"head"]];
-			[user setHeight:[dictionary objectForKey:@"height"]];
-			[user setLastOnline:[df dateFromString:[dictionary objectForKey:@"last_on"]]];
-			[user setLikes:[dictionary objectForKey:@"likes"]];
-			[user setName:[dictionary objectForKey:@"name"]];
-			[user setOnlineStatus:[dictionary objectForKey:@"on_stat"]];
-			[user setSex:[dictionary objectForKey:@"sex"]];
-			[user setShowDistance:[dictionary objectForKey:@"sdis"]];
-			[user setUpdated:[df dateFromString:[dictionary valueForKey:@"updated"]]];
+			[user setAbout:[dictionary valueForKey:@"about"]];
+			[user setAge:[dictionary valueForKey:@"age"]];
+			[user setCreated:[dateFormatter dateFromString:[dictionary valueForKey:@"created"]]];
+			[user setEthnicity:[dictionary valueForKey:@"ethnic"]];
+			[user setFbid:[dictionary valueForKey:@"fbid"]];
+			[user setFbLink:[dictionary valueForKey:@"fb_link"]];
+			[user setHeadline:[dictionary valueForKey:@"head"]];
+			[user setHeight:[dictionary valueForKey:@"height"]];
+			[user setLastOnline:[dateFormatter dateFromString:[dictionary valueForKey:@"last_on"]]];
+			[user setLikes:[dictionary valueForKey:@"likes"]];
+			Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
+			[location setLatitude:[[dictionary valueForKey:@"loc"] objectAtIndex:0]];
+			[location setLongitude:[[dictionary valueForKey:@"loc"] objectAtIndex:1]];
+			[user setLocation:location];
+			[user setName:[dictionary valueForKey:@"name"]];
+			[user setOnlineStatus:[dictionary valueForKey:@"on_stat"]];
+			[user setSex:[dictionary valueForKey:@"sex"]];
+			[user setShowDistance:[dictionary valueForKey:@"sdis"]];
+			[user setUpdated:[dateFormatter dateFromString:[dictionary valueForKey:@"updated"]]];
 			[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
-			[user setWeight:[dictionary objectForKey:@"weight"]];
+			[user setWeight:[dictionary valueForKey:@"weight"]];
 			[users addObject:user];
             [user release];
         }
-		[df release];
+		[dateFormatter release];
     }
 	return users;
 }

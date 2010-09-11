@@ -353,22 +353,16 @@ const enum downloadType JSON = _json;
 	User *user = [self.Users objectAtIndex:selectedImage.tag];
 	
 	PhotoViewController *aController = [[PhotoViewController alloc] initWithUser:user];
-	aController.userAbout = [user about];
-	aController.aboutHead = [user headline];
-	aController.ethinicity = [user ethnicity];
-	aController.height = [user height];
-	aController.weight = [user weight];
-	aController.age = [user age];
-	aController.likes = [user likes];
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
 }
 
 - (void)goToProfile:(id)sender {
-	ProfileViewController *profileVC = [[[ProfileViewController alloc] init] autorelease];
+	ProfileViewController *profileVC = [[ProfileViewController alloc] init];
 	//	[self.navigationController pushViewController:pvc animated:YES];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
+	[profileVC release];
 	[navController setNavigationBarHidden:NO];
 	
 	[self presentModalViewController:navController animated:YES];

@@ -356,6 +356,12 @@
  */
 
 - (void)sendMSG:(id)sender {
+	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+	if (![webSocket connected]) {
+		NSLog(@"Cannot send message, not connected");
+		return;
+	} 
+
 	// This is not really necessary since we disable the
 	// "Send" button unless the chatInput has text.
 	if (![chatInput hasText]) {
@@ -366,17 +372,11 @@
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
-	[msg setSender:@"me"];
+	[msg setSender:@"me"]; // Make me user object in LoversAppDelegate. Fetch from ManangedObjectContext. If nil, create & save.
 	[msg setChannel:channel];
 	time_t now; time(&now);
 	latestTimestamp = now;
 	[msg setTimestamp:[NSNumber numberWithLong:now]];
-
-	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
-	if (![webSocket connected]) {
-		NSLog(@"Cannot send message, not connected");
-		return;
-	} 
 
 //	[activityIndicator startAnimating];
 	

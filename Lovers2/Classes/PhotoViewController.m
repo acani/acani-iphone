@@ -1,13 +1,18 @@
 #import "PhotoViewController.h"
 #import "ChatViewController.h"
 #import "User.h"
+#import "Location.h"
 #import "Constants.h"
+#import "LoversAppDelegate.h"
 
 @implementation PhotoViewController
 
+@synthesize targetUser;
+@synthesize overlay;
+@synthesize overlaySide;
 @synthesize profileImage;
-@synthesize targetUser, picUrl, userAbout, aboutHead;
-@synthesize lastOnline, location, height, weight, ethinicity, likes, age;  
+@synthesize profilePicConnection;
+@synthesize picUrl;
 
 BOOL overlayHide;
 BOOL workInProgress;
@@ -75,19 +80,19 @@ NSMutableData *picData;
 	//overlay.alpha = 0.5;
 	
 	UILabel *userAboutHead = [[UILabel alloc] initWithFrame:CGRectMake(25, 5, 280, 30)];
-	userAboutHead.text = self.aboutHead;
+	userAboutHead.text = [targetUser headline];
 	userAboutHead.backgroundColor = [UIColor clearColor];
 	userAboutHead.shadowColor = [UIColor blackColor];
 	userAboutHead.textColor = [UIColor whiteColor];
 	[overlay addSubview:userAboutHead];
 	[userAboutHead release];
 
-	CGSize aboutLabelSize = [self.userAbout sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(280.0f, 100.0f) lineBreakMode:UILineBreakModeWordWrap];
+	CGSize aboutLabelSize = [[targetUser about] sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(280.0f, 100.0f) lineBreakMode:UILineBreakModeWordWrap];
 	
 	UILabel *aboutLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, aboutLabelSize.width, aboutLabelSize.height)];
 	aboutLabel.lineBreakMode = UILineBreakModeWordWrap;
 	aboutLabel.numberOfLines = 0;
-	aboutLabel.text = self.userAbout;
+	aboutLabel.text = [targetUser about];
 	aboutLabel.font = [UIFont systemFontOfSize:12.0];
 	aboutLabel.backgroundColor = [UIColor clearColor];
 	aboutLabel.shadowColor = [UIColor blackColor];
@@ -96,65 +101,72 @@ NSMutableData *picData;
 	[aboutLabel release];
 	[self.view addSubview:overlay];
 
-	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(210, 10, 100, 310)];
+	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(160, 10, 150, 310)];
 	overlaySide.backgroundColor = [UIColor clearColor];
 	
-	UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
-	UILabel *lastOnlineLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 100, 15)];
-	UILabel *likesLabel =    [[UILabel alloc] initWithFrame:CGRectMake(0, 40, 100, 15)];
-	UILabel *heightLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 60, 100, 20)];
-	UILabel *weightLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 100, 20)];
-	UILabel *ageLabel =      [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 100, 20)];
-	UILabel *ethinicLabel =  [[UILabel alloc] initWithFrame:CGRectMake(0, 120, 100, 20)];
+	UILabel *locationLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+	UILabel *lastOnlineLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 150, 15)];
+	UILabel *likesLabel =      [[UILabel alloc] initWithFrame:CGRectMake(0, 35, 150, 15)];
+	UILabel *ageLabel =        [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 150, 15)];
+	UILabel *heightLabel =     [[UILabel alloc] initWithFrame:CGRectMake(0, 65, 150, 15)];
+	UILabel *weightLabel =     [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 150, 15)];
+	UILabel *ethnicityLabel =  [[UILabel alloc] initWithFrame:CGRectMake(0, 95, 150, 15)];
 	
-	locationLabel.backgroundColor = [UIColor clearColor];
-	lastOnlineLabel.backgroundColor =   [UIColor clearColor];
-	likesLabel.backgroundColor =    [UIColor clearColor];
-	heightLabel.backgroundColor =   [UIColor clearColor];
-	weightLabel.backgroundColor =   [UIColor clearColor];
-	ageLabel.backgroundColor =      [UIColor clearColor];
-	ethinicLabel.backgroundColor =  [UIColor clearColor];
+	locationLabel.backgroundColor =   [UIColor clearColor];
+	lastOnlineLabel.backgroundColor = [UIColor clearColor];
+	likesLabel.backgroundColor =      [UIColor clearColor];
+	heightLabel.backgroundColor =     [UIColor clearColor];
+	weightLabel.backgroundColor =     [UIColor clearColor];
+	ageLabel.backgroundColor =        [UIColor clearColor];
+	ethnicityLabel.backgroundColor =  [UIColor clearColor];
 
-	locationLabel.shadowColor = [UIColor blackColor];
-	lastOnlineLabel.shadowColor =   [UIColor blackColor];
-	likesLabel.shadowColor =    [UIColor blackColor];
-	heightLabel.shadowColor =   [UIColor blackColor];
-	weightLabel.shadowColor =   [UIColor blackColor];
-	ageLabel.shadowColor =      [UIColor blackColor];
-	ethinicLabel.shadowColor =  [UIColor blackColor];
+	locationLabel.shadowColor =   [UIColor blackColor];
+	lastOnlineLabel.shadowColor = [UIColor blackColor];
+	likesLabel.shadowColor =      [UIColor blackColor];
+	heightLabel.shadowColor =     [UIColor blackColor];
+	weightLabel.shadowColor =     [UIColor blackColor];
+	ageLabel.shadowColor =        [UIColor blackColor];
+	ethnicityLabel.shadowColor =  [UIColor blackColor];
 
-	locationLabel.textColor = [UIColor whiteColor];
-	lastOnlineLabel.textColor =   [UIColor whiteColor];
-	likesLabel.textColor =    [UIColor whiteColor];
-	heightLabel.textColor =   [UIColor whiteColor];
-	weightLabel.textColor =   [UIColor whiteColor];
-	ageLabel.textColor =      [UIColor whiteColor];
-	ethinicLabel.textColor =  [UIColor whiteColor];
+	locationLabel.textColor =   [UIColor whiteColor];
+	lastOnlineLabel.textColor = [UIColor whiteColor];
+	likesLabel.textColor =      [UIColor whiteColor];
+	heightLabel.textColor =     [UIColor whiteColor];
+	weightLabel.textColor =     [UIColor whiteColor];
+	ageLabel.textColor =        [UIColor whiteColor];
+	ethnicityLabel.textColor =  [UIColor whiteColor];
 	
-	locationLabel.font = [UIFont systemFontOfSize:15.0];
+	locationLabel.font =   [UIFont systemFontOfSize:14.0];
 	lastOnlineLabel.font = [UIFont systemFontOfSize:12.0];
-	likesLabel.font = [UIFont systemFontOfSize:15.0];
-	heightLabel.font = [UIFont systemFontOfSize:15.0];
-	weightLabel.font = [UIFont systemFontOfSize:15.0];
-	ageLabel.font = [UIFont systemFontOfSize:15.0];
-	ethinicLabel.font = [UIFont systemFontOfSize:15.0];
+	likesLabel.font =      [UIFont systemFontOfSize:12.0];
+	heightLabel.font =     [UIFont systemFontOfSize:12.0];
+	weightLabel.font =     [UIFont systemFontOfSize:12.0];
+	ageLabel.font =        [UIFont systemFontOfSize:12.0];
+	ethnicityLabel.font =  [UIFont systemFontOfSize:12.0];
 	
-	locationLabel.textAlignment = UITextAlignmentRight;
-	lastOnlineLabel.textAlignment =   UITextAlignmentRight;
-	likesLabel.textAlignment =    UITextAlignmentRight;
-	heightLabel.textAlignment =   UITextAlignmentRight;
-	weightLabel.textAlignment =   UITextAlignmentRight;
-	ageLabel.textAlignment =      UITextAlignmentRight;
-	ethinicLabel.textAlignment =  UITextAlignmentRight;
+	locationLabel.textAlignment =   UITextAlignmentRight;
+	lastOnlineLabel.textAlignment = UITextAlignmentRight;
+	likesLabel.textAlignment =      UITextAlignmentRight;
+	heightLabel.textAlignment =     UITextAlignmentRight;
+	weightLabel.textAlignment =     UITextAlignmentRight;
+	ageLabel.textAlignment =        UITextAlignmentRight;
+	ethnicityLabel.textAlignment =  UITextAlignmentRight;
 	//userAboutHead.textColor = [UIColor whiteColor];
-	
-	locationLabel.text = @"420 feet away";
-	lastOnlineLabel.text =   @"Online 10 mins ago";
-	likesLabel.text =    self.likes;
-	heightLabel.text =   [[NSString alloc] initWithFormat:@"%d cm",self.height];
-	weightLabel.text =   [[NSString alloc] initWithFormat:@"%d lbs",self.weight];
-	ageLabel.text =      [[NSString alloc] initWithFormat:@"%d yrs",self.age];;
-	ethinicLabel.text =  self.ethinicity;
+	CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:[[[targetUser location] latitude] doubleValue]
+															longitude:[[[targetUser location] longitude] doubleValue]];
+	locationLabel.text = [NSString stringWithFormat:@"%.1f meters away",
+						  [[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] bestEffortAtLocation]
+						  distanceFromLocation:targetLocation]]; // @"420 feet away";
+	[targetLocation release];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // make user friendly with function below
+	lastOnlineLabel.text = [dateFormatter stringFromDate:[targetUser lastOnline]]; // @"Online 10 mins ago";
+	[dateFormatter release];
+	likesLabel.text =     [NSString stringWithFormat:@"likes %@", [targetUser likes]];
+	heightLabel.text =    [NSString stringWithFormat:@"%@ cm", [targetUser height]];
+	weightLabel.text =    [NSString stringWithFormat:@"%@ lbs", [targetUser weight]];
+	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", [targetUser age]];
+	ethnicityLabel.text = [[targetUser ethnicity] capitalizedString];
 
 	UIButton * favorite = [UIButton buttonWithType:UIButtonTypeCustom];
 	favorite.frame = CGRectMake(70, 230, 30, 30);
@@ -162,18 +174,18 @@ NSMutableData *picData;
 	[favorite addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
 
 	UILabel *favoriteLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 260, 50, 10)];
-	favoriteLabel.text =@"favorite";
+	favoriteLabel.text = @"favorite";
 	favoriteLabel.backgroundColor = [UIColor clearColor];
 	favoriteLabel.textColor = [UIColor whiteColor];
 	favoriteLabel.font =  [UIFont systemFontOfSize:10.0];
 	
 	UIButton * block = [UIButton buttonWithType:UIButtonTypeCustom];
 	block.frame = CGRectMake(70, 270, 30, 30);
-	[block setImage:[UIImage imageNamed:@"BlockButton.png" ] forState:UIControlStateNormal];
+	[block setImage:[UIImage imageNamed:@"BlockButton.png"] forState:UIControlStateNormal];
 	[block addTarget:self action:@selector(blockAction:) forControlEvents:UIControlEventTouchUpInside];
 	
 	UILabel *blockLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 300, 50, 10)];
-	blockLabel.text =@"block";
+	blockLabel.text = @"block";
 	blockLabel.backgroundColor = [UIColor clearColor];
 	blockLabel.textColor = [UIColor whiteColor];
 	blockLabel.font =  [UIFont systemFontOfSize:10.0];
@@ -195,8 +207,8 @@ NSMutableData *picData;
 	[weightLabel release];
 	[overlaySide addSubview:ageLabel];
 	[ageLabel release];
-	[overlaySide addSubview:ethinicLabel];
-	[ethinicLabel release];
+	[overlaySide addSubview:ethnicityLabel];
+	[ethnicityLabel release];
 	[overlaySide addSubview:favorite];
 	[overlaySide addSubview:favoriteLabel];
 	[favoriteLabel release];
@@ -206,8 +218,8 @@ NSMutableData *picData;
 	[self.view addSubview:overlaySide];
 }
 
-- (void) profilePicReady: (UIImage*) downloadedImage {
-	self.profileImage.image = downloadedImage; 
+- (void) profilePicReady:(UIImage*)downloadedImage {
+	self.profileImage.image = downloadedImage;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -215,12 +227,6 @@ NSMutableData *picData;
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)backButtonClicked:(id)sender {
@@ -240,7 +246,7 @@ NSMutableData *picData;
 
 - (void)moveOverlay:(id)sender {
 	if (self.view.window!=nil) {
-		[UIView beginAnimations: @"move_Overlay" context:nil];
+		[UIView beginAnimations:@"move_Overlay" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
 		[UIView setAnimationDuration:0.3f];
 		
@@ -344,7 +350,60 @@ NSMutableData *picData;
 	}	
 }
 
-- (void)dealloc {
+//- (NSString*)timestamp {
+//    // Calculate distance time string
+//    //
+//    time_t now;
+//    time(&now);
+//    
+//    int distance = (int)difftime(now, lastOnline);
+//    if (distance < 0) distance = 0;
+//    
+//    if (distance < 60) {
+//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "second ago" : "seconds ago"];
+//    }
+//    else if (distance < 60 * 60) {  
+//        distance = distance / 60;
+//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "minute ago" : "minutes ago"];
+//    }  
+//    else if (distance < 60 * 60 * 24) {
+//        distance = distance / 60 / 60;
+//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "hour ago" : "hours ago"];
+//    }
+//    else if (distance < 60 * 60 * 24 * 7) {
+//        distance = distance / 60 / 60 / 24;
+//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "day ago" : "days ago"];
+//    }
+//    else if (distance < 60 * 60 * 24 * 7 * 4) {
+//        distance = distance / 60 / 60 / 24 / 7;
+//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "week ago" : "weeks ago"];
+//    }
+//    else {
+//        static NSDateFormatter *dateFormatter = nil;
+//        if (dateFormatter == nil) {
+//            dateFormatter = [[NSDateFormatter alloc] init];
+//            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+//            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        }
+//        
+//        NSDate *date = [NSDate dateWithTimeIntervalSince1970:createdAt];        
+//        self.timestamp = [dateFormatter stringFromDate:date];
+//    }
+//    return timestamp;
+//}
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
+	self.targetUser = nil;
+	self.overlay = nil;
+	self.overlaySide = nil;
+	[profileImage release];
+	self.profileImage = nil;
+	self.profilePicConnection = nil;
+	self.picUrl = nil;
+}
+
+- (void)dealloc {	
 	[overlay release];
 	[overlaySide release];
 	[profilePicConnection release];
