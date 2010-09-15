@@ -1,11 +1,3 @@
-//
-//  User.h
-//  Lovers
-//
-//  Created by Matt Di Pasquale on 9/11/10.
-//  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
-//
-
 #import <CoreData/CoreData.h>
 #import "Profile.h"
 
@@ -32,6 +24,8 @@
 @property (nonatomic, retain) NSNumber * showDistance;
 @property (nonatomic, retain) Location * location;
 @property (nonatomic, retain) NSManagedObject * account;
+
++ insertWithDictionary:(NSDictionary *)dictionary withDateFormatter:(NSDateFormatter *)dateFormatter inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
 

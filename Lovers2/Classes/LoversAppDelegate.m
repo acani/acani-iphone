@@ -9,6 +9,7 @@
 @implementation LoversAppDelegate
 
 @synthesize window;
+@synthesize me;
 @synthesize navigationController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
@@ -282,6 +283,8 @@
 
 - (void)dealloc {
 	if (receiveMessageSound) AudioServicesDisposeSystemSoundID(receiveMessageSound);
+
+	[me release];
 
 	[webSocket release];
 

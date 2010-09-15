@@ -147,32 +147,21 @@ static enum downloadType _data = _json;
         NSArray *results = [json objectWithString:jsonResponse error:&error];
         [json release];
         NSLog(@"result count %d",[results count]);
-        for (NSDictionary *dictionary in results) {
-			User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
-			[user setAbout:[dictionary valueForKey:@"about"]];
-			[user setAge:[dictionary valueForKey:@"age"]];
-			[user setCreated:[dateFormatter dateFromString:[dictionary valueForKey:@"created"]]];
-			[user setEthnicity:[dictionary valueForKey:@"ethnic"]];
-			[user setFbid:[dictionary valueForKey:@"fbid"]];
-			[user setFbLink:[dictionary valueForKey:@"fb_link"]];
-			[user setHeadline:[dictionary valueForKey:@"head"]];
-			[user setHeight:[dictionary valueForKey:@"height"]];
-			[user setLastOnline:[dateFormatter dateFromString:[dictionary valueForKey:@"last_on"]]];
-			[user setLikes:[dictionary valueForKey:@"likes"]];
-			Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
-			[location setLatitude:[[dictionary valueForKey:@"loc"] objectAtIndex:0]];
-			[location setLongitude:[[dictionary valueForKey:@"loc"] objectAtIndex:1]];
-			[user setLocation:location];
-			[user setName:[dictionary valueForKey:@"name"]];
-			[user setOnlineStatus:[dictionary valueForKey:@"on_stat"]];
-			[user setSex:[dictionary valueForKey:@"sex"]];
-			[user setShowDistance:[dictionary valueForKey:@"sdis"]];
-			[user setUpdated:[dateFormatter dateFromString:[dictionary valueForKey:@"updated"]]];
-			[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
-			[user setWeight:[dictionary valueForKey:@"weight"]];
-			[users addObject:user];
-            [user release];
-        }
+		
+		NSEnumerator *e = [results objectEnumerator];
+		NSDictionary *dictionary;
+		User *me = [User insertWithDictionary:[e nextObject] // The first result is me
+							withDateFormatter:dateFormatter
+					   inManagedObjectContext:managedObjectContext];
+		[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] setMe:me];
+		[users addObject:me];
+
+		while (dictionary = [e nextObject]) {
+			[users addObject:[User insertWithDictionary:dictionary
+									  withDateFormatter:dateFormatter
+								 inManagedObjectContext:managedObjectContext]];
+		}
+
 		[dateFormatter release];
     }
 	return users;

@@ -4,9 +4,12 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "ZTWebSocket.h"
 
+@class User;
 @class UsersViewController;
 
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate> {
+	User *me;
+
 	SystemSoundID receiveMessageSound;
 
 	ZTWebSocket *webSocket;
@@ -23,6 +26,8 @@
 	UINavigationController *navigationController;
 	UsersViewController *usersViewController;
 }
+
+@property (nonatomic, retain) User *me;
 
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 
