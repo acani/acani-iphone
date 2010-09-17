@@ -25,7 +25,7 @@
 @property (nonatomic, retain) Location * location;
 @property (nonatomic, retain) NSManagedObject * account;
 
-+ insertWithDictionary:(NSDictionary *)dictionary withDateFormatter:(NSDateFormatter *)dateFormatter inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
++ insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
 

@@ -136,7 +136,10 @@ const enum downloadType JSON = _json;
 	}
 	NSLog(@"loc %6d", location.horizontalAccuracy);
 	self.locNoticelabel.text = [[NSString alloc] initWithFormat: @"Accuracy +-%.1f mts",location.horizontalAccuracy] ;
-	NSString * tempUrl = [[NSString alloc]initWithFormat:@"http://localhost:4567/users/123/123/%f/%f",location.coordinate.latitude, location.coordinate.longitude];
+	NSString *tempUrl = [NSString stringWithFormat:@"http://localhost:4567/users/%@/%@/%f/%f",
+						  @"0", // uid should get from LoversAppDelegate me
+						  [[UIDevice currentDevice] uniqueIdentifier],
+						  location.coordinate.latitude, location.coordinate.longitude];
 	[self downloadJsonFromInternet: tempUrl];
 	NSLog(@"%@", tempUrl);
 }
@@ -201,14 +204,14 @@ const enum downloadType JSON = _json;
 	//[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
 }
 
-- (void)downloadJsonFromInternet:(NSString*) urlToJson {
+- (void)downloadJsonFromInternet:(NSString*)urlToJson {
 	// Create a instance of InternetImage
 	[indicatorView removeFromSuperview];
 	
 	asynchImage = [[InternetImage alloc] initWithUrl:urlToJson];
 
 	// Start downloading the image with self as delegate receiver
-	[asynchImage DownloadData:self datatype:JSON ];
+	[asynchImage DownloadData:self datatype:JSON];
 }
 
 - (void)jsonReady:(NSMutableArray *)users {

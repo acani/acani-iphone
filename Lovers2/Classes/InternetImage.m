@@ -8,7 +8,9 @@ static enum downloadType _data = _json;
 
 @implementation InternetImage
 
-@synthesize dataUrl, Image, workInProgress;
+@synthesize dataUrl;
+@synthesize Image;
+@synthesize workInProgress;
 
 - (id)initWithUrl:(NSString*)urlToData {
 	self = [super init];
@@ -140,8 +142,6 @@ static enum downloadType _data = _json;
 	NSMutableArray *users = [NSMutableArray array];
     if (jsonResponse) {
 		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // 2010-06-21T08:26:46+0000 => 2010-06-21 08:26:46 -0400
 		NSError *error = nil;
         SBJSON *json = [[SBJSON alloc] init];    
         NSArray *results = [json objectWithString:jsonResponse error:&error];
@@ -151,18 +151,14 @@ static enum downloadType _data = _json;
 		NSEnumerator *e = [results objectEnumerator];
 		NSDictionary *dictionary;
 		User *me = [User insertWithDictionary:[e nextObject] // The first result is me
-							withDateFormatter:dateFormatter
 					   inManagedObjectContext:managedObjectContext];
 		[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] setMe:me];
 		[users addObject:me];
 
 		while (dictionary = [e nextObject]) {
 			[users addObject:[User insertWithDictionary:dictionary
-									  withDateFormatter:dateFormatter
 								 inManagedObjectContext:managedObjectContext]];
 		}
-
-		[dateFormatter release];
     }
 	return users;
 }

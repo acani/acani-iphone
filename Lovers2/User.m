@@ -21,27 +21,27 @@
 @dynamic location;
 @dynamic account;
 
-+ insertWithDictionary:(NSDictionary *)dictionary withDateFormatter:(NSDateFormatter *)dateFormatter inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
++ insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
 	User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
 	[user setAbout:[dictionary valueForKey:@"about"]];
 	[user setAge:[dictionary valueForKey:@"age"]];
-	[user setCreated:[dateFormatter dateFromString:[dictionary valueForKey:@"created"]]];
+	[user setCreated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"created"] doubleValue]]];
 	[user setEthnicity:[dictionary valueForKey:@"ethnic"]];
 	[user setFbid:[dictionary valueForKey:@"fbid"]];
-	[user setFbLink:[dictionary valueForKey:@"fb_link"]];
+	[user setFbLink:[dictionary valueForKey:@"fblink"]];
 	[user setHeadline:[dictionary valueForKey:@"head"]];
 	[user setHeight:[dictionary valueForKey:@"height"]];
-	[user setLastOnline:[dateFormatter dateFromString:[dictionary valueForKey:@"last_on"]]];
+	[user setLastOnline:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"laston"] doubleValue]]];
 	[user setLikes:[dictionary valueForKey:@"likes"]];
 	Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
 	[location setLatitude:[[dictionary valueForKey:@"loc"] objectAtIndex:0]];
 	[location setLongitude:[[dictionary valueForKey:@"loc"] objectAtIndex:1]];
 	[user setLocation:location];
 	[user setName:[dictionary valueForKey:@"name"]];
-	[user setOnlineStatus:[dictionary valueForKey:@"on_stat"]];
+	[user setOnlineStatus:[dictionary valueForKey:@"onstat"]];
 	[user setSex:[dictionary valueForKey:@"sex"]];
-	[user setShowDistance:[dictionary valueForKey:@"sdis"]];
-	[user setUpdated:[dateFormatter dateFromString:[dictionary valueForKey:@"updated"]]];
+	[user setShowDistance:[dictionary valueForKey:@"sdist"]];
+	[user setUpdated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"updated"] doubleValue]]];
 	[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
 	[user setWeight:[dictionary valueForKey:@"weight"]];
 	return user;
