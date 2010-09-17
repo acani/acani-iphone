@@ -1,4 +1,0 @@
-@interface UsersViewController : UIViewController {
-}
-
-@end
