@@ -1,6 +1,15 @@
+//
+//  User.h
+//  Lovers
+//
+//  Created by Matt Di Pasquale on 9/17/10.
+//  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
+//
+
 #import <CoreData/CoreData.h>
 #import "Profile.h"
 
+@class Account;
 @class Location;
 
 @interface User :  Profile  
@@ -23,7 +32,7 @@
 @property (nonatomic, retain) NSString * ethnicity;
 @property (nonatomic, retain) NSNumber * showDistance;
 @property (nonatomic, retain) Location * location;
-@property (nonatomic, retain) NSManagedObject * account;
+@property (nonatomic, retain) Account * account;
 
 + insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 

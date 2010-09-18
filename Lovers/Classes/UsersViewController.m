@@ -135,11 +135,13 @@ const enum downloadType JSON = _json;
 		location = [_location retain];
 	}
 	NSLog(@"loc %6d", location.horizontalAccuracy);
-	self.locNoticelabel.text = [[NSString alloc] initWithFormat: @"Accuracy +-%.1f mts",location.horizontalAccuracy] ;
+	self.locNoticelabel.text = [[NSString alloc] initWithFormat:@"Accuracy +-%.1f mts", location.horizontalAccuracy];
+	NSString *myUid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid];
+	NSLog(@"myUid %@", myUid == nil ? @"0" : myUid);
 	NSString *tempUrl = [NSString stringWithFormat:@"http://localhost:4567/users/%@/%@/%f/%f",
-						  @"0", // uid should get from LoversAppDelegate me
-						  [[UIDevice currentDevice] uniqueIdentifier],
-						  location.coordinate.latitude, location.coordinate.longitude];
+						 myUid == nil ? @"0" : myUid,
+						 [[UIDevice currentDevice] uniqueIdentifier],
+						 location.coordinate.latitude, location.coordinate.longitude];
 	[self downloadJsonFromInternet: tempUrl];
 	NSLog(@"%@", tempUrl);
 }
@@ -214,7 +216,7 @@ const enum downloadType JSON = _json;
 	[asynchImage DownloadData:self datatype:JSON];
 }
 
-- (void)jsonReady:(NSMutableArray *)users {
+- (void)jsonReady:(NSMutableArray *)users {	
 	NSLog(@"user count: %d",[users count]);
 	self.Users = users;
 // download thumbnail images from internet and feed into users
@@ -355,7 +357,7 @@ const enum downloadType JSON = _json;
 	[selectedImage setBackgroundColor:[UIColor colorWithRed:0.500f green:0.500f blue:0.500f alpha:0.50f]];
 	User *user = [self.Users objectAtIndex:selectedImage.tag];
 	
-	PhotoViewController *aController = [[PhotoViewController alloc] initWithUser:user];
+	PhotoViewController *aController = [(PhotoViewController *)[PhotoViewController alloc] initWithUser:user];
 	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
 }

@@ -1,6 +1,7 @@
 #import "ChatViewController.h"
 #import "LoversAppDelegate.h"
 #import "Message.h"
+#import "User.h"
 #import "Constants.h"
 #include <time.h>
 #import <QuartzCore/QuartzCore.h>
@@ -372,7 +373,7 @@
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
-	[msg setSender:@"me"]; // Make me user object in LoversAppDelegate. Fetch from ManangedObjectContext. If nil, create & save.
+	[msg setSender:(Profile *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]];
 	[msg setChannel:channel];
 	time_t now; time(&now);
 	latestTimestamp = now;
@@ -388,7 +389,7 @@
 	
 	NSString *msgJson = [NSString stringWithFormat:
 						 @"{\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
-						 [msg timestamp], [msg channel], [msg sender], escapedMsg];
+						 [msg timestamp], [msg channel], [(User *)[msg sender] uid], escapedMsg];
 	[webSocket send:msgJson];
 
 	chatInput.text = @"";
@@ -546,7 +547,8 @@ CGFloat msgTimestampHeight;
 	
 	UIImage *balloon;
 
-	if ([[msg sender] isEqualToString:@"me"]) {
+	if ([[(User *)[msg sender] uid] isEqualToString:
+		 [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid]]) {
 		msgBackground.frame = CGRectMake(320.0f - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 		msgText.frame = CGRectMake(298.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);

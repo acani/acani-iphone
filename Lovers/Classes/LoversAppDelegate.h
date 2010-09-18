@@ -4,11 +4,11 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "ZTWebSocket.h"
 
-@class User;
+@class Account;
 @class UsersViewController;
 
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate> {
-	User *me;
+	Account *myAccount;
 
 	SystemSoundID receiveMessageSound;
 
@@ -27,7 +27,7 @@
 	UsersViewController *usersViewController;
 }
 
-@property (nonatomic, retain) User *me;
+@property (nonatomic, retain) Account *myAccount;
 
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 

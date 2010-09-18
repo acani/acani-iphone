@@ -2,12 +2,13 @@
 //  Profile.h
 //  Lovers
 //
-//  Created by Matt Di Pasquale on 9/11/10.
+//  Created by Matt Di Pasquale on 9/17/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
 
+@class Message;
 
 @interface Profile :  NSManagedObject  
 {
@@ -21,8 +22,8 @@
 
 
 @interface Profile (CoreDataGeneratedAccessors)
-- (void)addSentMessagesObject:(NSManagedObject *)value;
-- (void)removeSentMessagesObject:(NSManagedObject *)value;
+- (void)addSentMessagesObject:(Message *)value;
+- (void)removeSentMessagesObject:(Message *)value;
 - (void)addSentMessages:(NSSet *)value;
 - (void)removeSentMessages:(NSSet *)value;
 

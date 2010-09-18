@@ -91,22 +91,18 @@ static enum downloadType _data = _json;
 				// Call the delegate method and pass ourselves along.
 				[m_Delegate jsonReady:users];
 			}
-			
-
 		} else if (_data == _thumbnail) {
 			NSLog(@"internetImage: connectiondidfinishloading: thumbnail");
-			UIImage* downloadedImage = [[UIImage alloc] initWithData:m_ImageRequestData];
+			InternetImage* downloadedImage = [[UIImage alloc] initWithData:m_ImageRequestData];
 			if ([m_Delegate respondsToSelector:@selector(internetImageReady:)])
 			{
 				// Call the delegate method and pass ourselves along.
 				[m_Delegate internetImageReady:downloadedImage];
 			}
-			
 			[downloadedImage release];
 			// send it to the caller function
-			
 		} else if (_data == _profilepic) {
-			UIImage* downloadedImage = [[UIImage alloc] initWithData:m_ImageRequestData];
+			InternetImage* downloadedImage = [[UIImage alloc] initWithData:m_ImageRequestData];
 			// send it to the caller function
 			
 			if ([m_Delegate respondsToSelector:@selector(internetImageReady:)])
@@ -114,12 +110,8 @@ static enum downloadType _data = _json;
 				// Call the delegate method and pass ourselves along.
 				[m_Delegate internetImageReady:downloadedImage];
 			}
-			
 			[downloadedImage release];
-			
 		}
-		
-		
 	
 		//self.Image = downloadedImage;
 	
@@ -147,12 +139,17 @@ static enum downloadType _data = _json;
         NSArray *results = [json objectWithString:jsonResponse error:&error];
         [json release];
         NSLog(@"result count %d",[results count]);
-		
+
 		NSEnumerator *e = [results objectEnumerator];
 		NSDictionary *dictionary;
+	
 		User *me = [User insertWithDictionary:[e nextObject] // The first result is me
 					   inManagedObjectContext:managedObjectContext];
-		[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] setMe:me];
+		[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] setUser:me];
+		if (![managedObjectContext save:&error]) {
+			// Handle the error.
+			NSLog(@"Error saving myAccount & me! %@", error);
+		}
 		[users addObject:me];
 
 		while (dictionary = [e nextObject]) {
@@ -160,6 +157,12 @@ static enum downloadType _data = _json;
 								 inManagedObjectContext:managedObjectContext]];
 		}
     }
+
+	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+	if (![webSocket connected]) {
+		[webSocket open];
+	} 
+	
 	return users;
 }
 

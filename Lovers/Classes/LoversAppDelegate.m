@@ -1,6 +1,8 @@
 #import "LoversAppDelegate.h"
 #import "UsersViewController.h"
 #import "ChatViewController.h"
+#import "Account.h"
+#import "User.h"
 #import "Message.h"
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
@@ -9,7 +11,7 @@
 @implementation LoversAppDelegate
 
 @synthesize window;
-@synthesize me;
+@synthesize myAccount;
 @synthesize navigationController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
@@ -39,7 +41,33 @@
 //    usersViewController.managedObjectContext = context;
 
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
-    [webSocket open];
+
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:managedObjectContext];
+	[request setEntity:entity];
+	
+	NSError *error;
+	NSMutableArray *accounts = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	if (accounts == nil) {
+		// Handle the error.
+	}
+	[request release];
+
+	// We should ship the app with a default account already
+	// created so that we can assume it exists.
+	if ([accounts count] == 0) {
+		// Create account
+		myAccount = (Account *)[NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
+		[myAccount setEmail:@""];
+		[myAccount setUsername:@""];
+		[myAccount setPassword:@""];
+//		[myAccount setUser:(User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext]];
+	} else if ([accounts count] == 1) {
+		myAccount = [accounts objectAtIndex:0];
+		[webSocket open];
+	} else if ([accounts count] > 1) {
+		// Present account login screen to pick account
+	}
 
 //	[usersViewController release];
 //	[navigationController release];
@@ -128,8 +156,9 @@
 		[logButton release];
 	}
 	// should be mongodb _id for user, not device id.
+	// So, open WebSocket after sinatra responds w my uid
 	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
-					 [UIDevice currentDevice].uniqueIdentifier]];
+					 [(User *)[myAccount user] uid]]];
 }
 
 - (void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
@@ -284,7 +313,7 @@
 - (void)dealloc {
 	if (receiveMessageSound) AudioServicesDisposeSystemSoundID(receiveMessageSound);
 
-	[me release];
+	[myAccount release];
 
 	[webSocket release];
 
