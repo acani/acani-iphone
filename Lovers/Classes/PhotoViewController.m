@@ -22,7 +22,7 @@ NSMutableData *picData;
 	if (self = [super init]) {
 		self.targetUser = user;
 		self.title = [user name];
-		self.picUrl = [NSString stringWithFormat:@"http://localhost:4567/%@/picture?type=large", [targetUser uid]];
+		self.picUrl = [NSString stringWithFormat:@"http://%@/%@/picture?type=large", SINATRA, [targetUser uid]];
 		[[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		self.wantsFullScreenLayout = YES;

@@ -108,7 +108,7 @@
 	profileName.minimumFontSize = 10.0f;
 	//profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	profileName.delegate = self;
-	profileName.text = @"Matt Di Pasquale";
+	profileName.text = [me name];
 	profileName.backgroundColor = [UIColor clearColor];
 	[profileHeader addSubview:profileName];
 	[profileName release];

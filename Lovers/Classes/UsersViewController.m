@@ -1,3 +1,4 @@
+#import "Constants.h"
 #import "UsersViewController.h"
 #import "PhotoViewController.h"
 #import "LoversAppDelegate.h"
@@ -138,7 +139,8 @@ const enum downloadType JSON = _json;
 	self.locNoticelabel.text = [[NSString alloc] initWithFormat:@"Accuracy +-%.1f mts", location.horizontalAccuracy];
 	NSString *myUid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid];
 	NSLog(@"myUid %@", myUid == nil ? @"0" : myUid);
-	NSString *tempUrl = [NSString stringWithFormat:@"http://localhost:4567/users/%@/%@/%f/%f",
+	NSString *tempUrl = [NSString stringWithFormat:@"http://%@/users/%@/%@/%f/%f",
+						 SINATRA,
 						 myUid == nil ? @"0" : myUid,
 						 [[UIDevice currentDevice] uniqueIdentifier],
 						 location.coordinate.latitude, location.coordinate.longitude];
@@ -225,7 +227,7 @@ const enum downloadType JSON = _json;
 		//NSLog(@"user id %@", user.uid);
 		//NSLog(@"user fbid %d", user.fbid);
 		NSString *imageUrl;
-		imageUrl = [[NSString alloc] initWithFormat:@"http://localhost:4567/%@/picture", [user uid]];
+		imageUrl = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user uid]];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
 		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl userInfo:i];
 		[thumbnailLoad DownloadData:self];
@@ -362,8 +364,8 @@ const enum downloadType JSON = _json;
 	[aController release];
 }
 
-- (void)goToProfile:(id)sender { // objectAtIndex should be 0 below. I put 5 so we could see some values.
-	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[Users objectAtIndex:5]];
+- (void)goToProfile:(id)sender {
+	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[Users objectAtIndex:0]];
 	//	[self.navigationController pushViewController:pvc animated:YES];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
