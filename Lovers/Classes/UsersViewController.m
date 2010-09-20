@@ -344,7 +344,7 @@ const enum downloadType JSON = _json;
 	//[self loadView];
 }
 
-- (void)loadMoreButtonAction:(id)sender{
+- (void)loadMoreButtonAction:(id)sender {
 	NSLog(@"load more button called");
 }
 
@@ -362,8 +362,8 @@ const enum downloadType JSON = _json;
 	[aController release];
 }
 
-- (void)goToProfile:(id)sender {
-	ProfileViewController *profileVC = [[ProfileViewController alloc] init];
+- (void)goToProfile:(id)sender { // objectAtIndex should be 0 below. I put 5 so we could see some values.
+	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[Users objectAtIndex:5]];
 	//	[self.navigationController pushViewController:pvc animated:YES];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:profileVC];

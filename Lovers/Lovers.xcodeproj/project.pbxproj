@@ -41,8 +41,8 @@
 		C96221A712445C7D00059C58 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C962219E12445C7D00059C58 /* Profile.m */; };
 		C96221A812445C7D00059C58 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A012445C7D00059C58 /* Location.m */; };
 		C96221A912445C7D00059C58 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A212445C7D00059C58 /* Message.m */; };
-		C96221AA12445C7D00059C58 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A412445C7D00059C58 /* User.m */; };
 		C96221AB12445C7D00059C58 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A612445C7D00059C58 /* Account.m */; };
+		C96222C61246B55700059C58 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C96222C51246B55700059C58 /* User.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
@@ -59,7 +59,7 @@
 		137342BD118F1D66006CCB0E /* InternetImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InternetImage.m; path = Classes/InternetImage.m; sourceTree = SOURCE_ROOT; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* LoversAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoversAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* LoversAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoversAppDelegate.m; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* LoversAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoversAppDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
 		1D6058910D05DD3D006BFB54 /* Lovers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lovers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,10 +111,10 @@
 		C96221A012445C7D00059C58 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		C96221A112445C7D00059C58 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		C96221A212445C7D00059C58 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
-		C96221A312445C7D00059C58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		C96221A412445C7D00059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		C96221A512445C7D00059C58 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		C96221A612445C7D00059C58 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		C96222C41246B55700059C58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C96222C51246B55700059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -206,14 +206,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C96222C41246B55700059C58 /* User.h */,
+				C96222C51246B55700059C58 /* User.m */,
 				C962219D12445C7D00059C58 /* Profile.h */,
 				C962219E12445C7D00059C58 /* Profile.m */,
 				C962219F12445C7D00059C58 /* Location.h */,
 				C96221A012445C7D00059C58 /* Location.m */,
 				C96221A112445C7D00059C58 /* Message.h */,
 				C96221A212445C7D00059C58 /* Message.m */,
-				C96221A312445C7D00059C58 /* User.h */,
-				C96221A412445C7D00059C58 /* User.m */,
 				C96221A512445C7D00059C58 /* Account.h */,
 				C96221A612445C7D00059C58 /* Account.m */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
@@ -388,8 +388,8 @@
 				C96221A712445C7D00059C58 /* Profile.m in Sources */,
 				C96221A812445C7D00059C58 /* Location.m in Sources */,
 				C96221A912445C7D00059C58 /* Message.m in Sources */,
-				C96221AA12445C7D00059C58 /* User.m in Sources */,
 				C96221AB12445C7D00059C58 /* Account.m in Sources */,
+				C96222C61246B55700059C58 /* User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

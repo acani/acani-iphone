@@ -1,6 +1,10 @@
+#include "User.h"
+
 #define BAR_BUTTON(TITLE, SELECTOR) [[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
 
 @interface ProfileViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+	User *me;
+
 	UINavigationController *navController;
 	UIView *profileHeader;
 	NSArray *profileFields;
@@ -22,6 +26,9 @@
 	UISwitch *filter;
 }
 
+@property (nonatomic, retain) User *me;
+
+- (id)initWithMe:(User *)user;
 - (void)doneEditingText:(id)sender;
 - (void)donePickingValue:(id)sender;
 

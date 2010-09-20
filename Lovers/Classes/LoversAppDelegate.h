@@ -25,6 +25,10 @@
 	UIWindow *window;
 	UINavigationController *navigationController;
 	UsersViewController *usersViewController;
+	
+	NSArray *Sexes;
+	NSArray *Ethnicities;	
+	NSArray *Likes;	
 }
 
 @property (nonatomic, retain) Account *myAccount;
@@ -42,6 +46,10 @@
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSMutableArray *locationMeasurements;
 @property (nonatomic, retain) CLLocation *bestEffortAtLocation;
+
+@property (nonatomic, retain) NSArray *Sexes;
+@property (nonatomic, retain) NSArray *Ethnicities;
+@property (nonatomic, retain) NSArray *Likes;
 
 - (NSString *)applicationDocumentsDirectory;
 - (void)findLocation;

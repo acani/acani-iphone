@@ -156,6 +156,7 @@ static enum downloadType _data = _json;
 			[users addObject:[User insertWithDictionary:dictionary
 								 inManagedObjectContext:managedObjectContext]];
 		}
+		NSLog(@"user: %@", [users objectAtIndex:19]);
     }
 
 	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];

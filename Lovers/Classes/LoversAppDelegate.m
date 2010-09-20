@@ -18,11 +18,15 @@
 @synthesize locationManager;
 @synthesize usersViewController;
 @synthesize webSocket;
+@synthesize Sexes;
+@synthesize Ethnicities;
+@synthesize Likes;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	// Setup the view
 	usersViewController = [[UsersViewController alloc] init];
 	navigationController = [[UINavigationController alloc]
 							initWithRootViewController:usersViewController];
@@ -31,6 +35,7 @@
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
 
+	// Initialize Core Data's managedObjectContext
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
         // Handle the error.
@@ -69,9 +74,58 @@
 		// Present account login screen to pick account
 	}
 
-//	[usersViewController release];
-//	[navigationController release];
 	[self findLocation];
+	
+	// Setup profileValues decoder arrays: Maybe these should just be in one NSDictionary?
+	Sexes = [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil];
+	Ethnicities = [[NSArray alloc] initWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino",
+				   @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil];
+	Likes = [[NSArray alloc] initWithObjects:@"Do Not Show", @"Women", @"Men", @"Both", nil];
+
+//	// make a function to convert height in cm to ft, etc.
+//	// http://stackoverflow.com/questions/2324125/objective-c-string-formatter-for-distances
+//	// Returns a string representing the distance in the correct units.
+//	// If distance is greater than convert max in feet or meters, 
+//	// the distance in miles or km is returned instead
+//	NSString* getDistString(float distance, int convertMax, BOOL includeUnit) {
+//		NSString * unitName;
+//		if (METRIC) {
+//			unitName = @"m";
+//			if (convertMax != -1 && distance > convertMax) {
+//				unitName = @"km";
+//				distance = distance / 1000;
+//			}
+//		} else {
+//			unitName = @"ft";
+//			if (convertMax != -1 && distance > convertMax) {
+//				unitName = @"mi";
+//				distance = distance / 5280;
+//			}
+//			distance = metersToFeet(distance);
+//		}
+//		
+//		if (includeUnit) return [NSString stringWithFormat:@"%@ %@", formatDecimal_1(distance), unitName];
+//		
+//		return formatDecimal_1(distance);
+//		
+//	}
+//	// returns a string if the number with one decimal place of precision
+//	// sets the style (commas or periods) based on the locale
+//	NSString * formatDecimal_1(float num) {
+//		static NSNumberFormatter *numFormatter;
+//		if (!numFormatter) {
+//			numFormatter = [[[NSNumberFormatter alloc] init] retain];
+//			[numFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+//			[numFormatter setLocale:[NSLocale currentLocale]];
+//			[numFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//			[numFormatter setMaximumFractionDigits:1];
+//			[numFormatter setMinimumFractionDigits:1];
+//		}
+//		
+//		return [numFormatter stringFromNumber:F(num)];
+//		
+//	}
+	
 	return YES;
 }
 
@@ -91,7 +145,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	if (locationMeasurements == nil) {
-		self.locationMeasurements = [NSMutableArray array];
+		self.locationMeasurements = [[NSMutableArray alloc] init];
 	}
 	[locationMeasurements addObject:newLocation];
 	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
@@ -313,8 +367,10 @@
 - (void)dealloc {
 	if (receiveMessageSound) AudioServicesDisposeSystemSoundID(receiveMessageSound);
 
-	[myAccount release];
-
+	[Sexes release];
+	[Ethnicities release];
+	[Likes release];
+	
 	[webSocket release];
 
 	[managedObjectContext release];

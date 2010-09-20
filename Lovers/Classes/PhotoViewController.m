@@ -45,7 +45,7 @@ NSMutableData *picData;
 
 - (void)goToChat:(id)sender {
 	ChatViewController *chatView = [[ChatViewController alloc] init];
-	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", targetUser.uid];
+	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", [targetUser uid]];
 	chatView.title = targetUser.name;
 	[self.navigationController pushViewController:chatView animated:YES];
 	[chatView release];
@@ -103,70 +103,89 @@ NSMutableData *picData;
 
 	overlaySide = [[UIView alloc] initWithFrame:CGRectMake(160, 10, 150, 310)];
 	overlaySide.backgroundColor = [UIColor clearColor];
-	
+
+	// Lots of repetition here. Keep code DRY (Donot Repeat Yourself). Refactor with: 
+	//   (1) macro, or (2) function, or (3) subclass UILabel & redefine init.
+	// Also, labals should be created & displayed only if corresponding value !- nil
+	// They should also be positioned vertically w/o gaps.
+	// So, the origin.y should be a variable and only incremented if value != nil
 	UILabel *locationLabel =   [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
 	UILabel *lastOnlineLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 150, 15)];
-	UILabel *likesLabel =      [[UILabel alloc] initWithFrame:CGRectMake(0, 35, 150, 15)];
 	UILabel *ageLabel =        [[UILabel alloc] initWithFrame:CGRectMake(0, 50, 150, 15)];
+	UILabel *likesLabel =      [[UILabel alloc] initWithFrame:CGRectMake(0, 35, 150, 15)];
 	UILabel *heightLabel =     [[UILabel alloc] initWithFrame:CGRectMake(0, 65, 150, 15)];
 	UILabel *weightLabel =     [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 150, 15)];
 	UILabel *ethnicityLabel =  [[UILabel alloc] initWithFrame:CGRectMake(0, 95, 150, 15)];
+	UILabel *sexLabel =        [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 150, 15)];
 	
 	locationLabel.backgroundColor =   [UIColor clearColor];
 	lastOnlineLabel.backgroundColor = [UIColor clearColor];
+	ageLabel.backgroundColor =        [UIColor clearColor];
 	likesLabel.backgroundColor =      [UIColor clearColor];
 	heightLabel.backgroundColor =     [UIColor clearColor];
 	weightLabel.backgroundColor =     [UIColor clearColor];
-	ageLabel.backgroundColor =        [UIColor clearColor];
 	ethnicityLabel.backgroundColor =  [UIColor clearColor];
+	sexLabel.backgroundColor =        [UIColor clearColor];
 
 	locationLabel.shadowColor =   [UIColor blackColor];
 	lastOnlineLabel.shadowColor = [UIColor blackColor];
+	ageLabel.shadowColor =        [UIColor blackColor];
 	likesLabel.shadowColor =      [UIColor blackColor];
 	heightLabel.shadowColor =     [UIColor blackColor];
 	weightLabel.shadowColor =     [UIColor blackColor];
-	ageLabel.shadowColor =        [UIColor blackColor];
 	ethnicityLabel.shadowColor =  [UIColor blackColor];
+	sexLabel.shadowColor =        [UIColor blackColor];
 
 	locationLabel.textColor =   [UIColor whiteColor];
 	lastOnlineLabel.textColor = [UIColor whiteColor];
+	ageLabel.textColor =        [UIColor whiteColor];
 	likesLabel.textColor =      [UIColor whiteColor];
 	heightLabel.textColor =     [UIColor whiteColor];
 	weightLabel.textColor =     [UIColor whiteColor];
-	ageLabel.textColor =        [UIColor whiteColor];
 	ethnicityLabel.textColor =  [UIColor whiteColor];
+	sexLabel.textColor =        [UIColor whiteColor];
 	
 	locationLabel.font =   [UIFont systemFontOfSize:14.0];
 	lastOnlineLabel.font = [UIFont systemFontOfSize:12.0];
+	ageLabel.font =        [UIFont systemFontOfSize:12.0];
 	likesLabel.font =      [UIFont systemFontOfSize:12.0];
 	heightLabel.font =     [UIFont systemFontOfSize:12.0];
 	weightLabel.font =     [UIFont systemFontOfSize:12.0];
-	ageLabel.font =        [UIFont systemFontOfSize:12.0];
 	ethnicityLabel.font =  [UIFont systemFontOfSize:12.0];
+	sexLabel.font =        [UIFont systemFontOfSize:12.0];
 	
 	locationLabel.textAlignment =   UITextAlignmentRight;
 	lastOnlineLabel.textAlignment = UITextAlignmentRight;
+	ageLabel.textAlignment =        UITextAlignmentRight;
 	likesLabel.textAlignment =      UITextAlignmentRight;
 	heightLabel.textAlignment =     UITextAlignmentRight;
 	weightLabel.textAlignment =     UITextAlignmentRight;
-	ageLabel.textAlignment =        UITextAlignmentRight;
 	ethnicityLabel.textAlignment =  UITextAlignmentRight;
-	//userAboutHead.textColor = [UIColor whiteColor];
+	sexLabel.textAlignment =        UITextAlignmentRight;
+
 	CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:[[[targetUser location] latitude] doubleValue]
 															longitude:[[[targetUser location] longitude] doubleValue]];
 	locationLabel.text = [NSString stringWithFormat:@"%.1f meters away",
 						  [[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] bestEffortAtLocation]
 						  distanceFromLocation:targetLocation]]; // @"420 feet away";
 	[targetLocation release];
+
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // make user friendly with function below
 	lastOnlineLabel.text = [dateFormatter stringFromDate:[targetUser lastOnline]]; // @"Online 10 mins ago";
 	[dateFormatter release];
-	likesLabel.text =     [NSString stringWithFormat:@"likes %@", [targetUser likes]];
+
+	NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
+	NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
+	NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
+
+	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", [targetUser age]];
+	likesLabel.text =     [NSString stringWithFormat:@"Likes %@",
+						   [[Likes objectAtIndex:[[targetUser likes] intValue]] lowercaseString]];
 	heightLabel.text =    [NSString stringWithFormat:@"%@ cm", [targetUser height]];
 	weightLabel.text =    [NSString stringWithFormat:@"%@ lbs", [targetUser weight]];
-	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", [targetUser age]];
-	ethnicityLabel.text = [[targetUser ethnicity] capitalizedString];
+	ethnicityLabel.text = [[Ethnicities objectAtIndex:[[targetUser ethnicity] intValue]] capitalizedString];
+	sexLabel.text =       [[Sexes objectAtIndex:[[targetUser sex] intValue]] capitalizedString];
 
 	UIButton * favorite = [UIButton buttonWithType:UIButtonTypeCustom];
 	favorite.frame = CGRectMake(70, 230, 30, 30);
