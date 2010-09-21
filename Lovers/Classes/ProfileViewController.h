@@ -23,7 +23,6 @@
 	UIBarButtonItem *textDone;
 	UIButton *avatarImg;
 	UITextField *profileName;
-	UISwitch *filter;
 }
 
 @property (nonatomic, retain) User *me;

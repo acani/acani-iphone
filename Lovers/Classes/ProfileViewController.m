@@ -14,11 +14,25 @@
 	return self;
 }
 
-- (void)goBack:(id)sender {
+- (void)cancel:(id)sender {
+	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	[managedObjectContext refreshObject:me mergeChanges:NO]; // get rid of changes
 	[self dismissModalViewControllerAnimated:YES];
 }
 
+#define VALUE_TAG 121
+#define TEXT_VIEW_TAG 122
+#define TEXT_FIELD_TAG 123
+#define FILTER_TAG 124
+
 - (void)saveProfile:(id)sender {
+	[me setShowDistance:[NSNumber numberWithBool:[(UISwitch *)[[[self.tableView cellForRowAtIndexPath:
+	  [NSIndexPath indexPathForRow:0 inSection:1]] contentView] viewWithTag:FILTER_TAG] isOn]]];
+
+	NSDate *now = [[NSDate alloc] init];
+	[me setUpdated:now];
+	[now release];
+
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
@@ -50,13 +64,13 @@
 	[groupedTable release];
 
 //	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
-								   initWithTitle:@"Lovers"
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
+								   initWithTitle:@"Cancel"
 								   style:UIBarButtonItemStyleBordered
 								   target:self 
-								   action:@selector(goBack:)];
-	self.navigationItem.leftBarButtonItem = backButton;
-	[backButton release];
+								   action:@selector(cancel:)];
+	self.navigationItem.leftBarButtonItem = cancelButton;
+	[cancelButton release];
 
 	saveButton = [[UIBarButtonItem alloc] 
 				  initWithTitle:@"Save"
@@ -370,10 +384,6 @@
 	return [[profileFields objectAtIndex:section] count];
 }
 
-#define VALUE_TAG 121
-#define TEXT_VIEW_TAG 122
-#define TEXT_FIELD_TAG 123
-
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *fieldText = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -423,8 +433,9 @@
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			filter = [[UISwitch alloc] initWithFrame:CGRectMake(195.0f, (tableView.rowHeight - 27.0f)/2, 95.0f, 27.0f)];
-			[filter setOn:[[me showDistance] boolValue] animated:NO];
+			UISwitch *filter = [[UISwitch alloc] initWithFrame:CGRectMake(195.0f, (tableView.rowHeight - 27.0f)/2, 95.0f, 27.0f)];
+			filter.on = [[me showDistance] boolValue];
+			filter.tag = FILTER_TAG;
 			[cell.contentView addSubview:filter];
 			[filter release];
 		}
@@ -784,8 +795,20 @@
 }
 
 - (void)doneEditingText:(id)sender {
-	[profileName resignFirstResponder];
+//  // TODO: use something like this:
+//	switch (editIndexPath.row) {
+//		case 0:
+//			break;
+//		default:
+//			break;
+//	}
+	[me setAbout:aboutInput.text];
 	[aboutInput resignFirstResponder];
+
+	[me setName:profileName.text];
+	[profileName resignFirstResponder];
+	
+	[me setFbUsername:valueInput.text];
 	[valueInput resignFirstResponder];
 }
 
