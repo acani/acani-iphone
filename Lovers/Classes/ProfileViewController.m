@@ -1,7 +1,20 @@
 #import "ProfileViewController.h"
 #import "LoversAppDelegate.h"
 
-#define MAINLABEL	((UILabel *)self.navigationItem.titleView)
+#define MAINLABEL ((UILabel *)self.navigationItem.titleView)
+
+#define ABOUT_ROW 0
+#define SEX_ROW 1
+#define AGE_ROW 2
+#define HEIGHT_ROW 3
+#define WEIGHT_ROW 4
+#define ETHNICITY_ROW 5
+
+#define VALUE_TAG 121
+#define TEXT_VIEW_TAG 122
+#define TEXT_FIELD_TAG 123
+#define FILTER_TAG 124
+
 
 @implementation ProfileViewController
 
@@ -19,11 +32,6 @@
 	[managedObjectContext refreshObject:me mergeChanges:NO]; // get rid of changes
 	[self dismissModalViewControllerAnimated:YES];
 }
-
-#define VALUE_TAG 121
-#define TEXT_VIEW_TAG 122
-#define TEXT_FIELD_TAG 123
-#define FILTER_TAG 124
 
 - (void)saveProfile:(id)sender {
 	[me setShowDistance:[NSNumber numberWithBool:[(UISwitch *)[[[self.tableView cellForRowAtIndexPath:
@@ -51,16 +59,11 @@
 
 	self.wantsFullScreenLayout = YES;
 
-	NSLog(@"self.view.window: %@", self.view.window);
-	NSLog(@"self.view.superview: %@", self.view.superview);
-	NSLog(@"self.view: %@", self.view);
-
 	// I'm not sure how to initialize the default tableView as grouped, so create our own:
 	UITableView *groupedTable = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame style:UITableViewStyleGrouped];
 	groupedTable.delegate = self;
 	groupedTable.dataSource = self;
 	self.view = groupedTable;
-	NSLog(@"self.view.window: %@", self.view.window);
 	[groupedTable release];
 
 //	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -112,7 +115,6 @@
 	[profileHeader addSubview:avatarImg];
 	//[avatar release];
 	
-
 	profileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
 	
 	//UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
@@ -171,7 +173,10 @@
 					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil], nil],
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"Do Not Show",
-						// this seems dumb. can't we just convert int to sting here?
+						// Instead of making these long arrays, we can just put in a switch statement
+						// for age & weight (perhaps even height) that translates the current row to an
+						// age or weight string. We could even give an age/weight offset, so that
+						// instead of starting them at 1, we could start them at a higher number.
 						@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9",
 						@"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19",
 						@"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29",
@@ -190,7 +195,6 @@
 					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"5 feet", @"6 feet", @"7 feet", nil],
 					   [[NSArray alloc] initWithObjects:@"0 inches", @"1 inches", @"2 inches", @"3 inches", @"4 inches", @"5 inches", @"6 inches", @"7 inches", @"8 inches", @"9 inches", @"10 inches", @"11 inches", nil], nil],
 					  [[NSArray alloc] initWithObjects:
-					   // you've got to be fucking shitting me!?? good thing i was paying by the hour...
 					   [[NSArray alloc] initWithObjects:@"Do Not Show",
 						@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9",
 						@"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19",
@@ -250,9 +254,9 @@
 
 //	NSLog(@"pickerOptions: %@", pickerOptions);
 	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
-	NSLog(@"self.view.window.subviews: %@", self.view.window.subviews);	
-	NSLog(@"self.view.subviews: %@", self.view.subviews);	
-	NSLog(@"self.view.window: %@", self.view.window);
+//	NSLog(@"self.view.window.subviews: %@", self.view.window.subviews);	
+//	NSLog(@"self.view.subviews: %@", self.view.subviews);	
+//	NSLog(@"self.view.window: %@", self.view.window);
 
 //	// More views than you could dream of! 
 //	printf("\nAll window subviews:\n");
@@ -455,26 +459,37 @@
 		NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
 		NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
 
+		NSNumber *valueNum = [[NSNumber alloc] initWithInt:0];
 		switch (indexPath.row) {
-			case 1:
+			case SEX_ROW:
 				// If I try to set cell.detailTextLabel directly here, I get readonly error.
-				valueText = [Sexes objectAtIndex:[[me sex] intValue]];
+				valueNum = [me sex];
+				valueText = [Sexes objectAtIndex:[valueNum intValue]];
 				break;
-			case 2:
-				valueText = [[me age] stringValue];
+			case AGE_ROW:
+				valueNum = [me age];
+				valueText = [valueNum stringValue];
 				break;
-			case 3: // TODO: convert height to inches & feet if in USA
+			case HEIGHT_ROW: // TODO: convert height to inches & feet if in USA
+				valueNum = [me height];
 				valueText = [NSString stringWithFormat:@"%@ cm", [me height]];
 				break;
-			case 4: // TODO: convert weight to kilos if not in USA
+			case WEIGHT_ROW: // TODO: convert weight to kilos if not in USA
+				valueNum = [me weight];
 				valueText = [NSString stringWithFormat:@"%@ lbs", [me weight]];
 				break;
-			case 5:
+			case ETHNICITY_ROW:
+				valueNum = [me ethnicity];
 				valueText = [Ethnicities objectAtIndex:[[me ethnicity] intValue]];
 				break;
 			default:
 				break;
 		}
+		
+		if ([valueNum intValue] == 0) {
+			valueText = @"Optional";
+		}
+
 		cell.detailTextLabel.text = valueText;
 	} else { // Section 1 cells
 		CellID = @"Default1";
@@ -612,13 +627,13 @@
 	[valueSelect reloadAllComponents];
 
 	switch (editIndexPath.row) {
-		case 1:
+		case SEX_ROW:
 			[valueSelect selectRow:[[me sex] intValue] inComponent:0 animated:NO];
 			break;
-		case 2:
+		case AGE_ROW:
 			[valueSelect selectRow:[[me age] intValue] inComponent:0 animated:NO];
 			break;
-		case 3: // TODO: display metric system unless user local is USA
+		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			if (TRUE) { // detect if we're in USA. how?
 				[valueSelect selectRow:[[me height] intValue] inComponent:0 animated:NO]; // feet
 				[valueSelect selectRow:[[me height] intValue] inComponent:1 animated:NO]; // inches
@@ -626,10 +641,10 @@
 				[valueSelect selectRow:[[me height] intValue] inComponent:0 animated:NO]; // cm
 			}
 			break;
-		case 4: // TODO: display metric system unless user local is USA
+		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
 			[valueSelect selectRow:[[me weight] intValue] inComponent:0 animated:NO];
 			break;
-		case 5:
+		case ETHNICITY_ROW:
 			[valueSelect selectRow:[[me ethnicity] intValue] inComponent:0 animated:NO];
 			break;
 		default:
@@ -652,13 +667,13 @@
 
 	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row];
 	switch (editIndexPath.row) {
-		case 1:
+		case SEX_ROW:
 			[me setSex:[NSNumber numberWithInt:row]];
 			break;
-		case 2:
+		case AGE_ROW:
 			[me setAge:[NSNumber numberWithInt:row]];
 			break;
-		case 3: // TODO: display metric system unless user local is USA
+		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			// we should create a global mutable array: heightPicked = [int feet, int inches]
 			// actually, do we need mutable? can we use nsarray since we are not adding objects?
 			// just changing them in place...
@@ -671,7 +686,7 @@
 //			[me setHeight:[NSNumber numberWithInt:heightInCm]];
 			[me setHeight:[NSNumber numberWithInt:row]];
 			break;
-		case 4: // TODO: display metric system unless user local is USA
+		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
 			[me setWeight:[NSNumber numberWithInt:row]];
 			if (TRUE) {
 				valueText = [NSString stringWithFormat:@"%@ lbs", valueText];
@@ -679,7 +694,7 @@
 				valueText = [NSString stringWithFormat:@"%@ kg", valueText];
 			}
 			break;
-		case 5:
+		case ETHNICITY_ROW:
 			[me setEthnicity:[NSNumber numberWithInt:row]];
 			break;
 		default:
@@ -707,7 +722,7 @@
 	
 	NSString *valueTitle = [[components objectAtIndex:component] objectAtIndex:row];
 	switch (editIndexPath.row) {
-		case 4: // TODO: display metric system unless user local is USA
+		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
 			if (TRUE) {
 				return [NSString stringWithFormat:@"%@ lbs", valueTitle];
 			} else {
