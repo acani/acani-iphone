@@ -45,6 +45,8 @@
 		C96222C61246B55700059C58 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C96222C51246B55700059C58 /* User.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
+		C9D75D93124AE8790001A448 /* HTTPOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75D92124AE8790001A448 /* HTTPOperation.m */; };
+		C9D75DD3124B843D0001A448 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75DD2124B843D0001A448 /* Constants.m */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
 		F56D024411886CF000F2A797 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* UsersViewController.m */; };
@@ -117,6 +119,9 @@
 		C96222C51246B55700059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
+		C9D75D91124AE8790001A448 /* HTTPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPOperation.h; sourceTree = "<group>"; };
+		C9D75D92124AE8790001A448 /* HTTPOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPOperation.m; sourceTree = "<group>"; };
+		C9D75DD2124B843D0001A448 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
@@ -151,6 +156,7 @@
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
 				ADB02B231204AE76006FD53D /* ChatViewController.m */,
 				ADB02B251204AEDF006FD53D /* Constants.h */,
+				C9D75DD2124B843D0001A448 /* Constants.m */,
 				1D3623240D0F684500981E51 /* LoversAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
 				F56D024211886CF000F2A797 /* UsersViewController.h */,
@@ -165,6 +171,8 @@
 				AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */,
 				ADA9564A11FA09930073D09A /* ThumbnailDownload.h */,
 				ADA9564B11FA09930073D09A /* ThumbnailDownload.m */,
+				C9D75D91124AE8790001A448 /* HTTPOperation.h */,
+				C9D75D92124AE8790001A448 /* HTTPOperation.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -390,6 +398,8 @@
 				C96221A912445C7D00059C58 /* Message.m in Sources */,
 				C96221AB12445C7D00059C58 /* Account.m in Sources */,
 				C96222C61246B55700059C58 /* User.m in Sources */,
+				C9D75D93124AE8790001A448 /* HTTPOperation.m in Sources */,
+				C9D75DD3124B843D0001A448 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

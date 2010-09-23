@@ -1,5 +1,6 @@
 #import "ProfileViewController.h"
 #import "LoversAppDelegate.h"
+#import "Constants.h"
 
 #define MAINLABEL ((UILabel *)self.navigationItem.titleView)
 
@@ -34,9 +35,19 @@
 }
 
 - (void)saveProfile:(id)sender {
-	[me setShowDistance:[NSNumber numberWithBool:[(UISwitch *)[[[self.tableView cellForRowAtIndexPath:
-	  [NSIndexPath indexPathForRow:0 inSection:1]] contentView] viewWithTag:FILTER_TAG] isOn]]];
+	[me setShowDistance:[NSNumber numberWithBool:
+						 [(UISwitch *)[[[self.tableView cellForRowAtIndexPath:
+										 [NSIndexPath indexPathForRow:0 inSection:1]] contentView] viewWithTag:FILTER_TAG] isOn]]];
 
+	NSDictionary *changes = [me changedValues];
+	if ([changes count] == 0) {
+		// TODO: notify me that no changes were made
+		[[self parentViewController] dismissModalViewControllerAnimated:YES];
+		return;
+	}
+
+	// Might be better to have the server response be the updated time,
+	// and then we could store that on the iPhone.
 	NSDate *now = [[NSDate alloc] init];
 	[me setUpdated:now];
 	[now release];
@@ -45,12 +56,29 @@
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
 		// Handle the error. What's the best way to handle this?
-		NSLog(@"Error saving profile: %@", error);
+		NSLog(@"Error saving profile to iPhone: %@", error);
 	}
 
 	// Send a PUT request to: /{uid}
 	// See sample in sample-profile-put-request.txt
+	HTTPOperation *operation = [[[HTTPOperation alloc] init] autorelease];
+	operation.delegate = self;
+	operation.oid = me.uid;
+	operation.params = changes;
+	
+	NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+	[queue addOperation:operation];
+	NSLog(@"Send profile changes to server");
+}
 
+- (void)doneWithPut:(NSString *)outstring {
+//	[activity stopAnimating];
+//	showAlert(outstring);
+//	[button setEnabled:YES];
+//	[self showButtons];
+	NSLog(@"Response from server: %@", outstring);
+	
+	// TODO: dismiss before we get response back from server
 	[[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
