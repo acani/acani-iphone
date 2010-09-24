@@ -41,8 +41,8 @@
 		return;
 	}
 
-	// Might be better to have the server response be the updated time,
-	// and then we could store that on the iPhone.
+//	// Might be better to have the server response be the updated time,
+//	// and then we could store that on the iPhone.
 //	NSDate *now = [[NSDate alloc] init];
 //	[me setUpdated:now];
 //	[now release];
@@ -876,15 +876,14 @@
 }
 
 - (void)viewDidUnload {
+	[super viewDidUnload];
 	profileHeader = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super viewDidUnload];
 	// Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
 	// For example: self.myOutlet = nil;
 }
 
 - (void)dealloc {
-	[me release];
 	[profileHeader release];
 	[valueSelect release];
 	[avatarImg release];

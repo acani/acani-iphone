@@ -82,7 +82,7 @@
 	
 	// Return results
     NSString *outstring = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
-	[self cleanup: outstring];
+	[self cleanup:outstring];
 }
 
 @end

@@ -62,8 +62,10 @@
 							 @"e", @"ethnicity",
 							 @"h", @"height",
 							 @"n", @"name",
+							 @"o", @"onlineStatus", // not yet used
 							 @"p", @"weight",
 							 @"q", @"headline",
+							 @"r", @"lastOnline", // not yet used
 							 @"s", @"sex",
 							 @"u", @"fbUsername",
 							 @"v", @"likes",

@@ -24,5 +24,6 @@
 - (void)handleSingleTap;
 - (void)favoriteAction:(id)sender;
 - (void)blockAction:(id)sender;
+- (NSString *)statusFromDate:(NSDate *)date;
 
 @end

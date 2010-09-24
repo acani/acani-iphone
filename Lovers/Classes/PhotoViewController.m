@@ -170,11 +170,14 @@ NSMutableData *picData;
 						  distanceFromLocation:targetLocation]]; // @"420 feet away";
 	[targetLocation release];
 
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // make user friendly with function below
-	lastOnlineLabel.text = [dateFormatter stringFromDate:[targetUser lastOnline]]; // @"Online 10 mins ago";
-	[dateFormatter release];
+//	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; // make user friendly with function below
+//	lastOnlineLabel.text = [dateFormatter stringFromDate:[targetUser lastOnline]]; // @"Online 10 mins ago";
+//	[dateFormatter release];
 
+	lastOnlineLabel.text = [NSString stringWithFormat:@"Online%@", // @"Online 10 mins ago";
+							[self statusFromDate:[targetUser lastOnline]]];
+	
 	NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
 	NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
 	NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
@@ -369,47 +372,37 @@ NSMutableData *picData;
 	}	
 }
 
-//- (NSString*)timestamp {
-//    // Calculate distance time string
-//    //
-//    time_t now;
-//    time(&now);
-//    
-//    int distance = (int)difftime(now, lastOnline);
-//    if (distance < 0) distance = 0;
-//    
-//    if (distance < 60) {
-//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "second ago" : "seconds ago"];
-//    }
-//    else if (distance < 60 * 60) {  
-//        distance = distance / 60;
-//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "minute ago" : "minutes ago"];
-//    }  
-//    else if (distance < 60 * 60 * 24) {
-//        distance = distance / 60 / 60;
-//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "hour ago" : "hours ago"];
-//    }
-//    else if (distance < 60 * 60 * 24 * 7) {
-//        distance = distance / 60 / 60 / 24;
-//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "day ago" : "days ago"];
-//    }
-//    else if (distance < 60 * 60 * 24 * 7 * 4) {
-//        distance = distance / 60 / 60 / 24 / 7;
-//        self.timestamp = [NSString stringWithFormat:@"%d %s", distance, (distance == 1) ? "week ago" : "weeks ago"];
-//    }
-//    else {
-//        static NSDateFormatter *dateFormatter = nil;
-//        if (dateFormatter == nil) {
-//            dateFormatter = [[NSDateFormatter alloc] init];
-//            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-//            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//        }
-//        
-//        NSDate *date = [NSDate dateWithTimeIntervalSince1970:createdAt];        
-//        self.timestamp = [dateFormatter stringFromDate:date];
-//    }
-//    return timestamp;
-//}
+// TODO: Improve this function. See node_chat on github.com for a better implementation.
+- (NSString *)statusFromDate:(NSDate *)date {
+	time_t now;
+	time(&now);
+
+	NSString *status;
+	int delta = (int)difftime(now, [date timeIntervalSince1970]);
+	if (delta < 0) delta = 0;
+
+	if (delta < 60) {
+		status = @"";
+	} else if (delta < 60 * 60) {  
+		delta = delta / 60;
+		status = [NSString stringWithFormat:@" %d %s", delta, (delta == 1) ? "minute ago" : "minutes ago"];
+	} else if (delta < 60 * 60 * 24) {
+		delta = delta / 60 / 60;
+		status = [NSString stringWithFormat:@" %d %s", delta, (delta == 1) ? "hour ago" : "hours ago"];
+	} else if (delta < 60 * 60 * 24 * 7) {
+		delta = delta / 60 / 60 / 24;
+		status = [NSString stringWithFormat:@" %d %s", delta, (delta == 1) ? "day ago" : "days ago"];
+	} else if (delta < 60 * 60 * 24 * 7 * 4) {
+		delta = delta / 60 / 60 / 24 / 7;
+		status = [NSString stringWithFormat:@" %d %s", delta, (delta == 1) ? "week ago" : "weeks ago"];
+	} else {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		status = [dateFormatter stringFromDate:date];
+		[dateFormatter release];
+	}
+	return status;
+}
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
