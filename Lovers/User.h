@@ -33,6 +33,7 @@
 @property (nonatomic, retain) Location * location;
 @property (nonatomic, retain) Account * account;
 
-+ insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
++ (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
++ (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary;
 
 @end

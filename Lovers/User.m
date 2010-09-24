@@ -30,7 +30,7 @@
 @dynamic location;
 @dynamic account;
 
-+ insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
++ (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
 	User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
 	[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
 	[user setAbout:[dictionary valueForKey:@"a"]];
@@ -53,6 +53,26 @@
 	[user setLikes:[dictionary valueForKey:@"v"]];
 	[user setAge:[dictionary valueForKey:@"y"]];
 	return user;
+}
+
++ (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary {
+	NSDictionary *encoder = [[NSDictionary alloc] initWithObjectsAndKeys:
+							 @"a", @"about",
+							 @"d", @"showDistance",
+							 @"e", @"ethnicity",
+							 @"h", @"height",
+							 @"n", @"name",
+							 @"p", @"weight",
+							 @"q", @"headline",
+							 @"s", @"sex",
+							 @"u", @"fbUsername",
+							 @"v", @"likes",
+							 @"y", @"age", nil];
+	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithCapacity:[encoder count]];
+	for (id key in dictionary) {
+		[tempDict setValue:[dictionary valueForKey:key] forKey:[encoder valueForKey:key]];
+	}
+	return [NSDictionary dictionaryWithDictionary:tempDict];
 }
 
 //// How do we convert oid to created_at timestamp?

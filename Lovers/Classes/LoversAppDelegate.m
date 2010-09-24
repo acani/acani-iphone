@@ -191,6 +191,18 @@
 
 
 #pragma mark -
+#pragma mark HTTPOperation delegate
+
+- (void)doneWithPut:(NSString *)outstring {
+	//	[activity stopAnimating];
+	//	showAlert(outstring);
+	//	[button setEnabled:YES];
+	//	[self showButtons];
+	NSLog(@"Response from server: %@", outstring);
+}
+
+
+#pragma mark -
 #pragma mark WebSocket delegate
 
 - (void)webSocketDidClose:(ZTWebSocket *)webSocket {
