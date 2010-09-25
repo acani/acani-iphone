@@ -7,14 +7,17 @@
 
 #define ABOUT_ROW 0
 #define SEX_ROW 1
-#define AGE_ROW 2
-#define HEIGHT_ROW 3
-#define WEIGHT_ROW 4
-#define ETHNICITY_ROW 5
+#define LIKES_ROW 2
+#define AGE_ROW 3
+#define HEIGHT_ROW 4
+#define WEIGHT_ROW 5
+#define ETHNICITY_ROW 6
+#define FB_USERNAME_ROW 7
 
-#define VALUE_TAG 121
-#define TEXT_VIEW_TAG 122
-#define TEXT_FIELD_TAG 123
+#define NAME_TAG 120
+#define HEADLINE_TAG 121
+#define ABOUT_TAG 122
+#define FB_USERNAME_TAG 123
 
 static NSString* kAppId = @"132443680103133";
 
@@ -23,6 +26,24 @@ static NSString* kAppId = @"132443680103133";
 
 @synthesize me;
 @synthesize fb;
+
+@synthesize saveButton;
+@synthesize doneButton;
+@synthesize textDone;
+
+@synthesize avatarImg;
+@synthesize profileName;
+@synthesize headlineInput;
+
+@synthesize aboutInput;
+@synthesize valueInput;
+
+@synthesize profileFields;
+@synthesize pickerOptions;
+@synthesize components;
+@synthesize valueSelect;
+@synthesize editIndexPath;
+@synthesize editTextTag;
 
 
 #pragma mark -
@@ -97,9 +118,9 @@ static NSString* kAppId = @"132443680103133";
 	NSData   *data = [NSData dataWithContentsOfURL:url];
 	UIImage  *img  = [[UIImage alloc] initWithData:data];
 	
-	NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									img, @"picture",
-									nil];
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   img, @"picture",
+								   nil];
 	[fb requestWithMethodName: @"photos.upload" 
 						   andParams: params
 					   andHttpMethod: @"POST" 
@@ -182,6 +203,13 @@ static NSString* kAppId = @"132443680103133";
 
 
 - (void)cancel:(id)sender {
+	if (valueSelect.superview != nil) {
+		[self donePickingValue:self];
+	} else { // TODO: add condition here. Interesting link:
+// http://stackoverflow.com/questions/1490573/how-to-programatically-check-whether-a-keyboard-is-present-in-iphone-app
+		[self doneEditingText:self];
+	}
+	
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	[managedObjectContext refreshObject:me mergeChanges:NO]; // get rid of changes
 	[self dismissModalViewControllerAnimated:YES];
@@ -226,26 +254,36 @@ static NSString* kAppId = @"132443680103133";
 #pragma mark -
 #pragma mark Initialization
 
+/*
+ - (id)initWithStyle:(UITableViewStyle)style {
+ // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+ if ((self = [super initWithStyle:style])) {
+ }
+ return self;
+ }
+ */
+
 - (id)initWithMe:(User *)user {
 	if (!(self = [super init])) return self;
-	me = user;
+	self.me = user;
 	self.title = @"Edit Profile";
 	return self;
 }
 
+
+#pragma mark -
+#pragma mark View lifecycle
+
 - (void)loadView {
-	[super loadView];
-
-//	self.wantsFullScreenLayout = YES;
-
 	// I'm not sure how to initialize the default tableView as grouped, so create our own:
-	UITableView *groupedTable = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame style:UITableViewStyleGrouped];
+	UITableView *groupedTable = [[UITableView alloc] initWithFrame:
+								 [UIScreen mainScreen].applicationFrame style:UITableViewStyleGrouped];
 	groupedTable.delegate = self;
 	groupedTable.dataSource = self;
 	self.view = groupedTable;
 	[groupedTable release];
 
-//	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	// Create UIBarButtonItems
 	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
 								   initWithTitle:@"Cancel"
 								   style:UIBarButtonItemStyleBordered
@@ -254,61 +292,74 @@ static NSString* kAppId = @"132443680103133";
 	self.navigationItem.leftBarButtonItem = cancelButton;
 	[cancelButton release];
 
-	saveButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Save"
-				  style:UIBarButtonItemStyleBordered
-				  target:self 
-				  action:@selector(saveProfile:)];
+	UIBarButtonItem *localSaveButton = [[UIBarButtonItem alloc] 
+					   initWithTitle:@"Save"
+					   style:UIBarButtonItemStyleBordered
+					   target:self 
+					   action:@selector(saveProfile:)];
+	self.saveButton = localSaveButton;
+	[localSaveButton release];
+
 	self.navigationItem.rightBarButtonItem = saveButton;
 
-	doneButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Done"
-				  style:UIBarButtonItemStyleBordered
-				  target:self 
-				  action:@selector(donePickingValue:)];	
+	UIBarButtonItem *localDoneButton = [[UIBarButtonItem alloc] 
+					   initWithTitle:@"Done"
+					   style:UIBarButtonItemStyleBordered
+					   target:self 
+					   action:@selector(donePickingValue:)];
+	self.doneButton = localDoneButton;
+	[localDoneButton release];
 	
-	textDone = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Done"
-				  style:UIBarButtonItemStyleBordered
-				  target:self 
-				  action:@selector(doneEditingText:)];
-//	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 244.0f) style:UITableViewStyleGrouped];
-//	profileContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
-//	profileContent.clearsContextBeforeDrawing = NO;
-//	profileContent.delegate = self;
-//	profileContent.dataSource = self;
-//	profileContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;	
+	UIBarButtonItem *localTextDone = [[UIBarButtonItem alloc] 
+					  initWithTitle:@"Done"
+					  style:UIBarButtonItemStyleBordered
+					  target:self 
+					  action:@selector(doneEditingText:)];
+	self.textDone = localTextDone;
+	[localTextDone release];
 
-	// set up the table's header view
-	profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 86.0f)];
+	// Create the tableHeaderView.	
+	UIView *profileHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 86.0f)];
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
 
-	//UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(20.0f, 18.0f, 62.0f, 62.0f)];
-	//avatar.image = [UIImage imageNamed:@"BlankAvatar.png"];
-	avatarImg = [[UIButton buttonWithType:UIButtonTypeCustom] initWithFrame:CGRectMake(20.0f, 18.0f, 62, 62)];
+	self.avatarImg = [[UIButton buttonWithType:UIButtonTypeCustom] initWithFrame:CGRectMake(20.0f, 18.0f, 62, 62)];
+	avatarImg.clearsContextBeforeDrawing = NO;
 	[avatarImg addTarget:self action:@selector(imageButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	[avatarImg setBackgroundImage:[UIImage imageNamed:@"BlankAvatar.png"] forState:UIControlStateNormal];
-	//[avatar addSubview:avatarImg];
-	//[profileHeader addSubview:avatar];
 	[profileHeader addSubview:avatarImg];
-	//[avatar release];
-	
-	profileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
-	
-	//UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(96.0f, 39.0f, 212.0f, 21.0f)];
+
+	UITextField *localProfileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 26.0f, 212.0f, 21.0f)];
+	self.profileName = localProfileName;
+	[localProfileName release];
 	profileName.clearsContextBeforeDrawing = NO;
 	profileName.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0f];
 	profileName.adjustsFontSizeToFitWidth = YES;
 	profileName.minimumFontSize = 10.0f;
-	//profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+//	profileName.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	profileName.delegate = self;
-	profileName.text = [me name];
 	profileName.backgroundColor = [UIColor clearColor];
+	profileName.placeholder = @"Name Here";
+	profileName.tag = NAME_TAG;
 	[profileHeader addSubview:profileName];
 	[profileName release];
 
+	UITextField *localheadlineInput = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 56.0f, 212.0f, 21.0f)];
+	self.headlineInput = localheadlineInput;
+	[localheadlineInput release];
+	headlineInput.clearsContextBeforeDrawing = NO;
+	headlineInput.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0f];
+	headlineInput.adjustsFontSizeToFitWidth = YES;
+	headlineInput.minimumFontSize = 10.0f;
+	headlineInput.delegate = self;
+	headlineInput.backgroundColor = [UIColor clearColor];
+	headlineInput.placeholder = @"Headline";
+	headlineInput.tag = HEADLINE_TAG;
+	[profileHeader addSubview:headlineInput];
+	[headlineInput release];
+	
 	self.tableView.tableHeaderView = profileHeader;	// note this overrides UITableView's 'sectionHeaderHeight' property
+	[profileHeader release];
 
 	// set up the table's header view
 	UIView *profileFooter = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 60.0f)];
@@ -324,32 +375,30 @@ static NSString* kAppId = @"132443680103133";
 	[profileFooter addSubview:clearChatsButton];
 
 	self.tableView.tableFooterView = profileFooter;
+	[profileFooter release];
 
-//	[self.view addSubview:profileContent];
-//	[profileContent release];
-
-//	valueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 220.0f)];
-	valueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 0.0f)];
+	UIPickerView *localValueSelect = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200.0f, 320.0f, 0.0f)]; // should height be 220.0f?
+	self.valueSelect = localValueSelect;
+	[localValueSelect release];
 	valueSelect.clearsContextBeforeDrawing = NO;
 	valueSelect.showsSelectionIndicator = YES;
 	valueSelect.delegate = self;
 
-//	int height = 22.0f;
-	profileFields = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"About", @"Sex", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
-					 [[NSArray alloc] initWithObjects:@"Show Distance", @"Sex Filter", @"Age Filter", nil], nil];
-
 	// This should be sqlite or something persistent. Maybe plist?
-	profileValues = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", @"Optional", nil],
-					 [[NSArray alloc] initWithObjects:@"Show", @"Both", @"All ages", nil], nil];
-	
-	pickerOptions = [[NSArray alloc] initWithObjects:
+	NSArray *localProfileFields = [[NSArray alloc] initWithObjects:
+					 [[NSArray alloc] initWithObjects:@"About", @"Sex", @"Likes", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
+					 [[NSArray alloc] initWithObjects:@"Show Distance", @"Sex Filter", @"Age Filter", nil], nil];
+	self.profileFields = localProfileFields;
+	[localProfileFields release];
+
+	NSArray *localPickerOptions = [[NSArray alloc] initWithObjects:
 					 [[NSArray alloc] initWithObjects: // section: 0
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"", nil], nil],
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil], nil],
+					  [[NSArray alloc] initWithObjects:
+					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Women", @"Men", @"Both", nil], nil],
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"Do Not Show",
 						// Instead of making these long arrays, we can just put in a switch statement
@@ -428,8 +477,8 @@ static NSString* kAppId = @"132443680103133";
 					  [[NSArray alloc] initWithObjects:
 					   [[NSArray alloc] initWithObjects:@"No min", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil],
 					   [[NSArray alloc] initWithObjects:@"No max", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil], nil], nil], nil];
-
-	components = [[pickerOptions objectAtIndex:0] objectAtIndex:1];
+	self.pickerOptions = localPickerOptions;
+	[localPickerOptions release];
 
 //	NSLog(@"pickerOptions: %@", pickerOptions);
 //	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
@@ -441,54 +490,37 @@ static NSString* kAppId = @"132443680103133";
 //	printf("\nAll window subviews:\n");
 //	NSLog(@"self.view.window: %@", allApplicationViews());
 
-	fb = [[Facebook alloc] init];
-	[self fbLogin];
+	Facebook *localFb = [[Facebook alloc] init];
+	self.fb = localFb;
+	[localFb release];
+//	[self fbLogin];
 
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-/*
- - (id)initWithStyle:(UITableViewStyle)style {
- // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
- if ((self = [super initWithStyle:style])) {
- }
- return self;
- }
- */
+- (void)viewDidLoad {
+//	NSString *myName = ; // change to fullName
+//	NSString *myHeadline = [me headline];
+//	
+//	if ([myName length] == 0) {
+//		myName = @"Name Here";
+//	}
+//	if ([myHeadline length] == 0) {
+//		myHeadline = @"Headline";
+//		headlineInput.color = [
+//	}
+	
+	profileName.text = [me name];
+	headlineInput.text = [me headline];
 
+	// Uncomment the following line to preserve selection between presentations.
+//	self.clearsSelectionOnViewWillAppear = NO;
 
-#pragma mark -
-#pragma mark View lifecycle
-
-
-//- (void)loadView {
-//	[super loadView];
-//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
-
-//	NSLog(@"parentView: %@", self.parentViewController.view);
-//	NSLog(@"parentView: %@", self.parentViewController.view.subviews);
-//	[self.parentViewController.view removeFromSuperview];
-//  // maybe put a willChangeWindow?
-//	[self.view addSubview:self.parentViewController.view];
-
-//	self.navigationItem.titleView = [[[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 30.0f)] autorelease];
-//	[MAINLABEL setBackgroundColor:[UIColor clearColor]];
-//	[MAINLABEL setTextColor:[UIColor whiteColor]];
-//	[MAINLABEL setTextAlignment:UITextAlignmentCenter];
-//	[MAINLABEL setText:@"Profile"];
-//}
-
-//- (void)viewDidLoad {
-//	[super viewDidLoad];
-//
-//	// Uncomment the following line to preserve selection between presentations.
-////	self.clearsSelectionOnViewWillAppear = NO;
-//
-//	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //	 self.navigationItem.rightBarButtonItem = self.editButtonItem;
-//}
+}
 
 
 /*
@@ -572,43 +604,49 @@ static NSString* kAppId = @"132443680103133";
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *fieldText = [[profileFields objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	NSString *valueText = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	NSString *valueText;
 	static NSString *CellID;
 	UITableViewCell *cell;
 
-	if (indexPath.section == 0 && indexPath.row == 0) { // About textView Cell
+	if (indexPath.section == 0 && indexPath.row == ABOUT_ROW) {
 		CellID = @"TextView";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			aboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
-			//	aboutInput.scrollEnabled = NO;
-			aboutInput.clearsContextBeforeDrawing = NO;
-			aboutInput.font = [UIFont systemFontOfSize:14.0];
-			//	aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
-			aboutInput.backgroundColor = [UIColor grayColor];
-			aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
-			aboutInput.delegate = self;			
-			aboutInput.tag = TEXT_VIEW_TAG;
+			if (aboutInput == nil) {
+				UITextView *localAboutInput = [[UITextView alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 50.0f)];
+				self.aboutInput = localAboutInput;
+				[localAboutInput release];
+				//	self.aboutInput.scrollEnabled = NO;
+				aboutInput.clearsContextBeforeDrawing = NO;
+				aboutInput.font = [UIFont systemFontOfSize:14.0];
+				//	aboutInput.dataDetectorTypes = UIDataDetectorTypeAll;
+				aboutInput.backgroundColor = [UIColor grayColor];
+				aboutInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
+				aboutInput.delegate = self;			
+				aboutInput.tag = ABOUT_TAG;
+			}
 			[cell.contentView addSubview:aboutInput];
-			[aboutInput release];
 		}
 		aboutInput.text = [me about];
-	} else if (indexPath.section == 0 && indexPath.row == 6) { // Facebook textField Cell
+	} else if (indexPath.section == 0 && indexPath.row == FB_USERNAME_ROW) {
 		CellID = @"TextField";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			valueInput = [[UITextField alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 30.0f)];
-			valueInput.clearsContextBeforeDrawing = NO;
-			valueInput.font = [UIFont systemFontOfSize:14.0];
-			valueInput.backgroundColor = [UIColor lightGrayColor];
-			valueInput.delegate = self;			
-			valueInput.tag = TEXT_FIELD_TAG;
+			if (valueInput == nil) {
+				UITextField *localValueInput = [[UITextField alloc] initWithFrame:CGRectMake(94.0f, 4.0f, 180.0f, 30.0f)];
+				self.valueInput = localValueInput;
+				[localValueInput release];
+				valueInput.clearsContextBeforeDrawing = NO;
+				valueInput.font = [UIFont systemFontOfSize:14.0];
+				valueInput.backgroundColor = [UIColor lightGrayColor];
+				valueInput.delegate = self;			
+				valueInput.tag = FB_USERNAME_TAG;
+			}
 			[cell.contentView addSubview:valueInput];
-			[valueInput release];
 		}
 		valueInput.text = [me fbUsername];
 	} else if (indexPath.section == 1 && indexPath.row == 0) { // Distance Filter Cell
@@ -629,15 +667,11 @@ static NSString* kAppId = @"132443680103133";
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellID] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-//		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//			int height = 22.0f;
-//			value = [[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-//			[cell.contentView addSubview:[[profileValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
-//			[cell sendSubviewToBack:cell.textLabel];
 		}
 
 		NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
 		NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
+		NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
 		NSNumber *valueNum = [[NSNumber alloc] initWithInt:0];
 		switch (indexPath.row) {
@@ -645,6 +679,10 @@ static NSString* kAppId = @"132443680103133";
 				// If I try to set cell.detailTextLabel directly here, I get readonly error.
 				valueNum = [me sex];
 				valueText = [Sexes objectAtIndex:[valueNum intValue]];
+				break;
+			case LIKES_ROW:
+				valueNum = [me likes];
+				valueText = [Likes objectAtIndex:[valueNum intValue]];
 				break;
 			case AGE_ROW:
 				valueNum = [me age];
@@ -678,11 +716,11 @@ static NSString* kAppId = @"132443680103133";
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellID] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		}
-		cell.detailTextLabel.text = valueText;
+		cell.detailTextLabel.text = @"Optional"; // TODO: store in NSUserDefaults
 	}
 //	else {
-//		value = (UILabel *)[cell.contentView viewWithTag:VALUE_TAG];
-//		aboutInput = (UITextView *)[cell.contentView viewWithTag:TEXT_VIEW_TAG];		
+//		value = (UILabel *)[cell.contentView viewWithTag:FB_USERNAME_TAG];
+//		aboutInput = (UITextView *)[cell.contentView viewWithTag:ABOUT_TAG];		
 //	}
 	cell.textLabel.text = fieldText;
 
@@ -801,14 +839,18 @@ static NSString* kAppId = @"132443680103133";
 		self.navigationItem.rightBarButtonItem = doneButton;
 	}
 	[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionTop animated:YES];
-	NSLog(@"indexPath: %@", indexPath);
-	editIndexPath = indexPath;
-	components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	self.editIndexPath = indexPath;
+	
+	// TODO: make components a pointer
+	self.components = [[pickerOptions objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[valueSelect reloadAllComponents];
 
 	switch (editIndexPath.row) {
 		case SEX_ROW:
 			[valueSelect selectRow:[[me sex] intValue] inComponent:0 animated:NO];
+			break;
+		case LIKES_ROW:
+			[valueSelect selectRow:[[me likes] intValue] inComponent:0 animated:NO];
 			break;
 		case AGE_ROW:
 			[valueSelect selectRow:[[me age] intValue] inComponent:0 animated:NO];
@@ -828,27 +870,26 @@ static NSString* kAppId = @"132443680103133";
 			[valueSelect selectRow:[[me ethnicity] intValue] inComponent:0 animated:NO];
 			break;
 		default:
-			[valueSelect selectRow:0 inComponent:0 animated:NO];
+//			[valueSelect selectRow:0 inComponent:0 animated:NO];
 			break;
 	}
 }
 
-//- (void)textViewDidBeginEditing:(UITextView *)textView {
-//	self.navigationItem.rightBarButtonItem = textDone;
-//}
-//
-//- (void)textFieldDidBeginEditing:(UITextField *)textField {
-//	self.navigationItem.rightBarButtonItem = textDone;
-//}
-
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	NSLog(@"Selected Color: %@. Index of selected color: %i", [[components objectAtIndex:component] objectAtIndex:row], row);
-	NSLog(@"editIndexPath: %@", editIndexPath);
+	NSString *valueText;
 
-	NSString *valueText = [[components objectAtIndex:component] objectAtIndex:row];
+	if (row == 0) {
+		valueText = @"Optional";
+	} else {
+		valueText = [[components objectAtIndex:component] objectAtIndex:row];
+	}
+
 	switch (editIndexPath.row) {
 		case SEX_ROW:
 			[me setSex:[NSNumber numberWithInt:row]];
+			break;
+		case LIKES_ROW:
+			[me setLikes:[NSNumber numberWithInt:row]];
 			break;
 		case AGE_ROW:
 			[me setAge:[NSNumber numberWithInt:row]];
@@ -882,10 +923,6 @@ static NSString* kAppId = @"132443680103133";
 	}
 
 	[self.tableView cellForRowAtIndexPath:editIndexPath].detailTextLabel.text = valueText; // set text for UILabel
-
-//	[[[profileValues objectAtIndex:editIndexPath.section] objectAtIndex:editIndexPath.row] setString:valueText];
-//	[[[profileValues objectAtIndex:editIndexPath.section]
-//	  objectAtIndex:editIndexPath.row] setText:[components objectAtIndex:row]];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -893,13 +930,10 @@ static NSString* kAppId = @"132443680103133";
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-	NSLog(@"valueSelect rows count: %d", [[components objectAtIndex:component] count]);
 	return [[components objectAtIndex:component] count];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	NSLog(@"object: %@", [[components objectAtIndex:component] objectAtIndex:row]);
-	
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {	
 	NSString *valueTitle = [[components objectAtIndex:component] objectAtIndex:row];
 	switch (editIndexPath.row) {
 		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
@@ -915,29 +949,8 @@ static NSString* kAppId = @"132443680103133";
 	}
 }
 
-//- (void)shrinkTableView {
-//	[self slideFrame:YES];
-//}
-//
-//// Shorten height of UITableView when picker/keyboard pops up
-//- (void)slideFrame:(BOOL)up {
-//	const int movementDistance = 216.0f; // set to keyboard variable	
-//	int movement = (up ? -movementDistance : movementDistance);
-//	
-//	[UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDuration:0.3];
-//
-//	CGRect viewFrame = self.tableView.frame;
-//	viewFrame.size.height += movement;
-//	self.tableView.frame = viewFrame;
-//
-//	CGRect pickerFrame = valueSelect.frame;
-//	pickerFrame.size.height -= movement;
-//	self.tableView.frame = viewFrame;
-//
-//	[UIView commitAnimations];
-//}
-
+// This is to get the keyboard/picker to hide when touching
+// the tableView. This should be in chatView.
 // Add to TableView (I think by subclassing UITableView, i.e.,
 // @interface TouchableTableView : UITableView
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -989,22 +1002,61 @@ static NSString* kAppId = @"132443680103133";
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)doneEditingText:(id)sender {
-//  // TODO: use something like this:
-//	switch (editIndexPath.row) {
-//		case 0:
-//			break;
-//		default:
-//			break;
-//	}
-	[me setAbout:aboutInput.text];
-	[aboutInput resignFirstResponder];
 
-	[me setName:profileName.text];
-	[profileName resignFirstResponder];
-	
-	[me setFbUsername:valueInput.text];
-	[valueInput resignFirstResponder];
+#pragma mark -
+#pragma mark Text field/view delegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	self.editTextTag = textView.tag;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.editTextTag = textField.tag;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	switch (textView.tag) {
+		case ABOUT_TAG:
+			[me setAbout:aboutInput.text];
+			break;
+		default:
+			break;
+	}
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	switch (textField.tag) {
+		case NAME_TAG:
+			[me setName:profileName.text];
+			break;
+		case HEADLINE_TAG:
+			[me setHeadline:headlineInput.text];
+			break;
+		case FB_USERNAME_TAG:
+			[me setFbUsername:valueInput.text];
+			break;
+		default:
+			break;
+	}
+}
+
+- (void)doneEditingText:(id)sender {
+	switch (editTextTag) {
+		case NAME_TAG:
+			[profileName resignFirstResponder];	
+			break;
+		case HEADLINE_TAG:
+			[headlineInput resignFirstResponder];	
+			break;
+		case ABOUT_TAG:
+			[aboutInput resignFirstResponder];	
+			break;
+		case FB_USERNAME_TAG:
+			[valueInput resignFirstResponder];	
+			break;
+		default:
+			break;
+	}
 }
 
 - (void)clearChats:(id)sender {
@@ -1041,17 +1093,52 @@ static NSString* kAppId = @"132443680103133";
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
-	profileHeader = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.fb = nil;
+	// me is set in init, so I'm not sure if we should set it to nil here.
+
+	self.saveButton = nil;
+	self.doneButton = nil;
+	self.textDone = nil;
+
+	self.avatarImg = nil;
+	self.profileName = nil;
+	self.headlineInput = nil;
+	
+	self.aboutInput = nil;
+	self.valueInput = nil;
+
+	self.profileFields = nil;
+	self.pickerOptions = nil;
+	self.components = nil;
+	self.valueSelect = nil;
+	self.editIndexPath = nil;
+	// editTexTag shouldn't be set to nil because it's an NSInteger, right?
+
 	// Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
 	// For example: self.myOutlet = nil;
 }
 
 - (void)dealloc {
 	[fb release];
-	[profileHeader release];
+	[me release];
+
+	[saveButton release];
+	[doneButton release];
+	[textDone release];
+
+	// avatarImg, profileName, and headlineInput are released in loadView.
+
+	[aboutInput release];
+	[valueInput release];
+
+	[profileFields release];
+	[pickerOptions release];
+	[components release];
 	[valueSelect release];
-	[avatarImg release];
+	[editIndexPath release];
+	// editTexTag mustn't be released because it's an NSInteger.
+
     [super dealloc];
 }
 

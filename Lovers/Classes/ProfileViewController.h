@@ -7,31 +7,47 @@
 UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate,
 UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
 	User *me;
+	Facebook *fb;
 
-	UINavigationController *navController;
-	UIView *profileHeader;
+	UIBarButtonItem *saveButton;
+	UIBarButtonItem *doneButton; // appears only when the picker is open
+	UIBarButtonItem *textDone;  // appears only when the keyboard is open
+
+	UIButton *avatarImg;
+	UITextField *profileName;
+	UITextField *headlineInput;
+
+	UITextView *aboutInput;
+	UITextField *valueInput;
+
 	NSArray *profileFields;
-	NSArray *profileValues;
-	NSArray *profileFields1;
-	NSArray *profileValues1;
 	NSArray *pickerOptions;
 	NSArray *components;
 	UIPickerView *valueSelect;
-	UIToolbar *pickerToolbar;
 	NSIndexPath *editIndexPath;
-	UITextView *aboutInput;
-	UITextField *valueInput;
-	UIBarButtonItem *saveButton;
-	UIBarButtonItem *doneButton; // this button appears only when the picker is open
-	UIBarButtonItem *textDone;
-	UIButton *avatarImg;
-	UITextField *profileName;
-	
-	Facebook *fb;
+	NSInteger editTextTag;
 }
 
 @property (nonatomic, retain) User *me;
 @property (nonatomic, retain) Facebook *fb;
+
+@property (nonatomic, retain) UIBarButtonItem *saveButton;
+@property (nonatomic, retain) UIBarButtonItem *doneButton;
+@property (nonatomic, retain) UIBarButtonItem *textDone;
+
+@property (nonatomic, retain) UIButton *avatarImg;
+@property (nonatomic, retain) UITextField *profileName;
+@property (nonatomic, retain) UITextField *headlineInput;
+
+@property (nonatomic, retain) UITextView *aboutInput;
+@property (nonatomic, retain) UITextField *valueInput;
+
+@property (nonatomic, retain) NSArray *profileFields;
+@property (nonatomic, retain) NSArray *pickerOptions;
+@property (nonatomic, retain) NSArray *components;
+@property (nonatomic, retain) UIPickerView *valueSelect;
+@property (nonatomic, retain) NSIndexPath *editIndexPath;
+@property (nonatomic) NSInteger editTextTag;
 
 - (id)initWithMe:(User *)user;
 - (void)doneEditingText:(id)sender;

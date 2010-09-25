@@ -366,14 +366,11 @@ const enum downloadType JSON = _json;
 
 - (void)goToProfile:(id)sender {
 	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[Users objectAtIndex:0]];
-	//	[self.navigationController pushViewController:pvc animated:YES];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
 	[profileVC release];
-	[navController setNavigationBarHidden:NO];
-	
 	[self presentModalViewController:navController animated:YES];
-	NSLog(@"GoToProfile!");
+	[navController release];
 }
 
 #define TERMS_ALERT 901

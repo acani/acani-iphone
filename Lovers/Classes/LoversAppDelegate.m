@@ -77,6 +77,7 @@
 	[self findLocation];
 	
 	// Setup profileValues decoder arrays: Maybe these should just be in one NSDictionary?
+	// Also, these are already in pickerOptions.
 	Sexes = [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil];
 	Ethnicities = [[NSArray alloc] initWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino",
 				   @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil];
