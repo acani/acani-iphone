@@ -1,6 +1,7 @@
 #import "ProfileViewController.h"
 #import "LoversAppDelegate.h"
 #import "Constants.h"
+#import "FBConnect.h"
 
 #define MAINLABEL ((UILabel *)self.navigationItem.titleView)
 
@@ -15,17 +16,170 @@
 #define TEXT_VIEW_TAG 122
 #define TEXT_FIELD_TAG 123
 
+static NSString* kAppId = @"132443680103133";
+
 
 @implementation ProfileViewController
 
 @synthesize me;
+@synthesize fb;
 
-- (id)initWithMe:(User *)user {
-	if (!(self = [super init])) return self;
-	me = user;
-	self.title = @"Edit Profile";
-	return self;
+
+#pragma mark -
+#pragma mark Facebook functions
+
+- (void)fbLogin {
+	[fb authorize:kAppId permissions:
+	 [NSArray arrayWithObjects:@"read_stream", @"offline_access", nil] delegate:self];
 }
+
+- (void)fbLogout {
+	[fb logout:self]; 
+}
+
+- (void)getUserInfo:(id)sender {
+	[fb requestWithGraphPath:@"me" andDelegate:self];
+}
+
+
+/**
+ * Example of REST API CAll
+ *
+ * This lets you make a REST API Call to get a user's public information with FQL.
+ */
+- (void)getPublicInfo:(id)sender {
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   @"SELECT uid,name FROM user WHERE uid=4", @"query",
+								   nil];
+	[fb requestWithMethodName: @"fql.query" 
+						   andParams: params
+					   andHttpMethod: @"POST" 
+						 andDelegate: self]; 
+}
+
+/**
+ * Example of display Facebook dialogs
+ *
+ * This lets you publish a story to the user's stream. It uses UIServer, which is a consistent 
+ * way of displaying user-facing dialogs
+ */
+- (void)publishStream:(id)sender {
+	
+	SBJSON *jsonWriter = [[SBJSON new] autorelease];
+	
+	NSDictionary* actionLinks = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys: 
+														   @"Always Running",@"text",@"http://itsti.me/",@"href", nil], nil];
+	
+	NSString *actionLinksStr = [jsonWriter stringWithObject:actionLinks];
+	NSDictionary* attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+								@"a long run", @"name",
+								@"The Facebook Running app", @"caption",
+								@"it is fun", @"description",
+								@"http://itsti.me/", @"href", nil];
+	NSString *attachmentStr = [jsonWriter stringWithObject:attachment];
+	NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   kAppId, @"api_key",
+								   @"Share on Facebook",  @"user_message_prompt",
+								   actionLinksStr, @"action_links",
+								   attachmentStr, @"attachment",
+								   nil];
+	
+	[fb dialog: @"stream.publish"
+			andParams: params
+		  andDelegate:self];
+	
+}
+
+
+- (void)uploadPhoto:(id)sender {
+	NSString *path = @"http://www.facebook.com/images/devsite/iphone_connect_btn.jpg";
+	NSURL    *url  = [NSURL URLWithString:path];
+	NSData   *data = [NSData dataWithContentsOfURL:url];
+	UIImage  *img  = [[UIImage alloc] initWithData:data];
+	
+	NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									img, @"picture",
+									nil];
+	[fb requestWithMethodName: @"photos.upload" 
+						   andParams: params
+					   andHttpMethod: @"POST" 
+						 andDelegate: self]; 
+	[img release];  
+}
+
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
+}
+
+
+/**
+ * Callback for facebook login
+ */ 
+- (void)fbDidLogin {
+	NSLog(@"logged in");
+}
+
+/**
+ * Callback for facebook did not login
+ */
+- (void)fbDidNotLogin:(BOOL)cancelled {
+	NSLog(@"did not login");
+}
+
+/**
+ * Callback for facebook logout
+ */ 
+- (void)fbDidLogout {
+	NSLog(@"logged out");
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FBRequestDelegate
+
+/**
+ * Callback when a request receives Response
+ */ 
+- (void)request:(FBRequest*)request didReceiveResponse:(NSURLResponse*)response{
+	NSLog(@"received response");
+};
+
+/**
+ * Called when an error prevents the request from completing successfully.
+ */
+- (void)request:(FBRequest*)request didFailWithError:(NSError*)error{
+//	[self.label setText:[error localizedDescription]];
+	NSLog(@"error %@", [error localizedDescription]);
+};
+
+/**
+ * Called when a request returns and its response has been parsed into an object.
+ * The resulting object may be a dictionary, an array, a string, or a number, depending
+ * on thee format of the API response.
+ */
+- (void)request:(FBRequest*)request didLoad:(id)result {
+	if ([result isKindOfClass:[NSArray class]]) {
+		result = [result objectAtIndex:0]; 
+	}
+	if ([result objectForKey:@"owner"]) {
+//		[self.label setText:@"Photo upload Success"];
+	} else {
+//		[self.label setText:[result objectForKey:@"name"]];
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FBDialogDelegate
+
+/** 
+ * Called when a UIServer Dialog successfully return
+ */
+- (void)dialogDidComplete:(FBDialog*)dialog{
+//	[self.label setText:@"publish successfully"];
+	NSLog(@"publish successfully");
+}
+
 
 - (void)cancel:(id)sender {
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -68,10 +222,21 @@
 	[[self parentViewController] dismissModalViewControllerAnimated:YES];	
 }
 
+
+#pragma mark -
+#pragma mark Initialization
+
+- (id)initWithMe:(User *)user {
+	if (!(self = [super init])) return self;
+	me = user;
+	self.title = @"Edit Profile";
+	return self;
+}
+
 - (void)loadView {
 	[super loadView];
 
-	self.wantsFullScreenLayout = YES;
+//	self.wantsFullScreenLayout = YES;
 
 	// I'm not sure how to initialize the default tableView as grouped, so create our own:
 	UITableView *groupedTable = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame style:UITableViewStyleGrouped];
@@ -267,7 +432,7 @@
 	components = [[pickerOptions objectAtIndex:0] objectAtIndex:1];
 
 //	NSLog(@"pickerOptions: %@", pickerOptions);
-	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
+//	NSLog(@"pickerOptions obj: %@", [[[pickerOptions objectAtIndex:0] objectAtIndex:1] objectAtIndex:0]);
 //	NSLog(@"self.view.window.subviews: %@", self.view.window.subviews);	
 //	NSLog(@"self.view.subviews: %@", self.view.subviews);	
 //	NSLog(@"self.view.window: %@", self.view.window);
@@ -276,14 +441,13 @@
 //	printf("\nAll window subviews:\n");
 //	NSLog(@"self.view.window: %@", allApplicationViews());
 
+	fb = [[Facebook alloc] init];
+	[self fbLogin];
+
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
-
-
-#pragma mark -
-#pragma mark Initialization
 
 /*
  - (id)initWithStyle:(UITableViewStyle)style {
@@ -522,8 +686,8 @@
 //	}
 	cell.textLabel.text = fieldText;
 
-	NSLog(@"cell.textLabel: %@", cell.textLabel);
-	NSLog(@"cell.detailTextLabel: %@", cell.detailTextLabel);
+//	NSLog(@"cell.textLabel: %@", cell.textLabel);
+//	NSLog(@"cell.detailTextLabel: %@", cell.detailTextLabel);
     return cell;
 }
 
@@ -884,6 +1048,7 @@
 }
 
 - (void)dealloc {
+	[fb release];
 	[profileHeader release];
 	[valueSelect release];
 	[avatarImg release];

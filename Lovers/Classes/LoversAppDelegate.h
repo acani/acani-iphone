@@ -28,8 +28,8 @@
 	UsersViewController *usersViewController;
 	
 	NSArray *Sexes;
-	NSArray *Ethnicities;	
-	NSArray *Likes;	
+	NSArray *Ethnicities;
+	NSArray *Likes;
 }
 
 @property (nonatomic, retain) Account *myAccount;
