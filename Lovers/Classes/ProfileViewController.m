@@ -386,21 +386,21 @@ static NSString* kAppId = @"132443680103133";
 
 	// This should be sqlite or something persistent. Maybe plist?
 	NSArray *localProfileFields = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects:@"About", @"Sex", @"Likes", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
-					 [[NSArray alloc] initWithObjects:@"Show Distance", @"Sex Filter", @"Age Filter", nil], nil];
+					 [NSArray arrayWithObjects:@"About", @"Sex", @"Likes", @"Age", @"Height", @"Weight", @"Ethnicity", @"Facebook", nil],
+					 [NSArray arrayWithObjects:@"Show Distance", @"Sex Filter", @"Age Filter", nil], nil];
 	self.profileFields = localProfileFields;
 	[localProfileFields release];
 
 	NSArray *localPickerOptions = [[NSArray alloc] initWithObjects:
-					 [[NSArray alloc] initWithObjects: // section: 0
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Female", @"Male", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Women", @"Men", @"Both", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show",
+					 [NSArray arrayWithObjects: // section: 0
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show", @"Female", @"Male", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show", @"Women", @"Men", @"Both", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show",
 						// Instead of making these long arrays, we can just put in a switch statement
 						// for age & weight (perhaps even height) that translates the current row to an
 						// age or weight string. We could even give an age/weight offset, so that
@@ -419,11 +419,11 @@ static NSString* kAppId = @"132443680103133";
 						@"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119",
 						@"120", @"121", @"122", @"123", @"124", @"125", @"126", @"127", @"128", @"129",
 						@"130", @"131", @"132", @"123", @"124", @"125", @"126", @"127", @"128", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"5 feet", @"6 feet", @"7 feet", nil],
-					   [[NSArray alloc] initWithObjects:@"0 inches", @"1 inches", @"2 inches", @"3 inches", @"4 inches", @"5 inches", @"6 inches", @"7 inches", @"8 inches", @"9 inches", @"10 inches", @"11 inches", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show",
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show", @"5 feet", @"6 feet", @"7 feet", nil],
+					   [NSArray arrayWithObjects:@"0 inches", @"1 inches", @"2 inches", @"3 inches", @"4 inches", @"5 inches", @"6 inches", @"7 inches", @"8 inches", @"9 inches", @"10 inches", @"11 inches", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show",
 						@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9",
 						@"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19",
 						@"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29",
@@ -465,18 +465,18 @@ static NSString* kAppId = @"132443680103133";
 						@"380", @"381", @"382", @"383", @"384", @"385", @"386", @"387", @"388", @"389",
 						@"390", @"391", @"392", @"393", @"394", @"395", @"396", @"397", @"398", @"399",
 						@"400", nil], nil],					  
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino", @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"", nil], nil], nil],
-					 [[NSArray alloc] initWithObjects:  // section: 1
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"Both", @"Women only", @"Men only", nil], nil],
-					  [[NSArray alloc] initWithObjects:
-					   [[NSArray alloc] initWithObjects:@"No min", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil],
-					   [[NSArray alloc] initWithObjects:@"No max", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil], nil], nil], nil];
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Do Not Show", @"Asian", @"Black", @"Latino", @"Middle Eastern", @"Mixed", @"Native American", @"White", @"Other", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"", nil], nil], nil],
+					 [NSArray arrayWithObjects:  // section: 1
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"Both", @"Women only", @"Men only", nil], nil],
+					  [NSArray arrayWithObjects:
+					   [NSArray arrayWithObjects:@"No min", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil],
+					   [NSArray arrayWithObjects:@"No max", @"9", @"10", @"11", @"12", @"13", @"14", @"15", @"16", @"17", @"18", @"19", @"20", @"21", @"22", @"23", @"24", @"25", @"26", @"27", @"28", @"29", @"30", @"31", @"32", @"33", @"34", @"35", @"36", @"37", @"38", @"39", @"40", @"41", @"42", @"43", @"44", @"45", @"46", @"47", @"48", @"49", @"50", @"51", @"52", @"53", @"54", @"55", @"56", @"57", @"58", @"59", @"60", @"61", @"62", @"63", @"64", @"65", @"66", @"67", @"68", @"69", @"70", @"71", @"72", @"73", @"74", @"75", @"76", @"77", @"78", @"79", @"80", @"81", @"82", @"83", @"84", @"85", @"86", @"87", @"88", @"89", @"91", @"92", @"93", @"94", @"95", @"96", @"97", @"98", @"99", @"100", @"101", @"102", @"103", @"104", @"105", @"106", @"107", @"108", @"109", @"110", @"111", @"112", @"113", @"114", @"115", @"116", @"117", @"118", @"119", @"120", @"121", @"122", nil], nil], nil], nil];
 	self.pickerOptions = localPickerOptions;
 	[localPickerOptions release];
 
