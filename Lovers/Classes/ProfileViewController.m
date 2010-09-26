@@ -795,12 +795,15 @@ static NSString* kAppId = @"132443680103133";
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	// check if our date picker is already on screen
-	if (valueSelect.superview == nil &&
-		!(indexPath.section == 0 && indexPath.row == 0) &&
-		!(indexPath.section == 0 && indexPath.row == 6) &&
-		!(indexPath.section == 1 && indexPath.row == 0)) {
+	// Don't do anything for text or switch cells
+	if ((indexPath.section == 0 && indexPath.row == ABOUT_ROW) ||
+		(indexPath.section == 0 && indexPath.row == FB_USERNAME_ROW) ||
+		(indexPath.section == 1 && indexPath.row == 0)) {
+		return;
+	}
 
+	// check if our date picker is already on screen
+	if (valueSelect.superview == nil) {
 		[self doneEditingText:self];
 
 		[[[UIApplication sharedApplication] keyWindow] addSubview:valueSelect];

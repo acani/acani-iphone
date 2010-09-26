@@ -70,11 +70,15 @@
 							 @"u", @"fbUsername",
 							 @"v", @"likes",
 							 @"y", @"age", nil];
+
 	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithCapacity:[encoder count]];
 	for (id key in dictionary) {
 		[tempDict setValue:[dictionary valueForKey:key] forKey:[encoder valueForKey:key]];
 	}
-	return [NSDictionary dictionaryWithDictionary:tempDict];
+	[encoder release];
+	NSDictionary *encodedDict = [NSDictionary dictionaryWithDictionary:tempDict];
+	[tempDict release];
+	return encodedDict;
 }
 
 //// How do we convert oid to created_at timestamp?

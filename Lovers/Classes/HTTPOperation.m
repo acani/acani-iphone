@@ -58,7 +58,6 @@
 - (void)main {
 	// Create the PUT data from the PUT dictionary
 	NSData *putData = [self generateFormDataFromDictionary:params];
-	[params release];
 	
 	// Establish the API request. Use upload vs uploadAndPost for skip tweet
     NSString *baseurl = [NSString stringWithFormat:@"http://%@/%@", SINATRA, oid]; 

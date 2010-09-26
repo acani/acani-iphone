@@ -26,7 +26,7 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// Setup the view
+	// Create the window & usersView
 	usersViewController = [[UsersViewController alloc] init];
 	navigationController = [[UINavigationController alloc]
 							initWithRootViewController:usersViewController];
