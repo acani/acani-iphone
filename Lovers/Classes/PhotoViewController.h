@@ -4,20 +4,15 @@
 	User *targetUser;
 	UIView *overlay;
 	UIView *overlaySide;
-	UIImageView *profileImage;
-	NSURLConnection *profilePicConnection;
-	NSString *picUrl;
+	NSMutableData *picData;
 }
 
 @property (nonatomic, retain) User *targetUser;
 @property (nonatomic, retain) UIView *overlay;
 @property (nonatomic, retain) UIView *overlaySide;
-@property (nonatomic, retain) UIImageView *profileImage;
-@property (nonatomic, retain) NSURLConnection *profilePicConnection;
-@property (nonatomic, retain) NSString *picUrl;
+@property (nonatomic, retain) NSMutableData *picData;
 
 - (void)backButtonClicked:(id)sender;
-- (void)moveOverlay:(id)sender;
 - (void)goToChat:(id)sender;
 - (id)initWithUser:(User *)user;
 - (void)profilePicReady:(UIImage *)downloadedImage; 

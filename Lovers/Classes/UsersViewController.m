@@ -118,7 +118,6 @@ BOOL buttonLayerPresent = NO;
 
 @implementation UsersViewController
 
-@synthesize scroll;
 @synthesize selectedImage;
 @synthesize asynchImage;
 @synthesize Users;
@@ -149,21 +148,14 @@ const enum downloadType JSON = _json;
 }
 
 -(void)loadView {
-	UIView *contentView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = [UIColor lightGrayColor];
-	self.scroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	[contentView addSubview:self.scroll];
-//	[scroll release]; // Should this go here or in dealloc?
-
-	self.view = contentView;
-	[contentView release];
+	UIScrollView *localScroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	localScroll.backgroundColor = [UIColor lightGrayColor];
+	self.view = localScroll;
+	[localScroll release];
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-	[self.navigationController setNavigationBarHidden:NO];
-	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 
 	UIBarButtonItem *profileButton = BAR_BUTTON(@"Profile", @selector(goToProfile:));
@@ -239,7 +231,7 @@ const enum downloadType JSON = _json;
 	}
 	
 	double tempY = ([self.Users count]/4)* 80;
-	self.scroll.contentSize = CGSizeMake(320,((100/4) * 80));
+	[(UIScrollView *)self.view setContentSize:CGSizeMake(320,((100/4) * 80))];
 	NSLog(@"tempY : %f", tempY);
 	//TODO: feed in the load more and refresh button
 	if (buttonLayerPresent == YES) {
@@ -263,12 +255,12 @@ const enum downloadType JSON = _json;
 	loadMoreButton.backgroundColor = [UIColor whiteColor];
 	[loadMoreButton setTitle:@"load more" forState:UIControlStateNormal];
 	[loadMoreButton addTarget:self action:@selector(loadMoreButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	[self.scroll addSubview:loadMoreButton];
-	[self.scroll addSubview:reloadButton];
+	[self.view addSubview:loadMoreButton];
+	[self.view addSubview:reloadButton];
 	//[self.buttonLayer addSubview: reloadButton];
 	//[self.buttonLayer addSubview: loadMoreButton];
 	
-	//[self.scroll addSubview: self.buttonLayer];
+	//[self.view addSubview:buttonLayer];
 	
 	[self.buttonLayer release];
 	
@@ -303,13 +295,12 @@ const enum downloadType JSON = _json;
 	UIImageView * onlineIndicator = [[UIImageView alloc] initWithFrame:CGRectMake(69, 69, 6, 6)];
 	onlineIndicator.image = [UIImage imageNamed:@"greendot.jpg" ];
 	[button addSubview:onlineIndicator];
-		[button addTarget:self action:@selector(imageSelected:) forControlEvents:UIControlEventTouchUpInside];
-		button.frame = CGRectMake(OFFSET + xOffset*colCounter, OFFSET + yOffset*rowCounter,76 ,76);
-		rowCounter = rCount%4 == 0 ? ++rowCounter:rowCounter;
-		colCounter = (colCounter+1)%4;
-		[scroll addSubview:button];
+	[button addTarget:self action:@selector(imageSelected:) forControlEvents:UIControlEventTouchUpInside];
+	button.frame = CGRectMake(OFFSET + xOffset*colCounter, OFFSET + yOffset*rowCounter,76 ,76);
+	rowCounter = rCount%4 == 0 ? ++rowCounter:rowCounter;
+	colCounter = (colCounter+1)%4;
+	[self.view addSubview:button];
 	rCount++;
-	//}
 	//[user release];
 }
 
@@ -327,7 +318,6 @@ const enum downloadType JSON = _json;
 }
 
 - (void)dealloc {
-	[scroll release];
 	[selectedImage release];
 	// Abort download. Doesn't do anything if image has been downloaded already.
 	[asynchImage abortDownload];

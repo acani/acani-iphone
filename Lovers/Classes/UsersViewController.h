@@ -4,7 +4,6 @@
 @class LoversAppDelegate;
 
 @interface UsersViewController : UIViewController {
-	UIScrollView *scroll;
 	UIButton *selectedImage;
 	InternetImage *asynchImage;
 	NSMutableArray *Users;
@@ -14,7 +13,6 @@
 	UILabel *locNoticelabel;
 }
 
-@property (nonatomic, retain) UIScrollView *scroll;
 @property (nonatomic, retain) UIButton *selectedImage;
 @property (nonatomic, retain) InternetImage *asynchImage;
 @property (nonatomic, retain) NSMutableArray *Users;

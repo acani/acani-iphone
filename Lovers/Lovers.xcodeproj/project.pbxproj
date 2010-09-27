@@ -52,6 +52,7 @@
 		C9D76029124CD99D0001A448 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D7601B124CD99D0001A448 /* Facebook.m */; };
 		C9D7602A124CD99D0001A448 /* FBLoginDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D7601E124CD99D0001A448 /* FBLoginDialog.m */; };
 		C9D7602B124CD99D0001A448 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D76020124CD99D0001A448 /* FBDialog.m */; };
+		C9D76534124F02BB0001A448 /* ThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D76533124F02BB0001A448 /* ThumbView.m */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
 		F56D024411886CF000F2A797 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* UsersViewController.m */; };
@@ -137,6 +138,8 @@
 		C9D7601E124CD99D0001A448 /* FBLoginDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBLoginDialog.m; path = "../facebook-ios-sdk/src/FBLoginDialog.m"; sourceTree = SOURCE_ROOT; };
 		C9D7601F124CD99D0001A448 /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBDialog.h; path = "../facebook-ios-sdk/src/FBDialog.h"; sourceTree = SOURCE_ROOT; };
 		C9D76020124CD99D0001A448 /* FBDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBDialog.m; path = "../facebook-ios-sdk/src/FBDialog.m"; sourceTree = SOURCE_ROOT; };
+		C9D76532124F02BB0001A448 /* ThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbView.h; sourceTree = "<group>"; };
+		C9D76533124F02BB0001A448 /* ThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbView.m; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
@@ -188,6 +191,8 @@
 				ADA9564B11FA09930073D09A /* ThumbnailDownload.m */,
 				C9D75D91124AE8790001A448 /* HTTPOperation.h */,
 				C9D75D92124AE8790001A448 /* HTTPOperation.m */,
+				C9D76532124F02BB0001A448 /* ThumbView.h */,
+				C9D76533124F02BB0001A448 /* ThumbView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -439,6 +444,7 @@
 				C9D76029124CD99D0001A448 /* Facebook.m in Sources */,
 				C9D7602A124CD99D0001A448 /* FBLoginDialog.m in Sources */,
 				C9D7602B124CD99D0001A448 /* FBDialog.m in Sources */,
+				C9D76534124F02BB0001A448 /* ThumbView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

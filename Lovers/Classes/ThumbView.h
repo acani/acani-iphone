@@ -1,0 +1,5 @@
+@interface ThumbView : UIButton {
+
+}
+
+@end
