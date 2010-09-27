@@ -323,13 +323,23 @@ static NSString* kAppId = @"132443680103133";
 	profileHeader.clearsContextBeforeDrawing = NO;
 	profileHeader.backgroundColor = [UIColor clearColor];
 
-	self.avatarImg = [[UIButton buttonWithType:UIButtonTypeCustom] initWithFrame:CGRectMake(20.0f, 18.0f, 62, 62)];
+	self.avatarImg = [[UIButton buttonWithType:UIButtonTypeCustom] initWithFrame:CGRectMake(10.0f, 18.0f, 75.0f, 75.0f)];
 	avatarImg.clearsContextBeforeDrawing = NO;
 	[avatarImg addTarget:self action:@selector(imageButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	[avatarImg setBackgroundImage:[UIImage imageNamed:@"BlankAvatar.png"] forState:UIControlStateNormal];
+	UILabel *tapToEdit = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 55.0f, 75.0f, 11.0f)];
+	tapToEdit.clearsContextBeforeDrawing = NO;
+	tapToEdit.text = @"Tap to edit";
+	tapToEdit.backgroundColor = [UIColor clearColor];
+	tapToEdit.shadowColor = [UIColor blackColor];
+	tapToEdit.textColor = [UIColor whiteColor];	
+	tapToEdit.textAlignment = UITextAlignmentCenter;
+	tapToEdit.font = [UIFont systemFontOfSize:11.0f];
+	[avatarImg addSubview:tapToEdit];
+	[tapToEdit release];
 	[profileHeader addSubview:avatarImg];
 
-	UITextField *localProfileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 26.0f, 212.0f, 21.0f)];
+	UITextField *localProfileName = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 28.0f, 212.0f, 21.0f)];
 	self.profileName = localProfileName;
 	[localProfileName release];
 	profileName.clearsContextBeforeDrawing = NO;
@@ -344,7 +354,7 @@ static NSString* kAppId = @"132443680103133";
 	[profileHeader addSubview:profileName];
 	[profileName release];
 
-	UITextField *localheadlineInput = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 56.0f, 212.0f, 21.0f)];
+	UITextField *localheadlineInput = [[UITextField alloc] initWithFrame:CGRectMake(96.0f, 58.0f, 212.0f, 21.0f)];
 	self.headlineInput = localheadlineInput;
 	[localheadlineInput release];
 	headlineInput.clearsContextBeforeDrawing = NO;
