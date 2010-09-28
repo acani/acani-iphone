@@ -6,7 +6,7 @@
 #import "HTTPOperation.h"
 
 @class Account;
-@class UsersViewController;
+@class UsersViewControllerOld;
 
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
 	Account *myAccount;
@@ -25,7 +25,7 @@
 
 	UIWindow *window;
 	UINavigationController *navigationController;
-	UsersViewController *usersViewController;
+	UsersViewControllerOld *usersViewController;
 	
 	NSArray *Sexes;
 	NSArray *Ethnicities;
@@ -38,7 +38,7 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) UsersViewController *usersViewController;
+@property (nonatomic, retain) UsersViewControllerOld *usersViewController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

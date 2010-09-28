@@ -72,7 +72,7 @@ static enum downloadType _data = _json;
     [m_ImageRequestData release];
 
     // inform the user
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] valueForKey:NSErrorFailingURLStringKey]);
+    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] valueForKey:NSURLErrorFailingURLStringErrorKey]);
 	workInProgress = NO;
 }
 

@@ -1,5 +1,5 @@
 #import "LoversAppDelegate.h"
-#import "UsersViewController.h"
+#import "UsersViewControllerOld.h"
 #import "ChatViewController.h"
 #import "Account.h"
 #import "User.h"
@@ -27,7 +27,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Create window, navigationController & usersViewController
-	usersViewController = [[UsersViewController alloc] init];
+	usersViewController = [[UsersViewControllerOld alloc] init];
 	navigationController = [[UINavigationController alloc]
 							initWithRootViewController:usersViewController];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;

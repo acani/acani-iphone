@@ -28,6 +28,7 @@
 		ADB02B341204AFDB006FD53D /* ChatBubbleGray.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB02B2F1204AFDB006FD53D /* ChatBubbleGray.png */; };
 		ADB02B861204CA15006FD53D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB02B851204CA15006FD53D /* ProfileViewController.m */; };
 		ADB02CB4120E1FEC006FD53D /* blankprofile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */; };
+		C9119F2C12518371008A26BB /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9119F2B12518371008A26BB /* UsersViewController.m */; };
 		C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7441225F6D7003C266E /* AsyncSocket.m */; };
 		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
@@ -55,7 +56,7 @@
 		C9D76534124F02BB0001A448 /* ThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D76533124F02BB0001A448 /* ThumbView.m */; };
 		C9F1923E121B60E700CAB471 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1923D121B60E700CAB471 /* CFNetwork.framework */; };
 		C9F19475121CCD8300CAB471 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F19474121CCD8300CAB471 /* CoreLocation.framework */; };
-		F56D024411886CF000F2A797 /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* UsersViewController.m */; };
+		F56D024411886CF000F2A797 /* UsersViewControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D024311886CF000F2A797 /* UsersViewControllerOld.m */; };
 		F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F56D02631188743D00F2A797 /* PhotoViewController.m */; };
 		F56D02991188790900F2A797 /* lovers-text.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02981188790900F2A797 /* lovers-text.png */; };
 		F56D02CC1188869B00F2A797 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = F56D02C51188869B00F2A797 /* refresh.png */; };
@@ -93,6 +94,8 @@
 		ADB02B841204CA15006FD53D /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		ADB02B851204CA15006FD53D /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		ADB02CB3120E1FEC006FD53D /* blankprofile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blankprofile.jpg; sourceTree = "<group>"; };
+		C9119F2A12518371008A26BB /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
+		C9119F2B12518371008A26BB /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		C91FE7431225F6D7003C266E /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		C91FE7441225F6D7003C266E /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		C91FE7661225FEAC003C266E /* ZTLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTLog.h; sourceTree = "<group>"; };
@@ -142,8 +145,8 @@
 		C9D76533124F02BB0001A448 /* ThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbView.m; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		F56D024211886CF000F2A797 /* UsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewController.h; sourceTree = "<group>"; };
-		F56D024311886CF000F2A797 /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
+		F56D024211886CF000F2A797 /* UsersViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewControllerOld.h; sourceTree = "<group>"; };
+		F56D024311886CF000F2A797 /* UsersViewControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewControllerOld.m; sourceTree = "<group>"; };
 		F56D02621188743D00F2A797 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		F56D02631188743D00F2A797 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		F56D02981188790900F2A797 /* lovers-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lovers-text.png"; sourceTree = "<group>"; };
@@ -171,14 +174,16 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C9119F2A12518371008A26BB /* UsersViewController.h */,
+				C9119F2B12518371008A26BB /* UsersViewController.m */,
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
 				ADB02B231204AE76006FD53D /* ChatViewController.m */,
 				ADB02B251204AEDF006FD53D /* Constants.h */,
 				C9D75DD2124B843D0001A448 /* Constants.m */,
 				1D3623240D0F684500981E51 /* LoversAppDelegate.h */,
 				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
-				F56D024211886CF000F2A797 /* UsersViewController.h */,
-				F56D024311886CF000F2A797 /* UsersViewController.m */,
+				F56D024211886CF000F2A797 /* UsersViewControllerOld.h */,
+				F56D024311886CF000F2A797 /* UsersViewControllerOld.m */,
 				137342BC118F1D66006CCB0E /* InternetImage.h */,
 				137342BD118F1D66006CCB0E /* InternetImage.m */,
 				ADB02B841204CA15006FD53D /* ProfileViewController.h */,
@@ -369,6 +374,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -417,7 +423,7 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* LoversAppDelegate.m in Sources */,
-				F56D024411886CF000F2A797 /* UsersViewController.m in Sources */,
+				F56D024411886CF000F2A797 /* UsersViewControllerOld.m in Sources */,
 				F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */,
 				137342BE118F1D66006CCB0E /* InternetImage.m in Sources */,
 				AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */,
@@ -445,6 +451,7 @@
 				C9D7602A124CD99D0001A448 /* FBLoginDialog.m in Sources */,
 				C9D7602B124CD99D0001A448 /* FBDialog.m in Sources */,
 				C9D76534124F02BB0001A448 /* ThumbView.m in Sources */,
+				C9119F2C12518371008A26BB /* UsersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +498,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../facebook-ios-sdk/src/**";
 				PREBINDING = NO;
-				SDKROOT = iphonesimulator3.2;
+				SDKROOT = iphonesimulator4.1;
 			};
 			name = Debug;
 		};
@@ -505,7 +512,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphonesimulator3.2;
+				SDKROOT = iphonesimulator4.1;
 			};
 			name = Release;
 		};
