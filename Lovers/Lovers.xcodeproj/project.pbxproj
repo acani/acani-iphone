@@ -103,16 +103,16 @@
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Lovers.xcdatamodel; path = Classes/Lovers.xcdatamodel; sourceTree = "<group>"; };
-		C962219D12445C7D00059C58 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
-		C962219E12445C7D00059C58 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
-		C962219F12445C7D00059C58 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
-		C96221A012445C7D00059C58 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
-		C96221A112445C7D00059C58 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		C96221A212445C7D00059C58 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
-		C96221A512445C7D00059C58 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		C96221A612445C7D00059C58 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
-		C96222C41246B55700059C58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		C96222C51246B55700059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C962219D12445C7D00059C58 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = ../Profile.h; sourceTree = "<group>"; };
+		C962219E12445C7D00059C58 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = ../Profile.m; sourceTree = "<group>"; };
+		C962219F12445C7D00059C58 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = ../Location.h; sourceTree = "<group>"; };
+		C96221A012445C7D00059C58 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = ../Location.m; sourceTree = "<group>"; };
+		C96221A112445C7D00059C58 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Message.h; path = ../Message.h; sourceTree = "<group>"; };
+		C96221A212445C7D00059C58 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Message.m; path = ../Message.m; sourceTree = "<group>"; };
+		C96221A512445C7D00059C58 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Account.h; path = ../Account.h; sourceTree = "<group>"; };
+		C96221A612445C7D00059C58 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = ../Account.m; sourceTree = "<group>"; };
+		C96222C41246B55700059C58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ../User.h; sourceTree = "<group>"; };
+		C96222C51246B55700059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ../User.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
 		C9D75D91124AE8790001A448 /* HTTPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPOperation.h; sourceTree = "<group>"; };
@@ -174,6 +174,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C9119F5212522657008A26BB /* Models */,
 				C9119F2A12518371008A26BB /* UsersViewController.h */,
 				C9119F2B12518371008A26BB /* UsersViewController.m */,
 				ADB02B221204AE76006FD53D /* ChatViewController.h */,
@@ -239,16 +240,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C96222C41246B55700059C58 /* User.h */,
-				C96222C51246B55700059C58 /* User.m */,
-				C962219D12445C7D00059C58 /* Profile.h */,
-				C962219E12445C7D00059C58 /* Profile.m */,
-				C962219F12445C7D00059C58 /* Location.h */,
-				C96221A012445C7D00059C58 /* Location.m */,
-				C96221A112445C7D00059C58 /* Message.h */,
-				C96221A212445C7D00059C58 /* Message.m */,
-				C96221A512445C7D00059C58 /* Account.h */,
-				C96221A612445C7D00059C58 /* Account.m */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
 				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
 				1331AC1B11906025004ABBC6 /* logo_bg.png */,
@@ -268,6 +259,23 @@
 				C9F19474121CCD8300CAB471 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C9119F5212522657008A26BB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C96222C41246B55700059C58 /* User.h */,
+				C96222C51246B55700059C58 /* User.m */,
+				C962219D12445C7D00059C58 /* Profile.h */,
+				C962219E12445C7D00059C58 /* Profile.m */,
+				C962219F12445C7D00059C58 /* Location.h */,
+				C96221A012445C7D00059C58 /* Location.m */,
+				C96221A112445C7D00059C58 /* Message.h */,
+				C96221A212445C7D00059C58 /* Message.m */,
+				C96221A512445C7D00059C58 /* Account.h */,
+				C96221A612445C7D00059C58 /* Account.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		C9D76008124CD99D0001A448 /* FBConnect */ = {

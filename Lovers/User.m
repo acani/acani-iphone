@@ -61,6 +61,7 @@
 							 @"d", @"showDistance",
 							 @"e", @"ethnicity",
 							 @"h", @"height",
+							 @"i", @"fbId",
 							 @"n", @"name",
 							 @"o", @"onlineStatus", // not yet used
 							 @"p", @"weight",
@@ -70,8 +71,9 @@
 							 @"u", @"fbUsername",
 							 @"v", @"likes",
 							 @"y", @"age", nil];
-
+	
 	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithCapacity:[encoder count]];
+	NSLog(@"dicionary: %@", dictionary);
 	for (id key in dictionary) {
 		[tempDict setValue:[dictionary valueForKey:key] forKey:[encoder valueForKey:key]];
 	}

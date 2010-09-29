@@ -59,6 +59,7 @@ static NSString* kAppId = @"132443680103133";
 }
 
 - (void)getUserInfo:(id)sender {
+	// TODO: add ?fields=id,name,picture... to end of path
 	[fb requestWithGraphPath:@"me" andDelegate:self];
 }
 
@@ -139,6 +140,7 @@ static NSString* kAppId = @"132443680103133";
  */ 
 - (void)fbDidLogin {
 	NSLog(@"logged in");
+	[self getUserInfo:self];
 }
 
 /**
@@ -182,12 +184,33 @@ static NSString* kAppId = @"132443680103133";
 - (void)request:(FBRequest*)request didLoad:(id)result {
 	if ([result isKindOfClass:[NSArray class]]) {
 		result = [result objectAtIndex:0]; 
-	}
-	if ([result objectForKey:@"owner"]) {
+	} else if ([result objectForKey:@"owner"]) {
+		NSLog(@"Photo upload Success. Response: %@", result);
 //		[self.label setText:@"Photo upload Success"];
 	} else {
-//		[self.label setText:[result objectForKey:@"name"]];
+		NSLog(@"Result: %@", result);
+
+		NSString *about = [result valueForKey:@"about"]; // should this be headline?
+		[aboutInput setText:about]; [me setAbout:about];
+
+		[me setFbId:[NSNumber numberWithInt:[[result valueForKey:@"id"] intValue]]];
+
+		NSString *fullName = [result valueForKey:@"name"];
+		[me setName:fullName]; [profileName setText:fullName];
+
+		//	[me setHeadline:[result valueForKey:@"about"]];
+		NSString *sex = [[result valueForKey:@"gender"] capitalizedString];
+		[me setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInt:2] : [NSNumber numberWithInt:1]];
+		[[[self.tableView cellForRowAtIndexPath:
+		   [NSIndexPath indexPathForRow:1 inSection:0]] detailTextLabel] setText:sex];
+
+		NSString *fbUsername = [[result valueForKey:@"link"] lastPathComponent];
+		[me setFbUsername:fbUsername]; [valueInput setText:fbUsername];
+
+		 //	[me setLikes:[result valueForKey:@"v"]];
+		 //	[me setAge:[result valueForKey:@"y"]];		 
 	}
+	NSLog(@"Me: %@", me);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -503,7 +526,11 @@ static NSString* kAppId = @"132443680103133";
 	Facebook *localFb = [[Facebook alloc] init];
 	self.fb = localFb;
 	[localFb release];
-//	[self fbLogin];
+	if ([fb isSessionValid]) {
+		[self getUserInfo:self];
+	} else {
+		[self fbLogin];
+	}
 
 	// Listen for keyboard
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
