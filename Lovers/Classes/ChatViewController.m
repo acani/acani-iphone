@@ -60,29 +60,6 @@
 //    return self;
 //}
 
-// Recursively travel down the view tree, increasing the indentation level for children
-- (void) dumpView: (UIView *) aView atIndent: (int) indent into:(NSMutableString *) outstring
-{
-	for (int i = 0; i < indent; i++) [outstring appendString:@"--"];
-	[outstring appendFormat:@"[%2d] %@ - (%f, %f) - %f x %f \n", indent, [[aView class] description], aView.frame.origin.x, aView.frame.origin.y, aView.bounds.size.width, aView.bounds.size.height];
-	for (UIView *view in [aView subviews]) [self dumpView:view atIndent:indent + 1 into:outstring];
-}
-
-// Start the tree recursion at level 0 with the root view
-- (NSString *) displayViews: (UIView *) aView
-{
-	NSMutableString *outstring = [[NSMutableString alloc] init];
-	[self dumpView: self.view.window atIndent:0 into:outstring];
-	return [outstring autorelease];
-}
-
-// Show the tree
-- (void) displayViews
-{
-	CFShow([self displayViews: self.view.window]);
-}
-
-//	[self performSelector:@selector(displayViews) withObject:nil afterDelay:3.0f];
 
 - (void)done:(id)sender {
 	[chatInput resignFirstResponder]; // temporary
@@ -148,6 +125,7 @@
 	lastContentHeight = contentHeight;
 }
 
+// This fixes a scrolling quirk
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 	return YES;
@@ -180,48 +158,16 @@
 	[self slideFrameDown];
 }
 
+
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)loadView {
-	[super loadView];
+	[super loadView]; // take this out
+
 	NSLog(@"channel: %@", channel);
 
-//	UIView *self.view = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
-//	self.view.backgroundColor = [UIColor lightGrayColor];
-
-//	// create messages
-//	time_t now; time(&now);
-//	latestTimestamp = 0;
-//	Message *msg1 = [[Message alloc] init];
-//	msg1.text = @"text 1";
-//	msg1.timestamp = now - 10000;
-//	Message *msg2 = [[Message alloc] init];
-//	msg2.text = @"text 2 this is a longer message that should span two or more lines to show that resizing is working appropriately";
-//	msg2.timestamp = 0;
-//	Message *msg3 = [[Message alloc] init];
-//	msg3.text = @"text 3 a shorter message";
-//	msg3.timestamp = now - 7200;
-//	Message *msg4 = [[Message alloc] init];
-//	msg4.text = @"text 4 i want to add more messages here to see if the table view collapses nicely";
-//	msg4.timestamp = now - 4000;
-//	Message *msg5 = [[Message alloc] init];
-//	msg5.text = @"text 5 does it scroll well too?";
-//	msg5.timestamp = now - 2000;
-//	Message *msg6 = [[Message alloc] init];
-//	msg6.text = @"text 6 we are doing the resizing by resizing the UIView and setting its content sot autoresize";
-//	msg6.timestamp = now - 1500;
-//
-//	latestTimestamp = msg6.timestamp;
-//
-//	messages = [[NSMutableArray alloc] initWithObjects: msg1, msg2, msg3, msg4, msg5, msg6, nil];
-//	[msg1 release];
-//	[msg2 release];
-//	[msg3 release];
-//	[msg4 release];
-//	[msg5 release];
-//	[msg6 release];
-
+	// Fetch messages.
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -247,27 +193,41 @@
 	[mutableFetchResults release];
 	[request release];
 
-	// create chatContent
+	// Create contentView.
+	CGRect navFrame = [[UIScreen mainScreen] applicationFrame];
+	navFrame.size.height -= self.navigationController.navigationBar.frame.size.height;
+	UIView *contentView = [[UIView alloc] initWithFrame:navFrame];
+	
+	// Create chatContent.
 	NSLog(@"Create chatContent");
-	chatContent = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, VIEW_WIDTH, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1)];
+	UITableView *tempChatContent = [[UITableView alloc] initWithFrame:
+					   CGRectMake(0.0f, 0.0f, contentView.frame.size.width,
+								  contentView.frame.size.height - CHAT_BAR_HEIGHT_1)];
+	self.chatContent = tempChatContent;
+	[tempChatContent release];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
 	chatContent.backgroundColor = CHAT_BACKGROUND_COLOR;
 	chatContent.separatorStyle = UITableViewCellSeparatorStyleNone;
 	chatContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-	[self.view addSubview:chatContent];
-	[chatContent release];
+	[contentView addSubview:chatContent];
 
-	// create chatBar
-	chatBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, VIEW_HEIGHT - CHAT_BAR_HEIGHT_1, VIEW_WIDTH, CHAT_BAR_HEIGHT_1)];
+	// Create chatBar.
+	UIImageView *tempChatBar = [[UIImageView alloc] initWithFrame:
+				   CGRectMake(0.0f, contentView.frame.size.height - CHAT_BAR_HEIGHT_1,
+							  contentView.frame.size.width, CHAT_BAR_HEIGHT_1)];
+	self.chatBar = tempChatBar;
+	[tempChatBar release];
 	chatBar.clearsContextBeforeDrawing = NO;
 	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
 	chatBar.userInteractionEnabled = YES;
 
-	// create chatInput
-	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];
+	// Create chatInput.
+	UITextView *tempChatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];
+	self.chatInput = tempChatInput;
+	[tempChatInput release];
 	chatInput.contentSize = CGSizeMake(234.0f, 22.0f);
 	chatInput.delegate = self;
 	chatInput.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
@@ -281,10 +241,9 @@
 	lastContentHeight = chatInput.contentSize.height;
 	chatInputHadText = NO;
 	[chatBar addSubview:chatInput];
-	[chatInput release];
 
-	// create sendButton
-	sendButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	// Create sendButton.
+	self.sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	sendButton.clearsContextBeforeDrawing = NO;
 	sendButton.frame = CGRectMake(250.0f, 8.0f, 64.0f, 26.0f);
 	sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
@@ -299,30 +258,28 @@
 //	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
 	DISABLE_SEND_BUTTON; // initially
 	[chatBar addSubview:sendButton];
-	[sendButton release];
 
-	[self.view addSubview:chatBar];
-	[self.view sendSubviewToBack:chatBar];
-	[chatBar release];
+	[contentView addSubview:chatBar];
+	[contentView sendSubviewToBack:chatBar];
 
-//	self.view = contentView;
-//	[contentView release];
-
-	// Listen for keyboard
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	self.view = contentView;
+	[contentView release];
 }
 
 
-// - (void)viewDidLoad {
-// [super viewDidLoad];
-// 
-// // Uncomment the following line to preserve selection between presentations.
-// // self.clearsSelectionOnViewWillAppear = NO;
-// 
-// // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-// // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-// }
+- (void)viewDidLoad {
+	[super viewDidLoad];
+ 
+	// Listen for keyboard.
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+ // Uncomment the following line to preserve selection between presentations.
+ // self.clearsSelectionOnViewWillAppear = NO;
+ 
+ // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+ // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
 
 
 /*
@@ -673,11 +630,11 @@ CGFloat msgTimestampHeight;
 //	[msgTimestamp release];
 //	[msgBackground release];
 //	[msgText release];
-//	[chatContent release];
-//
-//	[sendButton release];
-//	[chatInput release];
-//	[chatBar release];
+	[chatContent release];
+
+	[sendButton release];
+	[chatInput release];
+	[chatBar release];
 
 	[super dealloc];
 }

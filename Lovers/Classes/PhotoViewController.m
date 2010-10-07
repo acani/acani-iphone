@@ -37,8 +37,7 @@ BOOL overlayHide = NO;
 	self.navigationItem.rightBarButtonItem = chatButton;
 	[chatButton release];
 
-	CGRect navFrame = [[UIScreen mainScreen] bounds];
-	UIImageView *imageView = [[UIImageView alloc] initWithFrame:navFrame];
+	UIImageView *imageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	imageView.image = [UIImage imageNamed:@"blankprofile.jpg"];
 	imageView.backgroundColor = [UIColor blackColor]; // default is nil
 	imageView.clearsContextBeforeDrawing = NO;
