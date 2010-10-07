@@ -110,7 +110,7 @@
 //	return imageCopy;
 //}
 
-#define OFFSET 5
+#define OFFSET 4
 static int rCount = 1;
 static int colCounter = 0;
 static int rowCounter = 0;
@@ -149,7 +149,7 @@ const enum downloadType JSON = _json;
 
 -(void)loadView {
 	UIScrollView *localScroll = [[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	localScroll.backgroundColor = [UIColor lightGrayColor];
+	localScroll.backgroundColor = [UIColor whiteColor];
 	self.view = localScroll;
 	[localScroll release];
 }
@@ -277,8 +277,8 @@ const enum downloadType JSON = _json;
 	// The image has been downloaded. Put the image into the UIImageView
 	//int totalImages = 100;
 	
-	int xOffset = 76;
-	int yOffset = 76;
+	int xOffset = 79;
+	int yOffset = 79;
 //	int colCounter = 0;
 //	int rowCounter = 0;
 
@@ -286,7 +286,7 @@ const enum downloadType JSON = _json;
 	[button setImage: userImage forState:UIControlStateNormal];
 	button.tag = user;
 		
-	UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 76, 10)];
+	UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 75, 10)];
 	name.font = [UIFont fontWithName:@"Arial" size:12];
 	name.textColor = [UIColor whiteColor];
 	name.backgroundColor = [UIColor clearColor];
@@ -297,7 +297,7 @@ const enum downloadType JSON = _json;
 	onlineIndicator.image = [UIImage imageNamed:@"greendot.jpg" ];
 	[button addSubview:onlineIndicator];
 	[button addTarget:self action:@selector(imageSelected:) forControlEvents:UIControlEventTouchUpInside];
-	button.frame = CGRectMake(OFFSET + xOffset*colCounter, OFFSET + yOffset*rowCounter,76 ,76);
+	button.frame = CGRectMake(OFFSET + xOffset*colCounter, OFFSET + yOffset*rowCounter, 75, 75);
 	rowCounter = rCount%4 == 0 ? ++rowCounter:rowCounter;
 	colCounter = (colCounter+1)%4;
 	[self.view addSubview:button];

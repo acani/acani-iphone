@@ -83,12 +83,12 @@
 	return encodedDict;
 }
 
-//// How do we convert oid to created_at timestamp?
-//// http://stackoverflow.com/questions/3746835/convert-mongodb-bson-objectid-oid-to-generated-time-in-objective-c
-//- timeFromBsonOid:(NSString *)oid {
-//    time_t out;
-//    memcpy(&out, oid, 4);
-//    return out;
-//}
+// How do we convert oid to created_at timestamp? TODO: Test if this works.
+// http://stackoverflow.com/questions/3746835/convert-mongodb-bson-objectid-oid-to-generated-time-in-objective-c
+- (NSDate *)dateFromBsonOid:(NSString *)oid {
+	double timestamp;
+	[[NSScanner scannerWithString:[oid substringToIndex:8]] scanHexDouble:&timestamp];
+	return [NSDate dateWithTimeIntervalSince1970:timestamp];
+}
 
 @end
