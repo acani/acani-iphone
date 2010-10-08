@@ -4,9 +4,6 @@
 		time_t	latestTimestamp;
 
 	UITableView *chatContent;
-		UILabel *msgTimestamp;
-		UIImageView *msgBackground;
-		UILabel *msgText;
 
 	UIImageView *chatBar;
 		UITextView *chatInput;
@@ -20,9 +17,6 @@
 @property (nonatomic, assign) time_t latestTimestamp;
 
 @property (nonatomic, retain) UITableView *chatContent;
-@property (nonatomic, retain) UILabel *msgTimestamp;
-@property (nonatomic, retain) UIImageView *msgBackground;
-@property (nonatomic, retain) UILabel *msgText;
 
 @property (nonatomic, retain) UIImageView *chatBar;
 @property (nonatomic, retain) UITextView *chatInput;

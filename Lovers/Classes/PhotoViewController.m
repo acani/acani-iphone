@@ -31,8 +31,6 @@ BOOL overlayHide = NO;
 }
 
 - (void)loadView {
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-
 	UIBarButtonItem *chatButton = BAR_BUTTON(@"Chat", @selector(goToChat:));
 	self.navigationItem.rightBarButtonItem = chatButton;
 	[chatButton release];
@@ -240,6 +238,11 @@ BOOL overlayHide = NO;
 	[overlaySide addSubview:blockLabel];
 	[blockLabel release];
 	[self.view addSubview:overlaySide];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+	self.navigationController.navigationBar.translucent = YES;
 }
 
 - (void)profilePicReady:(UIImage *)downloadedImage {

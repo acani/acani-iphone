@@ -39,9 +39,6 @@
 @synthesize latestTimestamp;
 
 @synthesize chatContent;
-@synthesize msgTimestamp;
-@synthesize msgBackground;
-@synthesize msgText;
 
 @synthesize chatBar;
 @synthesize chatInput;
@@ -63,6 +60,7 @@
 
 - (void)done:(id)sender {
 	[chatInput resignFirstResponder]; // temporary
+	RESET_CHAT_BAR_HEIGHT;
 	self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -163,9 +161,9 @@
 #pragma mark View lifecycle
 
 - (void)loadView {
-	[super loadView]; // take this out
-
 	NSLog(@"channel: %@", channel);
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	self.navigationController.navigationBar.translucent = NO;
 
 	// Fetch messages.
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -429,18 +427,19 @@ CGFloat msgTimestampHeight;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
 
+	UILabel *msgTimestamp;
+	UIImageView *msgBackground;
+	UILabel *msgText;
+
     static NSString *CellIdentifier = @"MessageCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-		// Create messageView to contain subviews (boosts scrolling performance)
-		UIView *messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 5, cell.frame.size.width, cell.frame.size.height)];
-		messageView.tag = MESSAGE_TAG;
 		
 		// Create message timestamp lable if appropriate
-		msgTimestamp = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)];
+		msgTimestamp = [[[UILabel alloc] initWithFrame:
+						 CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)] autorelease];
 		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.tag = TIMESTAMP_TAG;
 		msgTimestamp.font = [UIFont boldSystemFontOfSize:11.0f];
@@ -448,29 +447,23 @@ CGFloat msgTimestampHeight;
 		msgTimestamp.textAlignment = UITextAlignmentCenter;
 		msgTimestamp.backgroundColor = CHAT_BACKGROUND_COLOR; // clearColor slows performance
 		msgTimestamp.textColor = [UIColor darkGrayColor];			
-		[messageView addSubview:msgTimestamp];
-		[msgTimestamp release];
+		[cell.contentView addSubview:msgTimestamp];
 
 		// Create message background image view
-		msgBackground = [[UIImageView alloc] init];
+		msgBackground = [[[UIImageView alloc] init] autorelease];
 		msgBackground.clearsContextBeforeDrawing = NO;
 		msgBackground.tag = BACKGROUND_TAG;
-		[messageView addSubview:msgBackground];
-		[msgBackground release];
+		[cell.contentView addSubview:msgBackground];
 
 		// Create message text label
-		msgText = [[UILabel alloc] init];
+		msgText = [[[UILabel alloc] init] autorelease];
 		msgText.clearsContextBeforeDrawing = NO;
 		msgText.tag = TEXT_TAG;
 		msgText.backgroundColor = [UIColor clearColor];
 		msgText.numberOfLines = 0;
 		msgText.lineBreakMode = UILineBreakModeWordWrap;
 		msgText.font = [UIFont systemFontOfSize:14.0];
-		[messageView addSubview:msgText];
-		[msgText release];
-
-		[cell.contentView addSubview:messageView];
-		[messageView release];		
+		[cell.contentView addSubview:msgText];
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
 		msgBackground = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag:BACKGROUND_TAG];
@@ -608,9 +601,6 @@ CGFloat msgTimestampHeight;
 	self.channel = nil;
 	self.messages = nil;
 
-	self.msgTimestamp = nil;
-	self.msgBackground = nil;
-	self.msgText = nil;
 	self.chatContent = nil;
 
 	self.sendButton = nil;
@@ -622,14 +612,9 @@ CGFloat msgTimestampHeight;
 
 
 - (void)dealloc {
+	[channel release];
+	[messages release];
 
-// This crashes for some reason...
-//	[channel release];
-//	[messages release];
-//
-//	[msgTimestamp release];
-//	[msgBackground release];
-//	[msgText release];
 	[chatContent release];
 
 	[sendButton release];
