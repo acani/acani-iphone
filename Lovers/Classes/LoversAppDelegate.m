@@ -30,6 +30,7 @@
 	usersViewController = [[UsersViewControllerOld alloc] init];
 	navigationController = [[UINavigationController alloc]
 							initWithRootViewController:usersViewController];
+//							initWithRootViewController:[[ChatViewController alloc] init]]; // for testing chat
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
 

@@ -197,9 +197,9 @@
 	CGRect navFrame = [[UIScreen mainScreen] applicationFrame];
 	navFrame.size.height -= self.navigationController.navigationBar.frame.size.height;
 	UIView *contentView = [[UIView alloc] initWithFrame:navFrame];
-	
+	contentView.backgroundColor = CHAT_BACKGROUND_COLOR; // shown during rotation
+
 	// Create chatContent.
-	NSLog(@"Create chatContent");
 	UITableView *tempChatContent = [[UITableView alloc] initWithFrame:
 					   CGRectMake(0.0f, 0.0f, contentView.frame.size.width,
 								  contentView.frame.size.height - CHAT_BAR_HEIGHT_1)];
@@ -210,7 +210,7 @@
 	chatContent.dataSource = self;
 	chatContent.backgroundColor = CHAT_BACKGROUND_COLOR;
 	chatContent.separatorStyle = UITableViewCellSeparatorStyleNone;
-	chatContent.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	chatContent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[contentView addSubview:chatContent];
 
 	// Create chatBar.
@@ -220,8 +220,8 @@
 	self.chatBar = tempChatBar;
 	[tempChatBar release];
 	chatBar.clearsContextBeforeDrawing = NO;
-	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
+	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:18 topCapHeight:20];
 	chatBar.userInteractionEnabled = YES;
 
 	// Create chatInput.
@@ -230,8 +230,7 @@
 	[tempChatInput release];
 	chatInput.contentSize = CGSizeMake(234.0f, 22.0f);
 	chatInput.delegate = self;
-	chatInput.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-	chatInput.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	chatInput.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	chatInput.scrollEnabled = NO; // not initially
 	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 4.0f, -2.0f);
 	chatInput.clearsContextBeforeDrawing = NO;
@@ -245,8 +244,8 @@
 	// Create sendButton.
 	self.sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	sendButton.clearsContextBeforeDrawing = NO;
-	sendButton.frame = CGRectMake(250.0f, 8.0f, 64.0f, 26.0f);
-	sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+	sendButton.frame = CGRectMake(chatBar.frame.size.width - 70.0f, 8.0f, 64.0f, 26.0f);  // multi-line input & landscape (below)
+	sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 	UIImage *sendButtonBackground = [UIImage imageNamed:@"SendButton.png"];
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateNormal];
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateDisabled];	
@@ -307,13 +306,13 @@
 	[super viewDidDisappear:animated];
 }
 */
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
+
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	// Return YES for supported orientations
+//	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
 
 - (void)sendMSG:(id)sender {
 	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
@@ -385,9 +384,18 @@
 }
 
 // Shorten height of UIView when keyboard pops up
+// TODO: Test on different SDK versions; make more flexible if desired.
 - (void)slideFrame:(BOOL)up {
-	const int movementDistance = 216; // set to keyboard variable	
-	int movement = (up ? -movementDistance : movementDistance);
+	CGFloat movementDistance;
+
+	UIInterfaceOrientation orientation =[[UIApplication sharedApplication] statusBarOrientation];
+    if (orientation == UIInterfaceOrientationPortrait ||
+        orientation == UIInterfaceOrientationPortraitUpsideDown) {
+		movementDistance = 216.0f;
+    } else {
+		movementDistance = 162.0f;
+    }
+	CGFloat movement = (up ? -movementDistance : movementDistance);
 
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];	
@@ -423,7 +431,6 @@
 #define TIMESTAMP_TAG 1
 #define TEXT_TAG 2
 #define BACKGROUND_TAG 3
-#define MESSAGE_TAG 4
 
 CGFloat msgTimestampHeight;
 
@@ -443,7 +450,8 @@ CGFloat msgTimestampHeight;
 		
 		// Create message timestamp lable if appropriate
 		msgTimestamp = [[[UILabel alloc] initWithFrame:
-						 CGRectMake(0.0f, 0.0f, 320.0f, 12.0f)] autorelease];
+						 CGRectMake(0.0f, 0.0f, chatContent.frame.size.width, 12.0f)] autorelease];
+		msgTimestamp.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		msgTimestamp.clearsContextBeforeDrawing = NO;
 		msgTimestamp.tag = TIMESTAMP_TAG;
 		msgTimestamp.font = [UIFont boldSystemFontOfSize:11.0f];
@@ -470,10 +478,11 @@ CGFloat msgTimestampHeight;
 		[cell.contentView addSubview:msgText];
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
-		msgBackground = (UIImageView *)[[cell.contentView viewWithTag:MESSAGE_TAG] viewWithTag:BACKGROUND_TAG];
+		msgBackground = (UIImageView *)[cell.contentView viewWithTag:BACKGROUND_TAG];
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
+// TODO: Only show timestamps every 15 mins
 //	time_t now; time(&now);
 //	if (now < latestTimestamp+780) // show timestamp every 15 mins
 //		msg.timestamp = 0;
@@ -497,24 +506,28 @@ CGFloat msgTimestampHeight;
 		msgTimestamp.text = @"";
 	}	
 
-	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, 480.0f) lineBreakMode:UILineBreakModeWordWrap];
-	
+	// Layout message cell & its subviews.
+	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0]
+						 constrainedToSize:CGSizeMake(240.0f, CGFLOAT_MAX)
+							 lineBreakMode:UILineBreakModeWordWrap];
 	UIImage *balloon;
-
 	if ([[(User *)[msg sender] uid] isEqualToString:
 		 [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid]]) {
-		msgBackground.frame = CGRectMake(320.0f - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
+		msgBackground.frame = CGRectMake(chatContent.frame.size.width - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
-		msgText.frame = CGRectMake(298.0f - size.width, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
+		msgText.frame = CGRectMake(chatContent.frame.size.width - 22.0f - size.width,
+								   5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
+		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+		msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	} else {
 		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
 		msgText.frame = CGRectMake(22.0f, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 	}
-
 	msgBackground.image = balloon;
 	msgText.text = [msg text];
-	
+
+	// Mark message as read.
 	// Let's instead do this (asynchronously) from loadView and iterate over all messages
 	if ([msg unread]) { // then save as read
 		[msg setUnread:[NSNumber numberWithBool:NO]];
