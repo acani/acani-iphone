@@ -306,6 +306,8 @@ static NSString* kAppId = @"132443680103133";
 	self.view = groupedTable;
 	[groupedTable release];
 
+	self.navigationController.navigationBar.tintColor = ACANI_RED;
+
 	// Create UIBarButtonItems
 	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
 								   initWithTitle:@"Cancel"
@@ -565,11 +567,12 @@ static NSString* kAppId = @"132443680103133";
  [super viewWillAppear:animated];
  }
  */
-/*
- - (void)viewDidAppear:(BOOL)animated {
- [super viewDidAppear:animated];
- }
- */
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
 /*
  - (void)viewWillDisappear:(BOOL)animated {
  [super viewWillDisappear:animated];

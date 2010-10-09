@@ -156,7 +156,7 @@ const enum downloadType JSON = _json;
 
 - (void)viewDidLoad {
 	self.wantsFullScreenLayout = YES;
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+	// TODO: make the navBar title a logo.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 
 	UIBarButtonItem *profileButton = BAR_BUTTON(@"Profile", @selector(goToProfile:));
@@ -199,6 +199,11 @@ const enum downloadType JSON = _json;
 	[indicatorView release];
 	//[self downloadImageFromInternet:@"http://graph.facebook.com/5/picture"];
 	//[self downloadJsonFromInternet:@"http://localhost:4567/users/123/123/50/50"];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 }
 
 - (void)downloadJsonFromInternet:(NSString*)urlToJson {

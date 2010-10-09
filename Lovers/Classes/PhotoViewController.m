@@ -241,8 +241,10 @@ BOOL overlayHide = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-	self.navigationController.navigationBar.translucent = YES;
+	[super viewWillAppear:animated];
+	self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+	self.navigationController.navigationBar.translucent = YES;	
+	self.navigationController.navigationBar.tintColor = nil;
 }
 
 - (void)profilePicReady:(UIImage *)downloadedImage {

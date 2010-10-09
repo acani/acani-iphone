@@ -32,6 +32,7 @@
 							initWithRootViewController:usersViewController];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
+
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];

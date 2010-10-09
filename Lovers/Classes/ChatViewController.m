@@ -164,6 +164,8 @@
 	NSLog(@"channel: %@", channel);
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	self.navigationController.navigationBar.translucent = NO;
+	self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+	self.navigationController.navigationBar.tintColor = ACANI_RED;
 
 	// Fetch messages.
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -293,16 +295,18 @@
 //	[self scrollToBottomAnimated:YES]; 
 //}
 
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+	self.navigationController.navigationBar.tintColor = nil;
+}
+
 /*
- - (void)viewWillDisappear:(BOOL)animated {
- [super viewWillDisappear:animated];
- }
- */
-/*
- - (void)viewDidDisappear:(BOOL)animated {
- [super viewDidDisappear:animated];
- }
- */
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+*/
 /*
  // Override to allow orientations other than the default portrait orientation.
  - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
