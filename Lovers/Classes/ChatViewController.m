@@ -35,7 +35,9 @@
 @implementation ChatViewController
 
 @synthesize channel;
-@synthesize messages;
+
+@synthesize managedObjectContext;
+@synthesize fetchedResultsController;
 @synthesize latestTimestamp;
 
 @synthesize chatContent;
@@ -167,32 +169,6 @@
 	self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
 	self.navigationController.navigationBar.tintColor = ACANI_RED;
 
-	// Fetch messages.
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@", channel];
-	[request setPredicate:predicate];
-
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-	[request setSortDescriptors:sortDescriptors];
-	[sortDescriptors release];
-	[sortDescriptor release];
-
-	NSError *error;
-	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	if (mutableFetchResults == nil) {
-		// Handle the error.
-	}
-	
-	[self setMessages:mutableFetchResults];
-	[mutableFetchResults release];
-	[request release];
-
 	// Create contentView.
 	CGRect navFrame = [[UIScreen mainScreen] applicationFrame];
 	navFrame.size.height -= self.navigationController.navigationBar.frame.size.height;
@@ -252,7 +228,7 @@
 	sendButton.titleLabel.font = [UIFont boldSystemFontOfSize: 16];
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
-	[sendButton addTarget:self action:@selector(sendMSG:) forControlEvents:UIControlEventTouchUpInside];
+	[sendButton addTarget:self action:@selector(sendMsg) forControlEvents:UIControlEventTouchUpInside];
 //	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
 //	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
 	DISABLE_SEND_BUTTON; // initially
@@ -268,16 +244,49 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
- 
+	
+	self.channel = @"myid_4c9c179714672857ed00001f"; // for testing
+
+	// Create and configure a fetch request with the Message entity.
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	[fetchRequest setEntity:entity];
+
+	// Set the predicate to only fetch messages from this channel.
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"channel == %@", channel];
+	[fetchRequest setPredicate:predicate];
+	
+	// Create the sort descriptors array.
+	NSSortDescriptor *timestampDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:timestampDescriptor, nil];
+	[timestampDescriptor release];
+	[fetchRequest setSortDescriptors:sortDescriptors];
+	[sortDescriptors release];
+
+	// Create and initialize the fetchedResultsController.
+	NSFetchedResultsController *aFetchedResultsController = \
+		[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+											managedObjectContext:managedObjectContext
+											  sectionNameKeyPath:nil // only generate one section
+													   cacheName:@"Message"];
+	[fetchRequest release];
+	self.fetchedResultsController = aFetchedResultsController;
+	[aFetchedResultsController release];
+	fetchedResultsController.delegate = self;
+
+	NSError *error;
+	if (![fetchedResultsController performFetch:&error]) {
+		// TODO: Handle the error appropriately.
+		NSLog(@"fetchMessages error %@, %@", error, [error userInfo]);
+	}
+
 	// Listen for keyboard.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
- // Uncomment the following line to preserve selection between presentations.
- // self.clearsSelectionOnViewWillAppear = NO;
- 
- // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
- // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+//  // TODO: Implement edit mode like iPhone Messages does. (Backlog)
+//	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 
@@ -310,26 +319,22 @@
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-//	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)sendMSG:(id)sender {
+- (void)sendMsg {
+	//	// TODO: Show progress indicator like iPhone Message app does. (Backlog)
+	//	[activityIndicator startAnimating];
+
 	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
 	if (![webSocket connected]) {
 		NSLog(@"Cannot send message, not connected");
 		return;
 	} 
 
-	// This is not really necessary since we disable the
-	// "Send" button unless the chatInput has text.
-	if (![chatInput hasText]) {
-		NSLog(@"Cannot send message, no text");
-		return;
-	}
-	
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	// Create new message and save to Core Data.
+	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message"
+															inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
 	[msg setSender:(Profile *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]];
 	[msg setChannel:channel];
@@ -337,40 +342,37 @@
 	latestTimestamp = now;
 	[msg setTimestamp:[NSNumber numberWithLong:now]];
 
-//	[activityIndicator startAnimating];
-	
-	NSString *escapedMsg = [[[[msg text] // escape chars: \ " \n
+	NSError *error;
+	if (![managedObjectContext save:&error]) {
+		// TODO: Handle the error appropriately.
+		NSLog(@"SendMsg error %@, %@", error, [error userInfo]);
+	}
+
+	// Escape message and send via WebSocket connection.
+	NSString *escapedMsg = [[[[msg text] // escape chars: \ " \n, respectively
 							  stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
 							 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
 							stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	NSLog(@"escapedMSG: %@", escapedMsg);
-	
 	NSString *msgJson = [NSString stringWithFormat:
 						 @"{\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
 						 [msg timestamp], [msg channel], [(User *)[msg sender] uid], escapedMsg];
 	[webSocket send:msgJson];
 
+	// Clear chatInput.
 	chatInput.text = @"";
 	if (lastContentHeight > 22.0f) {
 		RESET_CHAT_BAR_HEIGHT;
 		chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 		chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk			
 	}		
-
-	NSError *error;
-	if (![managedObjectContext save:&error]) {
-		// Handle the error.
-	}
 	
-	[messages addObject:msg];
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
-	[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-						  withRowAnimation:UITableViewRowAnimationNone];
 	[self scrollToBottomAnimated:YES]; 
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[messages count]-1 inSection:0];
+	NSUInteger bottomRow = [[fetchedResultsController fetchedObjects] count] - 1;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:bottomRow inSection:0];
 	[chatContent scrollToRowAtIndexPath:indexPath
 					   atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
@@ -403,10 +405,10 @@
 	viewFrame.size.height += movement;
 	self.view.frame = viewFrame;
 	[UIView commitAnimations];
+
 	
-	if ([messages count] > 0) {
-		NSUInteger index = [messages count] - 1;
-		[chatContent scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+	if ([[fetchedResultsController fetchedObjects] count] > 0) {
+		[self scrollToBottomAnimated:YES];
 	}
 	chatInput.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 	chatInput.contentOffset = CGPointMake(0.0f, 6.0f); // fix quirk
@@ -417,14 +419,12 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [messages count];
+	return [[fetchedResultsController fetchedObjects] count];
 }
 
 
@@ -436,8 +436,6 @@ CGFloat msgTimestampHeight;
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
-
 	UILabel *msgTimestamp;
 	UIImageView *msgBackground;
 	UILabel *msgText;
@@ -482,11 +480,14 @@ CGFloat msgTimestampHeight;
 		msgText = (UILabel *)[cell.contentView viewWithTag:TEXT_TAG];
 	}
 
+	// Configure the cell to show the message in a bubble.
+	Message *msg = [fetchedResultsController objectAtIndexPath:indexPath];
+		
 // TODO: Only show timestamps every 15 mins
 //	time_t now; time(&now);
 //	if (now < latestTimestamp+780) // show timestamp every 15 mins
 //		msg.timestamp = 0;
-			
+
 	if (true) { // latestTimestamp > ([[msg timestamp] longValue]+780)) {
 		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -531,18 +532,17 @@ CGFloat msgTimestampHeight;
 	// Let's instead do this (asynchronously) from loadView and iterate over all messages
 	if ([msg unread]) { // then save as read
 		[msg setUnread:[NSNumber numberWithBool:NO]];
-		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 		NSError *error = nil;
 		if (![managedObjectContext save:&error]) {
-			// Handle the error.
-			NSLog(@"Error saving message as read! %@", error);
+			// TODO: Handle the error appropriately.
+			NSLog(@"Save msg as read error %@, %@", error, [error userInfo]);
 		}		
 	}
 	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	Message *msg = (Message *)[messages objectAtIndex:indexPath.row];
+ 	Message *msg = [fetchedResultsController objectAtIndexPath:indexPath];
 	msgTimestampHeight = 20.0f; // [msg timestamp] ? 20.0f : 0.0f;
 	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
@@ -604,6 +604,25 @@ CGFloat msgTimestampHeight;
 
 
 #pragma mark -
+#pragma mark Fetched results controller
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath *)newIndexPath {
+
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+			
+		case NSFetchedResultsChangeDelete:
+			[chatContent deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+	}
+}
+
+
+#pragma mark -
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
@@ -616,7 +635,8 @@ CGFloat msgTimestampHeight;
 - (void)viewDidUnload {
 	[super viewDidUnload];
 	self.channel = nil;
-	self.messages = nil;
+
+	self.fetchedResultsController = nil;
 
 	self.chatContent = nil;
 
@@ -630,7 +650,9 @@ CGFloat msgTimestampHeight;
 
 - (void)dealloc {
 	[channel release];
-	[messages release];
+
+	[fetchedResultsController release];
+	[managedObjectContext release];
 
 	[chatContent release];
 

@@ -6,7 +6,7 @@
 @synthesize user;
 
 - (void)dealloc {
-//	[user dealloc];
+	[user dealloc];
     [super dealloc];
 }
 

@@ -1,7 +1,9 @@
-@interface ChatViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
+@interface ChatViewController : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
 	NSString *channel;
-	NSMutableArray *messages;
-		time_t	latestTimestamp;
+
+    NSManagedObjectContext *managedObjectContext;
+	NSFetchedResultsController *fetchedResultsController;
+	time_t latestTimestamp;
 
 	UITableView *chatContent;
 
@@ -12,8 +14,10 @@
 		UIButton *sendButton;
 }
 
-@property (nonatomic, retain) NSString *channel;
-@property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, copy) NSString *channel;
+
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) time_t latestTimestamp;
 
 @property (nonatomic, retain) UITableView *chatContent;
@@ -24,6 +28,7 @@
 @property (nonatomic, assign) Boolean chatInputHadText;
 @property (nonatomic, retain) UIButton *sendButton;
 
+- (void)sendMsg;
 - (void)scrollToBottomAnimated:(BOOL)animated;
 - (void)slideFrame:(BOOL)up;
 - (void)slideFrameUp;

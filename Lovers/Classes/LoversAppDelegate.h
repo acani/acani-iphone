@@ -1,12 +1,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import <CoreData/CoreData.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "ZTWebSocket.h"
 #import "HTTPOperation.h"
 
 @class Account;
-@class UsersViewControllerOld;
+@class UsersViewController;
 
 @interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
 	Account *myAccount;
@@ -25,7 +24,7 @@
 
 	UIWindow *window;
 	UINavigationController *navigationController;
-	UsersViewControllerOld *usersViewController;
+	UsersViewController *usersViewController;
 	
 	NSArray *Sexes;
 	NSArray *Ethnicities;
@@ -38,7 +37,7 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) UsersViewControllerOld *usersViewController;
+@property (nonatomic, retain) UsersViewController *usersViewController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

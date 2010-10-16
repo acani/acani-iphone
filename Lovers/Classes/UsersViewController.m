@@ -1,8 +1,15 @@
 #import "UsersViewController.h"
+#import "ThumbsCell.h"
 
 
 @implementation UsersViewController
 
+@synthesize managedObjectContext;
+@synthesize fetchedResultsController;
+
+@synthesize location; // TODO: change this to sharedLocation in appDelegate
+@synthesize users;
+@synthesize columnCount;
 
 #pragma mark -
 #pragma mark Initialization
@@ -20,14 +27,16 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+	self.loadUsers;
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-*/
+
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,13 +71,11 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return 10;
 }
 
@@ -76,18 +83,34 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"ThumbsCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    UITableViewCell *thumbsCell = (ThumbsCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (thumbsCell == nil) {
+        thumbsCell = [[[ThumbsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-    // Configure the cell...
-    
-    return cell;
+
+//	thumbsCell.setUp;
+    return thumbsCell;
 }
 
+- (void)loadUsers {
+	// If connected to internet, fetch remote users.
+	[self fetchUsers];
+}
+
+// Get users from server.
+- (void)fetchUsers {
+	
+}
+
+- (void)reload {
+	
+}
+
+- (void)loadMoreUsers {
+	
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -155,12 +178,19 @@
 }
 
 - (void)viewDidUnload {
+	[super viewDidUnload];	
+	self.fetchedResultsController = nil;	
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+	[fetchedResultsController release];
+	[managedObjectContext release];
+
+	[location release];
+	[users release];
     [super dealloc];
 }
 

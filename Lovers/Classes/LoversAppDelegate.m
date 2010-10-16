@@ -1,5 +1,5 @@
 #import "LoversAppDelegate.h"
-#import "UsersViewControllerOld.h"
+#import "UsersViewController.h"
 #import "ChatViewController.h"
 #import "Account.h"
 #import "User.h"
@@ -27,10 +27,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Create window, navigationController & usersViewController
-	usersViewController = [[UsersViewControllerOld alloc] init];
+	usersViewController = [[UsersViewController alloc] init];
+	usersViewController.managedObjectContext = self.managedObjectContext;
+
+	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
+	chatViewController.managedObjectContext = self.managedObjectContext; // for testing chat
+
 	navigationController = [[UINavigationController alloc]
-							initWithRootViewController:usersViewController];
-//							initWithRootViewController:[[ChatViewController alloc] init]]; // for testing chat
+//							initWithRootViewController:usersViewController];
+							initWithRootViewController:chatViewController]; [chatViewController release]; // for testing chat
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
 
@@ -77,7 +82,7 @@
 		// Present account login screen to pick account
 	}
 
-	[self findLocation];
+//	[self findLocation];
 	
 	// Setup profileValues decoder arrays: Maybe these should just be in one NSDictionary?
 	// Also, these are already in pickerOptions.
@@ -251,43 +256,44 @@
 	
 	NSLog(@"Message dictionary: %@", msgDict);
 	
-	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
-	[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
-	//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
-	//	NSLog(@"[[msg timestamp] class]: %@", [[msg timestamp] class]);
-	//	NSLog(@"msg timestamp: %@", [msg timestamp]);
-	//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
+	NSString *type = [msgDict valueForKey:@"type"];
 	
-	[msg setChannel:[msgDict valueForKey:@"channel"]];
-	[msg setSender:[msgDict valueForKey:@"sender"]];
-	[msg setText:[[[[msgDict valueForKey:@"text"]
-					stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
-				   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
-				  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
-	
-	if ([navigationController.visibleViewController isKindOfClass:[ChatViewController class]]) {
-		[msg setUnread:[NSNumber numberWithBool:NO]];
-		ChatViewController *chatViewController = (ChatViewController *)navigationController.visibleViewController;
-//		[chatViewController addMessage];
-		[chatViewController.messages addObject:msg];
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[chatViewController.messages count]-1 inSection:0];
-		[chatViewController.chatContent insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-						   withRowAnimation:UITableViewRowAnimationNone];
-		[chatViewController scrollToBottomAnimated:YES];
-	}
-
-	// Play sound or buzz, depending on user settings.
-	NSString *sndpath = [[NSBundle mainBundle] pathForResource:@"basicsound" ofType:@"wav"];
-	CFURLRef baseURL = (CFURLRef)[NSURL fileURLWithPath:sndpath];
-	AudioServicesCreateSystemSoundID (baseURL, &receiveMessageSound);
-	AudioServicesPlaySystemSound(receiveMessageSound);
-//	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); // explicit vibrate
-
-	// Save message to database
-	error = nil;
-	if (![managedObjectContext save:&error]) {
-		// Handle the error.
-		NSLog(@"Error saving message! %@", error);
+	if ([type isEqualToString:@"login"]) {
+		return;
+	} else if ([type isEqualToString:@"text"]) {
+		Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
+		[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
+		//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
+		//	NSLog(@"[[msg timestamp] class]: %@", [[msg timestamp] class]);
+		//	NSLog(@"msg timestamp: %@", [msg timestamp]);
+		//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
+		
+		[msg setChannel:[msgDict valueForKey:@"channel"]];
+		[msg setSender:[msgDict valueForKey:@"sender"]];
+		[msg setText:[[[[msgDict valueForKey:@"text"]
+						stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
+					   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
+					  stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"]];
+		
+		if ([navigationController.visibleViewController isKindOfClass:[ChatViewController class]]) {
+			[msg setUnread:[NSNumber numberWithBool:NO]];
+			ChatViewController *chatViewController = (ChatViewController *)navigationController.visibleViewController;
+			[chatViewController scrollToBottomAnimated:YES];
+		}
+		
+		// Play sound or buzz, depending on user settings.
+		NSString *sndpath = [[NSBundle mainBundle] pathForResource:@"basicsound" ofType:@"wav"];
+		CFURLRef baseURL = (CFURLRef)[NSURL fileURLWithPath:sndpath];
+		AudioServicesCreateSystemSoundID (baseURL, &receiveMessageSound);
+		AudioServicesPlaySystemSound(receiveMessageSound);
+		//	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); // explicit vibrate
+		
+		// Save message to database
+		error = nil;
+		if (![managedObjectContext save:&error]) {
+			// TODO: Handle the error appropriately.
+			NSLog(@"ReceiveMsg error %@, %@", error, [error userInfo]);
+		}		
 	}
 }
 
