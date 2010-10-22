@@ -155,6 +155,7 @@ const enum downloadType JSON = _json;
 }
 
 - (void)viewDidLoad {
+	[super viewDidLoad];
 	self.wantsFullScreenLayout = YES;
 	// TODO: make the navBar title a logo.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
@@ -165,17 +166,6 @@ const enum downloadType JSON = _json;
 
 //	self.loginButton = BAR_BUTTON(@"Login", @selector(login:));
 //	self.logoutButton = BAR_BUTTON(@"Logout", @selector(login:));
-	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
-
-	
-	UIBarButtonItem *logButton;
-	if ([webSocket connected]) {
-		logButton = BAR_BUTTON(@"Logout", @selector(logout:));
-	} else {
-		logButton = BAR_BUTTON(@"Login", @selector(login:));
-	}
-	self.navigationItem.leftBarButtonItem = logButton;
-	[logButton release];
 
 	indicatorView = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 100, 100)];
 	

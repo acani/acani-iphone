@@ -163,7 +163,6 @@
 #pragma mark View lifecycle
 
 - (void)loadView {
-	NSLog(@"channel: %@", channel);
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	self.navigationController.navigationBar.translucent = NO;
 	self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
@@ -246,8 +245,9 @@
 	[super viewDidLoad];
 	
 	self.channel = @"myid_4c9c179714672857ed00001f"; // for testing
+	NSLog(@"channel: %@", channel);
 
-	// Create and configure a fetch request with the Message entity.
+	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -284,7 +284,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-//  // TODO: Implement edit mode like iPhone Messages does. (Backlog)
+//  // TODO: Implement edit mode like iPhone Messages does. (Icebox)
 //	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -323,7 +323,7 @@
 }
 
 - (void)sendMsg {
-	//	// TODO: Show progress indicator like iPhone Message app does. (Backlog)
+	//	// TODO: Show progress indicator like iPhone Message app does. (Icebox)
 	//	[activityIndicator startAnimating];
 
 	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
@@ -355,7 +355,7 @@
 							stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	NSLog(@"escapedMSG: %@", escapedMsg);
 	NSString *msgJson = [NSString stringWithFormat:
-						 @"{\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
+						 @"{\"type\":\"txt\",\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
 						 [msg timestamp], [msg channel], [(User *)[msg sender] uid], escapedMsg];
 	[webSocket send:msgJson];
 
@@ -421,7 +421,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [[fetchedResultsController fetchedObjects] count];

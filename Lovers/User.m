@@ -6,6 +6,8 @@
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
+#import "LoversAppDelegate.h"
+
 #import "User.h"
 
 #import "Account.h"
@@ -29,6 +31,35 @@
 @dynamic showDistance;
 @dynamic location;
 @dynamic account;
+
++ (User *)findByUid:(NSString *)uid {
+	LoversAppDelegate *appDelegate = (LoversAppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *managedObjectContext = [appDelegate managedObjectContext];
+	return [User findByUid:uid inManagedObjectContext:managedObjectContext];
+}
+
++ (User *)findByUid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
+											  inManagedObjectContext:managedObjectContext];
+	[fetchRequest setEntity:entity];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid == %@", uid];
+	[fetchRequest setPredicate:predicate];
+
+	NSError *error;
+	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	[fetchRequest release];
+	if (fetchedObjects == nil) {
+		// TODO: email error to support@acani.com
+		// See http://code.google.com/p/skpsmtpmessage/
+		NSLog(@"Fetch sender error %@, %@", error, [error userInfo]);
+		return nil;
+	} else if ([fetchedObjects count] > 0) {
+		return [fetchedObjects objectAtIndex:0];
+	}
+	return nil;
+}
 
 + (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
 	User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];

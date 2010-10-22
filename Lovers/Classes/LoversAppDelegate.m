@@ -26,29 +26,28 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	// Initialize Core Data's managedObjectContext
+    if (![self managedObjectContext]) {
+        // Handle the error.
+		NSLog(@"managedObjectContext error!");
+    }
+
 	// Create window, navigationController & usersViewController
 	usersViewController = [[UsersViewController alloc] init];
-	usersViewController.managedObjectContext = self.managedObjectContext;
+	usersViewController.managedObjectContext = managedObjectContext;
 
-	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
-	chatViewController.managedObjectContext = self.managedObjectContext; // for testing chat
+//	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
+//	chatViewController.managedObjectContext = managedObjectContext; // for testing chat
 
 	navigationController = [[UINavigationController alloc]
-//							initWithRootViewController:usersViewController];
-							initWithRootViewController:chatViewController]; [chatViewController release]; // for testing chat
+							initWithRootViewController:usersViewController];
+//							initWithRootViewController:chatViewController]; [chatViewController release]; // for testing chat
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
 
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
-
-	// Initialize Core Data's managedObjectContext
-	NSManagedObjectContext *context = [self managedObjectContext];
-    if (!context) {
-        // Handle the error.
-		NSLog(@"managedObjectContext error!");
-    }
 
 //	// Pass the managed object context to the view controller.
 //    usersViewController.managedObjectContext = context;
@@ -217,7 +216,7 @@
 - (void)webSocketDidClose:(ZTWebSocket *)webSocket {
 	NSLog(@"Disconnected");
 	if (usersViewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", usersViewController, @selector(login:));
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", usersViewController, @selector(login));
 		usersViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
@@ -226,7 +225,7 @@
 - (void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
 	NSLog(@"Connected");
 	if (usersViewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", usersViewController, @selector(logout:));
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", usersViewController, @selector(logout));
 		usersViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
@@ -257,10 +256,10 @@
 	NSLog(@"Message dictionary: %@", msgDict);
 	
 	NSString *type = [msgDict valueForKey:@"type"];
-	
+
 	if ([type isEqualToString:@"login"]) {
 		return;
-	} else if ([type isEqualToString:@"text"]) {
+	} else if ([type isEqualToString:@"txt"]) {
 		Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:managedObjectContext];
 		[msg setTimestamp:[msgDict valueForKey:@"timestamp"]];
 		//	NSLog(@"[[msgDict valueForKey:@\"timestamp\"] class]: %@", [[msgDict valueForKey:@"timestamp"] class]);
@@ -269,7 +268,20 @@
 		//	NSLog(@"msg timestamp doubleValue: %d", [[msg timestamp] doubleValue]);
 		
 		[msg setChannel:[msgDict valueForKey:@"channel"]];
-		[msg setSender:[msgDict valueForKey:@"sender"]];
+
+		// Fetch the msg sender based on the BSON ObjectId.
+		NSString *senderUid = [msgDict valueForKey:@"sender"];
+		User *sender = [User findByUid:senderUid];
+		// If the sender is not found on the iPhone, request her asynchronously from the server.
+		if (!sender) {
+			NSLog(@"Get sender from Sinatra");
+			sender = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User"
+														   inManagedObjectContext:managedObjectContext];
+			[sender setUid:senderUid];
+			// TODO: Request other attributes from the server asynchronously.
+		}
+
+		[msg setSender:sender];
 		[msg setText:[[[[msgDict valueForKey:@"text"]
 						stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]
 					   stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]
@@ -298,6 +310,7 @@
 }
 
 -(void)webSocketDidSendMessage:(ZTWebSocket *)webSocket {
+	NSLog(@"Sent message.");
 	//    messages--;
 	//    if (messages == 0) {
 	//        [activityIndicator stopAnimating];

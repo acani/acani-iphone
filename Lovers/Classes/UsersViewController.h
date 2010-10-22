@@ -1,24 +1,35 @@
 #import <CoreLocation/CoreLocation.h>
 
-@interface UsersViewController : UITableViewController {
-	
+@class User;
+
+@interface UsersViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
+	NSInteger columnCount;
+
+	User *me;
+
     NSManagedObjectContext *managedObjectContext;
 	NSFetchedResultsController *fetchedResultsController;
-	
+
 	CLLocation *location;
-	NSMutableArray *users;
-	NSInteger columnCount;
+	NSMutableData *userData;
 }
+
+@property (nonatomic, assign) NSInteger columnCount;
+
+@property (nonatomic, retain) User *me;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, retain) CLLocation *location;
-@property (nonatomic, retain) NSMutableArray *users;
-@property (nonatomic, assign) NSInteger columnCount;
+@property (nonatomic, retain) NSMutableData *userData;
 
-- (void)loadUsers;
-- (void)reload;
-- (void)loadMoreUsers;
+- (void)logout;
+- (void)login;
+- (void)goToProfile;
+
+//- (void)loadUsers;
+//- (void)reload;
+//- (void)loadMoreUsers;
 	
 @end

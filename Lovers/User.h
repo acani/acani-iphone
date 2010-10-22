@@ -33,6 +33,9 @@
 @property (nonatomic, retain) Location * location;
 @property (nonatomic, retain) Account * account;
 
++ (User *)findByUid:(NSString *)uid;
++ (User *)findByUid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
 + (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary;
 
