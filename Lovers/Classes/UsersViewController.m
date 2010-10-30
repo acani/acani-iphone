@@ -63,7 +63,7 @@
 //	[fetchRequest setPredicate:predicate];
 	
 	// TODO: What should we sort by? Last diplayed?
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastOnline" ascending:YES];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[sortDescriptor release];
 	[fetchRequest setSortDescriptors:sortDescriptors];
@@ -370,28 +370,85 @@
 	// Parse userData to JSON object.
 	NSString *usersJson = [[NSString alloc] initWithData:userData encoding:NSUTF8StringEncoding];
 	[userData release];
-	NSArray *users = [usersJson JSONValue];
+	NSArray *usrDicts = [usersJson JSONValue];
 	[usersJson release];
 
-	// Insert users into managedObjectContext.
-	NSEnumerator *e = [users objectEnumerator];
+	NSLog(@"Me: %@", [usrDicts objectAtIndex:0]);
+	
+	// Fetch matching local users and update their attributes if necesary.
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
+											  inManagedObjectContext:managedObjectContext];
+	[fetchRequest setEntity:entity];
 
-	// Insert me first, then the others.
-	me = [User insertWithDictionary:[e nextObject] 
-			 inManagedObjectContext:managedObjectContext];
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] setUser:me];
-	if (![self.navigationItem.rightBarButtonItem isEnabled] && me) {
-		[self.navigationItem.rightBarButtonItem setEnabled:YES];
+	// Create predicate with uids of users fetched from server.
+	NSMutableArray *servedUids = [[NSMutableArray alloc] initWithCapacity:[usrDicts count]];
+	for (NSDictionary *usrDict in usrDicts) {
+		[servedUids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
+//		[remotes setObject:user
+//				 forKey:[[user valueForKey:@"_id"] valueForKey:@"$oid"]];
 	}
-	NSDictionary *user;
-	while (user = [e nextObject]) {
-		[User insertWithDictionary:user
-			inManagedObjectContext:managedObjectContext];
+	NSLog(@"servedUids: %@", servedUids);
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uid IN %@", servedUids]];
+
+	// Perform the fetch.
+	NSError *error = nil;
+	NSArray *fetchedUsers = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	[fetchRequest release];
+	if (fetchedUsers == nil) {
+		// TODO: Handle the error appropriately.
+		NSLog(@"batch fetch users error %@, %@", error, [error userInfo]);
+	} else if ([fetchedUsers count] > 0) {
+		NSLog(@"fetched users: %@", fetchedUsers);
+
+		// Store fetched users in dictionary with uids as keys.
+		NSMutableDictionary *uidFetc = [[NSMutableDictionary alloc]
+										initWithCapacity:[fetchedUsers count]];
+		for (User *fUsr in fetchedUsers) {
+			[uidFetc setObject:fUsr forKey:[fUsr uid]];
+		}
+
+		// First usrDict is me. Can treat the same as others. Just create me
+		// and attach to account in the LoversAppDelegate if doesn't exist.
+
+		// Iterate over served Users 
+		NSUInteger index = 0; User *usrObj;
+		for (NSDictionary *usrDict in usrDicts) {
+			
+			// Check if served user is already stored on iPhone.
+			if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:index]]) {
+				NSLog(@"%@ exists already", [usrObj name]);
+				// Update each fetched user only if served user is more recent.
+				if ([[usrObj updated] timeIntervalSince1970] <
+					[[usrDict valueForKey:@"t"] doubleValue]) {
+					[usrObj updateWithDictionary:usrDict];
+					NSLog(@"update user: %@", [usrObj name]);
+				}
+			} else { // insert new served user
+				NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
+				[User insertWithDictionary:usrDict
+					inManagedObjectContext:managedObjectContext];
+			}
+			index++;
+		}
+		[uidFetc release];
+	} else { // insert all served users cause none exist locally
+		NSLog(@"no users exist. all inserted");
+		for (NSDictionary *usrDict in usrDicts) {
+			[User insertWithDictionary:usrDict
+				inManagedObjectContext:managedObjectContext];
+		}
 	}
+
+	[servedUids release];
 
 	// Save. In memory-changes trump conflicts in external store.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-//	[managedObjectContext save:nil]; // this breaks currently
+	[managedObjectContext save:nil]; // causes duplicates
+
+	if (![self.navigationItem.rightBarButtonItem isEnabled]) {
+	   [self.navigationItem.rightBarButtonItem setEnabled:YES];
+	}
 }
 
 

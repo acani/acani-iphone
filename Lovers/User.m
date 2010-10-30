@@ -63,27 +63,31 @@
 
 + (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
 	User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
-	[user setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
-	[user setAbout:[dictionary valueForKey:@"a"]];
-	[user setShowDistance:[dictionary valueForKey:@"d"]];
-	[user setEthnicity:[dictionary valueForKey:@"e"]];
-	[user setHeight:[dictionary valueForKey:@"h"]];
-	[user setFbId:[dictionary valueForKey:@"i"]];
 	Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
-	[location setLatitude:[[dictionary valueForKey:@"l"] objectAtIndex:0]];
-	[location setLongitude:[[dictionary valueForKey:@"l"] objectAtIndex:1]];
 	[user setLocation:location];
-	[user setName:[dictionary valueForKey:@"n"]];
-	[user setOnlineStatus:[dictionary valueForKey:@"o"]];
-	[user setWeight:[dictionary valueForKey:@"p"]];
-	[user setHeadline:[dictionary valueForKey:@"q"]];
-	[user setLastOnline:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"r"] doubleValue]]];
-	[user setSex:[dictionary valueForKey:@"s"]];
-	[user setUpdated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"t"] doubleValue]]];
-	[user setFbUsername:[dictionary valueForKey:@"u"]];
-	[user setLikes:[dictionary valueForKey:@"v"]];
-	[user setAge:[dictionary valueForKey:@"y"]];
-	return user;
+	return [user updateWithDictionary:dictionary];
+}
+
+- (User *)updateWithDictionary:(NSDictionary *)dictionary {
+	[self setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
+	[self setAbout:[dictionary valueForKey:@"a"]];
+	[self setShowDistance:[dictionary valueForKey:@"d"]];
+	[self setEthnicity:[dictionary valueForKey:@"e"]];
+	[self setHeight:[dictionary valueForKey:@"h"]];
+	[self setFbId:[dictionary valueForKey:@"i"]];
+	[[self location] setLatitude:[[dictionary valueForKey:@"l"] objectAtIndex:0]];
+	[[self location] setLongitude:[[dictionary valueForKey:@"l"] objectAtIndex:1]];
+	[self setName:[dictionary valueForKey:@"n"]];
+	[self setOnlineStatus:[dictionary valueForKey:@"o"]];
+	[self setWeight:[dictionary valueForKey:@"p"]];
+	[self setHeadline:[dictionary valueForKey:@"q"]];
+	[self setLastOnline:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"r"] doubleValue]]];
+	[self setSex:[dictionary valueForKey:@"s"]];
+	[self setUpdated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"t"] doubleValue]]];
+	[self setFbUsername:[dictionary valueForKey:@"u"]];
+	[self setLikes:[dictionary valueForKey:@"v"]];
+	[self setAge:[dictionary valueForKey:@"y"]];
+	return self;
 }
 
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary {

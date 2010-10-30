@@ -39,4 +39,6 @@
 + (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary;
 
+- (User *)updateWithDictionary:(NSDictionary *)dictionary;
+
 @end
