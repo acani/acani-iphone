@@ -2,16 +2,16 @@
 //  User.m
 //  Lovers
 //
-//  Created by Matt Di Pasquale on 9/19/10.
+//  Created by Matt Di Pasquale on 10/31/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
-
-#import "LoversAppDelegate.h"
 
 #import "User.h"
 
 #import "Account.h"
 #import "Location.h"
+#import "Thumb.h"
+#import "LoversAppDelegate.h"
 
 @implementation User 
 
@@ -26,9 +26,11 @@
 @dynamic likes;
 @dynamic uid;
 @dynamic fbUsername;
+@dynamic order;
 @dynamic height;
 @dynamic ethnicity;
 @dynamic showDistance;
+@dynamic thumb;
 @dynamic location;
 @dynamic account;
 
@@ -46,7 +48,7 @@
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid == %@", uid];
 	[fetchRequest setPredicate:predicate];
-
+	
 	NSError *error;
 	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	[fetchRequest release];

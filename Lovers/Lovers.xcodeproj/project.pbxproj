@@ -35,11 +35,12 @@
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
 		C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* Lovers.sql */; };
 		C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */; };
-		C96221A712445C7D00059C58 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C962219E12445C7D00059C58 /* Profile.m */; };
-		C96221A812445C7D00059C58 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A012445C7D00059C58 /* Location.m */; };
-		C96221A912445C7D00059C58 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A212445C7D00059C58 /* Message.m */; };
-		C96221AB12445C7D00059C58 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A612445C7D00059C58 /* Account.m */; };
-		C96222C61246B55700059C58 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C96222C51246B55700059C58 /* User.m */; };
+		C93B6A48127DEE9900CC4E85 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A3D127DEE9900CC4E85 /* Profile.m */; };
+		C93B6A49127DEE9900CC4E85 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A3F127DEE9900CC4E85 /* Location.m */; };
+		C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A41127DEE9900CC4E85 /* Message.m */; };
+		C93B6A4B127DEE9900CC4E85 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A43127DEE9900CC4E85 /* User.m */; };
+		C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A45127DEE9900CC4E85 /* Account.m */; };
+		C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A47127DEE9900CC4E85 /* Thumb.m */; };
 		C962C11612668F6700D0B1DD /* ThumbsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C962C11512668F6700D0B1DD /* ThumbsCell.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
@@ -108,16 +109,18 @@
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Lovers.xcdatamodel; path = Classes/Lovers.xcdatamodel; sourceTree = "<group>"; };
 		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
-		C962219D12445C7D00059C58 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = ../Profile.h; sourceTree = "<group>"; };
-		C962219E12445C7D00059C58 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = ../Profile.m; sourceTree = "<group>"; };
-		C962219F12445C7D00059C58 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = ../Location.h; sourceTree = "<group>"; };
-		C96221A012445C7D00059C58 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = ../Location.m; sourceTree = "<group>"; };
-		C96221A112445C7D00059C58 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Message.h; path = ../Message.h; sourceTree = "<group>"; };
-		C96221A212445C7D00059C58 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Message.m; path = ../Message.m; sourceTree = "<group>"; };
-		C96221A512445C7D00059C58 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Account.h; path = ../Account.h; sourceTree = "<group>"; };
-		C96221A612445C7D00059C58 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = ../Account.m; sourceTree = "<group>"; };
-		C96222C41246B55700059C58 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ../User.h; sourceTree = "<group>"; };
-		C96222C51246B55700059C58 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ../User.m; sourceTree = "<group>"; };
+		C93B6A3C127DEE9900CC4E85 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		C93B6A3D127DEE9900CC4E85 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		C93B6A3E127DEE9900CC4E85 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		C93B6A3F127DEE9900CC4E85 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		C93B6A40127DEE9900CC4E85 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		C93B6A41127DEE9900CC4E85 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		C93B6A42127DEE9900CC4E85 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C93B6A43127DEE9900CC4E85 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C93B6A44127DEE9900CC4E85 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		C93B6A45127DEE9900CC4E85 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		C93B6A46127DEE9900CC4E85 /* Thumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thumb.h; sourceTree = "<group>"; };
+		C93B6A47127DEE9900CC4E85 /* Thumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thumb.m; sourceTree = "<group>"; };
 		C962C11412668F6700D0B1DD /* ThumbsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbsCell.h; sourceTree = "<group>"; };
 		C962C11512668F6700D0B1DD /* ThumbsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsCell.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -233,6 +236,18 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93B6A3C127DEE9900CC4E85 /* Profile.h */,
+				C93B6A3D127DEE9900CC4E85 /* Profile.m */,
+				C93B6A3E127DEE9900CC4E85 /* Location.h */,
+				C93B6A3F127DEE9900CC4E85 /* Location.m */,
+				C93B6A40127DEE9900CC4E85 /* Message.h */,
+				C93B6A41127DEE9900CC4E85 /* Message.m */,
+				C93B6A42127DEE9900CC4E85 /* User.h */,
+				C93B6A43127DEE9900CC4E85 /* User.m */,
+				C93B6A44127DEE9900CC4E85 /* Account.h */,
+				C93B6A45127DEE9900CC4E85 /* Account.m */,
+				C93B6A46127DEE9900CC4E85 /* Thumb.h */,
+				C93B6A47127DEE9900CC4E85 /* Thumb.m */,
 				C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */,
 				C93B6923127C9EB200CC4E85 /* Lovers.sql */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
@@ -259,16 +274,6 @@
 		C9119F5212522657008A26BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C96222C41246B55700059C58 /* User.h */,
-				C96222C51246B55700059C58 /* User.m */,
-				C962219D12445C7D00059C58 /* Profile.h */,
-				C962219E12445C7D00059C58 /* Profile.m */,
-				C962219F12445C7D00059C58 /* Location.h */,
-				C96221A012445C7D00059C58 /* Location.m */,
-				C96221A112445C7D00059C58 /* Message.h */,
-				C96221A212445C7D00059C58 /* Message.m */,
-				C96221A512445C7D00059C58 /* Account.h */,
-				C96221A612445C7D00059C58 /* Account.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -502,11 +507,6 @@
 				C91FE7451225F6D7003C266E /* AsyncSocket.m in Sources */,
 				C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */,
 				C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */,
-				C96221A712445C7D00059C58 /* Profile.m in Sources */,
-				C96221A812445C7D00059C58 /* Location.m in Sources */,
-				C96221A912445C7D00059C58 /* Message.m in Sources */,
-				C96221AB12445C7D00059C58 /* Account.m in Sources */,
-				C96222C61246B55700059C58 /* User.m in Sources */,
 				C9D75D93124AE8790001A448 /* HTTPOperation.m in Sources */,
 				C9D75DD3124B843D0001A448 /* Constants.m in Sources */,
 				C9D76022124CD99D0001A448 /* NSObject+SBJSON.m in Sources */,
@@ -522,6 +522,12 @@
 				C9D76534124F02BB0001A448 /* ThumbView.m in Sources */,
 				C9119F2C12518371008A26BB /* UsersViewController.m in Sources */,
 				C962C11612668F6700D0B1DD /* ThumbsCell.m in Sources */,
+				C93B6A48127DEE9900CC4E85 /* Profile.m in Sources */,
+				C93B6A49127DEE9900CC4E85 /* Location.m in Sources */,
+				C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */,
+				C93B6A4B127DEE9900CC4E85 /* User.m in Sources */,
+				C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */,
+				C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

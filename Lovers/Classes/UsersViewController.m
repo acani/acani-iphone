@@ -210,8 +210,8 @@
 		// Inform the user that the connection failed.
 		NSLog(@"Failure to create URL connection.");
 	}
-	
-    // show in the status bar that network activity is starting
+
+    // Start network activity spinner in the status bar.
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;	
 }
 
