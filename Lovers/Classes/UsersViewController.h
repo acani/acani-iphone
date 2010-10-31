@@ -28,9 +28,7 @@
 - (void)logout;
 - (void)login;
 - (void)goToProfile;
-
-//- (void)loadUsers;
-//- (void)reload;
-//- (void)loadMoreUsers;
+- (void)loadUsers;
+- (void)loadMoreUsers;
 	
 @end

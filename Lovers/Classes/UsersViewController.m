@@ -82,32 +82,7 @@
 //	NSLog(@"fetched sections count: %i", [[fetchedResultsController sections] count]);
 //	NSLog(@"fetched objects first: %@", [[fetchedResultsController fetchedObjects] objectAtIndex:0]);
 
-	// GET nearest users from server; limit => 20.
-	NSString *string = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%f/%f",
-						SINATRA,
-						[[myUser uid] length] ? [myUser uid] : @"0", // nil if it's first time using app
-						[[UIDevice currentDevice] uniqueIdentifier],
-						50.0f, 50.0f];
-//						location.coordinate.latitude, location.coordinate.longitude];
-	NSURL *url = [[NSURL alloc] initWithString:string];
-	[string	release];
-	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url
-													 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-												 timeoutInterval:60.0]; // default
-	[url release];
-	NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-	[urlRequest release];
-	if (urlConnection) {
-		self.userData = [NSMutableData data];
-	} else {
-		// Inform the user that the connection failed.
-		NSLog(@"Failure to create URL connection.");
-	}
-
-    // show in the status bar that network activity is starting
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-//	self.loadUsers;
+	[self loadUsers];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -208,6 +183,42 @@
 	[navController release];
 }
 
+// GET nearest users from server if connected to internet; limit => 20.
+- (void)loadUsers {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%@/%@",
+						   SINATRA,
+						   [[myUser uid] length] ? [myUser uid] : @"0", // @"" if it's first time using app
+						   [[UIDevice currentDevice] uniqueIdentifier],
+						   [[myUser location] latitude],
+						   [[myUser location] longitude]];
+	NSLog(@"urlString: %@", urlString);
+	NSURL *url = [[NSURL alloc] initWithString:urlString];
+	[urlString	release];
+	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url
+													 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
+												 timeoutInterval:60.0]; // default
+	[url release];
+	NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+	[urlRequest release];
+	if (urlConnection) {
+		if (userData == nil) {
+			self.userData = [NSMutableData data];
+		} else {
+			[userData setLength:0]; // reset data
+		}
+	} else {
+		// Inform the user that the connection failed.
+		NSLog(@"Failure to create URL connection.");
+	}
+	
+    // show in the status bar that network activity is starting
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;	
+}
+
+- (void)loadMoreUsers {
+	
+}
+
 
 #pragma mark -
 #pragma mark Table view data source
@@ -244,24 +255,6 @@
 
     return thumbsCell;
 }
-
-//- (void)loadUsers {
-//	// If connected to internet, fetch remote users.
-//	[self fetchUsers];
-//}
-//
-//// Get users from server.
-//- (void)fetchUsers {
-//	
-//}
-//
-//- (void)reload {
-//	
-//}
-//
-//- (void)loadMoreUsers {
-//	
-//}
 
 /*
 // Override to support conditional editing of the table view.
