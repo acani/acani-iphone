@@ -32,8 +32,26 @@
 		NSLog(@"managedObjectContext error!");
     }
 
+	// Get myAccount.
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:managedObjectContext];
+	[request setEntity:entity];
+	
+	NSError *error;
+	NSArray *accounts = [managedObjectContext executeFetchRequest:request error:&error];
+	[request release];
+	if (accounts == nil) {
+		// TODO: Handle the error appropriately.
+		NSLog(@"fetch accounts error %@, %@", error, [error userInfo]);
+	} else if ([accounts count] == 1) { // app ships with at least 1 account
+		self.myAccount = [accounts objectAtIndex:0];
+		[webSocket open];
+	} else if ([accounts count] > 1) {
+		// Present account login screen to pick account
+	}
+
 	// Create window, navigationController & usersViewController
-	usersViewController = [[UsersViewController alloc] init];
+	usersViewController = [[UsersViewController alloc] initWithMe:[myAccount user]];
 	usersViewController.managedObjectContext = managedObjectContext;
 
 //	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
@@ -49,37 +67,8 @@
     [window addSubview:navigationController.view];
     [window makeKeyAndVisible];
 
-//	// Pass the managed object context to the view controller.
-//    usersViewController.managedObjectContext = context;
 
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
-
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-	
-	NSError *error;
-	NSMutableArray *accounts = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	if (accounts == nil) {
-		// Handle the error.
-	}
-	[request release];
-
-	// We should ship the app with a default account already
-	// created so that we can assume it exists.
-	if ([accounts count] == 0) {
-		// Create account
-		myAccount = (Account *)[NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
-		[myAccount setEmail:@""];
-		[myAccount setUsername:@""];
-		[myAccount setPassword:@""];
-//		[myAccount setUser:(User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext]];
-	} else if ([accounts count] == 1) {
-		myAccount = [accounts objectAtIndex:0];
-		[webSocket open];
-	} else if ([accounts count] > 1) {
-		// Present account login screen to pick account
-	}
 
 //	[self findLocation];
 	
@@ -356,17 +345,15 @@
  Returns the managed object context for the application.
  If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
  */
-- (NSManagedObjectContext *) managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext {
+	if (managedObjectContext) return managedObjectContext;
 	
-    if (managedObjectContext != nil) {
-        return managedObjectContext;
-    }
+    NSPersistentStoreCoordinator *coord = [self persistentStoreCoordinator];
+	if (!coord) return nil;
 	
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
-    }
+	managedObjectContext = [[NSManagedObjectContext alloc] init];
+	[managedObjectContext setPersistentStoreCoordinator:coord];
+
     return managedObjectContext;
 }
 
@@ -375,10 +362,8 @@
  If the model doesn't already exist, it is created by merging all of the models found in the application bundle.
  */
 - (NSManagedObjectModel *)managedObjectModel {
-	
-    if (managedObjectModel != nil) {
-        return managedObjectModel;
-    }
+	if (managedObjectModel) return managedObjectModel;
+
     managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
     return managedObjectModel;
 }
@@ -388,16 +373,27 @@
  If the coordinator doesn't already exist, it is created and the application's store added to it.
  */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+	if (persistentStoreCoordinator) return persistentStoreCoordinator;
+
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"];
+
+	// If the expected store doesn't exist, copy the default store.
+	// This is basically like shipping the app with a default user account
+	// already created so that we can assume it exists.
+	if (![fileManager fileExistsAtPath:storePath]) {
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
+		if (defaultStorePath) {
+			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+		}
+	}
+
+	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	
-    if (persistentStoreCoordinator != nil) {
-        return persistentStoreCoordinator;
-    }
-	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"]];
-	
-	NSError *error = nil;
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+	NSError *error;
+	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];	
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error]) {
 		/*
 		 Replace this implementation with code to handle the error appropriately.
 		 
@@ -410,8 +406,7 @@
 		 */
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-    }    
-	
+    }
     return persistentStoreCoordinator;
 }
 
@@ -432,6 +427,8 @@
 
 - (void)dealloc {
 	if (receiveMessageSound) AudioServicesDisposeSystemSoundID(receiveMessageSound);
+
+	[myAccount release];
 
 	[Sexes release];
 	[Ethnicities release];

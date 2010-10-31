@@ -13,7 +13,7 @@
 
 @synthesize columnCount;
 
-@synthesize me;
+@synthesize myUser;
 
 @synthesize managedObjectContext;
 @synthesize fetchedResultsController;
@@ -25,13 +25,12 @@
 #pragma mark -
 #pragma mark Initialization
 
-
-- (id)init {
-    if ((self = [super initWithStyle:UITableViewStylePlain])) {
-		self.wantsFullScreenLayout = YES;
-		// TODO: make the navBar title a logo.
-		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-    }
+- (id)initWithMe:(User *)user {
+	if (!(self = [super initWithStyle:UITableViewStylePlain])) return self;
+	self.wantsFullScreenLayout = YES;
+	self.myUser = user;
+	// TODO: make the navBar title a logo.
+	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
     return self;
 }
 
@@ -44,15 +43,10 @@
 
 	// Add Profile button as rightBarButtonItem.
 	UIBarButtonItem *profileButton = BAR_BUTTON(@"Profile", @selector(goToProfile));
-	[profileButton setEnabled:NO]; // Enable once we get me.
+	[profileButton setEnabled:NO]; // Enable once we get myUser.
 	self.navigationItem.rightBarButtonItem = profileButton;
 
-	// Fetch me & other users from Core Data.
-	if (self.me = [User findByUid:@"myid"]) {
-		[profileButton setEnabled:YES];
-	}
-	[profileButton release];	
-	
+	// Fetch 20 closest users from Core Data.
 	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
@@ -89,10 +83,9 @@
 //	NSLog(@"fetched objects first: %@", [[fetchedResultsController fetchedObjects] objectAtIndex:0]);
 
 	// GET nearest users from server; limit => 20.
-	NSString *myUid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid]; // make shared me variable so this is easier to get
 	NSString *string = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%f/%f",
 						SINATRA,
-						myUid == nil ? @"0" : myUid, // nil if it's first time using app
+						[[myUser uid] length] ? [myUser uid] : @"0", // nil if it's first time using app
 						[[UIDevice currentDevice] uniqueIdentifier],
 						50.0f, 50.0f];
 //						location.coordinate.latitude, location.coordinate.longitude];
@@ -207,7 +200,7 @@
 }
 
 - (void)goToProfile {
-	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:me];
+	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:myUser];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
 	[profileVC release];
@@ -372,8 +365,9 @@
 	[userData release];
 	NSArray *usrDicts = [usersJson JSONValue];
 	[usersJson release];
-
-	NSLog(@"Me: %@", [usrDicts objectAtIndex:0]);
+	
+	// Update myUser first.
+	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
 	
 	// Fetch matching local users and update their attributes if necesary.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -382,11 +376,12 @@
 	[fetchRequest setEntity:entity];
 
 	// Create predicate with uids of users fetched from server.
+	NSUInteger index = -1; // so we can pre-increment (faster?)
 	NSMutableArray *servedUids = [[NSMutableArray alloc] initWithCapacity:[usrDicts count]];
 	for (NSDictionary *usrDict in usrDicts) {
-		[servedUids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
-//		[remotes setObject:user
-//				 forKey:[[user valueForKey:@"_id"] valueForKey:@"$oid"]];
+		if (++index != 0) {
+			[servedUids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
+		}
 	}
 	NSLog(@"servedUids: %@", servedUids);
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uid IN %@", servedUids]];
@@ -408,38 +403,38 @@
 			[uidFetc setObject:fUsr forKey:[fUsr uid]];
 		}
 
-		// First usrDict is me. Can treat the same as others. Just create me
-		// and attach to account in the LoversAppDelegate if doesn't exist.
-
 		// Iterate over served Users 
-		NSUInteger index = 0; User *usrObj;
+		index = -1; User *usrObj;
+		NSUInteger sIndex = -1;
 		for (NSDictionary *usrDict in usrDicts) {
-			
-			// Check if served user is already stored on iPhone.
-			if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:index]]) {
-				NSLog(@"%@ exists already", [usrObj name]);
-				// Update each fetched user only if served user is more recent.
-				if ([[usrObj updated] timeIntervalSince1970] <
-					[[usrDict valueForKey:@"t"] doubleValue]) {
-					[usrObj updateWithDictionary:usrDict];
-					NSLog(@"update user: %@", [usrObj name]);
+			if (++index != 0) {
+				// Check if served user is already stored on iPhone.
+				if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:++sIndex]]) {
+					NSLog(@"%@ exists already", [usrObj name]);
+					// Update each fetched user only if served user is more recent.
+					if ([[usrObj updated] timeIntervalSince1970] <
+						[[usrDict valueForKey:@"t"] doubleValue]) {
+						[usrObj updateWithDictionary:usrDict];
+						NSLog(@"update user: %@", [usrObj name]);
+					}
+				} else { // insert new served user
+					NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
+					[User insertWithDictionary:usrDict
+						inManagedObjectContext:managedObjectContext];
 				}
-			} else { // insert new served user
-				NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
-				[User insertWithDictionary:usrDict
-					inManagedObjectContext:managedObjectContext];
 			}
-			index++;
 		}
 		[uidFetc release];
 	} else { // insert all served users cause none exist locally
 		NSLog(@"no users exist. all inserted");
+		index = -1;
 		for (NSDictionary *usrDict in usrDicts) {
-			[User insertWithDictionary:usrDict
-				inManagedObjectContext:managedObjectContext];
+			if (++index != 0) {
+				[User insertWithDictionary:usrDict
+					inManagedObjectContext:managedObjectContext];
+			}
 		}
 	}
-
 	[servedUids release];
 
 	// Save. In memory-changes trump conflicts in external store.
@@ -498,7 +493,7 @@
 
 
 - (void)dealloc {
-	[me release];
+	[myUser release];
 
 	[fetchedResultsController release];
 	[managedObjectContext release];

@@ -6,7 +6,7 @@
 @interface ProfileViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate,
 UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate,
 UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
-	User *me;
+	User *myUser;
 	Facebook *fb;
 
 	UIBarButtonItem *saveButton;
@@ -28,7 +28,7 @@ UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
 	NSInteger editTextTag;
 }
 
-@property (nonatomic, retain) User *me;
+@property (nonatomic, retain) User *myUser;
 @property (nonatomic, retain) Facebook *fb;
 
 @property (nonatomic, retain) UIBarButtonItem *saveButton;

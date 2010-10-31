@@ -24,7 +24,7 @@ static NSString* kAppId = @"132443680103133";
 
 @implementation ProfileViewController
 
-@synthesize me;
+@synthesize myUser;
 @synthesize fb;
 
 @synthesize saveButton;
@@ -191,26 +191,26 @@ static NSString* kAppId = @"132443680103133";
 		NSLog(@"Result: %@", result);
 
 		NSString *about = [result valueForKey:@"about"]; // should this be headline?
-		[aboutInput setText:about]; [me setAbout:about];
+		[aboutInput setText:about]; [myUser setAbout:about];
 
-		[me setFbId:[NSNumber numberWithInt:[[result valueForKey:@"id"] intValue]]];
+		[myUser setFbId:[NSNumber numberWithInt:[[result valueForKey:@"id"] intValue]]];
 
 		NSString *fullName = [result valueForKey:@"name"];
-		[me setName:fullName]; [profileName setText:fullName];
+		[myUser setName:fullName]; [profileName setText:fullName];
 
-		//	[me setHeadline:[result valueForKey:@"about"]];
+		//	[myUser setHeadline:[result valueForKey:@"about"]];
 		NSString *sex = [[result valueForKey:@"gender"] capitalizedString];
-		[me setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInt:2] : [NSNumber numberWithInt:1]];
+		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInt:2] : [NSNumber numberWithInt:1]];
 		[[[self.tableView cellForRowAtIndexPath:
 		   [NSIndexPath indexPathForRow:1 inSection:0]] detailTextLabel] setText:sex];
 
 		NSString *fbUsername = [[result valueForKey:@"link"] lastPathComponent];
-		[me setFbUsername:fbUsername]; [valueInput setText:fbUsername];
+		[myUser setFbUsername:fbUsername]; [valueInput setText:fbUsername];
 
-		 //	[me setLikes:[result valueForKey:@"v"]];
-		 //	[me setAge:[result valueForKey:@"y"]];		 
+		 //	[myUser setLikes:[result valueForKey:@"v"]];
+		 //	[myUser setAge:[result valueForKey:@"y"]];		 
 	}
-	NSLog(@"Me: %@", me);
+	NSLog(@"Me: %@", myUser);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,12 +234,12 @@ static NSString* kAppId = @"132443680103133";
 	}
 	
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	[managedObjectContext refreshObject:me mergeChanges:NO]; // get rid of changes
+	[managedObjectContext refreshObject:myUser mergeChanges:NO]; // get rid of changes
 	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)saveProfile:(id)sender {
-	NSDictionary *changes = [me changedValues];
+	NSDictionary *changes = [myUser changedValues];
 	if ([changes count] == 0) {
 		// TODO: notify me that no changes were made
 		[[self parentViewController] dismissModalViewControllerAnimated:YES];
@@ -249,7 +249,7 @@ static NSString* kAppId = @"132443680103133";
 //	// Might be better to have the server response be the updated time,
 //	// and then we could store that on the iPhone.
 //	NSDate *now = [[NSDate alloc] init];
-//	[me setUpdated:now];
+//	[myUser setUpdated:now];
 //	[now release];
 
 	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -263,7 +263,7 @@ static NSString* kAppId = @"132443680103133";
 	// See sample in sample-profile-put-request.txt
 	HTTPOperation *operation = [[[HTTPOperation alloc] init] autorelease];
 	operation.delegate = (LoversAppDelegate *)[[UIApplication sharedApplication] delegate];
-	operation.oid = me.uid;
+	operation.oid = myUser.uid;
 	operation.params = [User encodeKeysInDictionary:changes];
 	
 	NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
@@ -288,7 +288,7 @@ static NSString* kAppId = @"132443680103133";
 
 - (id)initWithMe:(User *)user {
 	if (!(self = [super init])) return self;
-	self.me = user;
+	self.myUser = user;
 	self.title = @"Edit Profile";
 	return self;
 }
@@ -541,7 +541,7 @@ static NSString* kAppId = @"132443680103133";
 
 - (void)viewDidLoad {
 //	NSString *myName = ; // change to fullName
-//	NSString *myHeadline = [me headline];
+//	NSString *myHeadline = [myUser headline];
 //	
 //	if ([myName length] == 0) {
 //		myName = @"Name Here";
@@ -551,8 +551,8 @@ static NSString* kAppId = @"132443680103133";
 //		headlineInput.color = [
 //	}
 	
-	profileName.text = [me name];
-	headlineInput.text = [me headline];
+	profileName.text = [myUser name];
+	headlineInput.text = [myUser headline];
 
 	// Uncomment the following line to preserve selection between presentations.
 //	self.clearsSelectionOnViewWillAppear = NO;
@@ -620,7 +620,7 @@ static NSString* kAppId = @"132443680103133";
 //}
 
 - (void)switchAction:(id)sender {
-	[me setShowDistance:[NSNumber numberWithBool:[sender isOn]]];
+	[myUser setShowDistance:[NSNumber numberWithBool:[sender isOn]]];
 }
 
 #pragma mark -
@@ -669,7 +669,7 @@ static NSString* kAppId = @"132443680103133";
 			}
 			[cell.contentView addSubview:aboutInput];
 		}
-		aboutInput.text = [me about];
+		aboutInput.text = [myUser about];
 	} else if (indexPath.section == 0 && indexPath.row == FB_USERNAME_ROW) {
 		CellID = @"TextField";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
@@ -688,7 +688,7 @@ static NSString* kAppId = @"132443680103133";
 			}
 			[cell.contentView addSubview:valueInput];
 		}
-		valueInput.text = [me fbUsername];
+		valueInput.text = [myUser fbUsername];
 	} else if (indexPath.section == 1 && indexPath.row == 0) { // Distance Filter Cell
 		CellID = @"Switch";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellID];
@@ -697,7 +697,7 @@ static NSString* kAppId = @"132443680103133";
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			UISwitch *filter = [[UISwitch alloc] initWithFrame:CGRectMake(194, 8, 94, 27)];
 			[filter addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-			filter.on = [[me showDistance] boolValue];
+			filter.on = [[myUser showDistance] boolValue];
 			[cell.contentView addSubview:filter];
 			[filter release]; // is this okay to release here since we set an action for it above?
 		}
@@ -717,28 +717,28 @@ static NSString* kAppId = @"132443680103133";
 		switch (indexPath.row) {
 			case SEX_ROW:
 				// If I try to set cell.detailTextLabel directly here, I get readonly error.
-				valueNum = [me sex];
+				valueNum = [myUser sex];
 				valueText = [Sexes objectAtIndex:[valueNum intValue]];
 				break;
 			case LIKES_ROW:
-				valueNum = [me likes];
+				valueNum = [myUser likes];
 				valueText = [Likes objectAtIndex:[valueNum intValue]];
 				break;
 			case AGE_ROW:
-				valueNum = [me age];
+				valueNum = [myUser age];
 				valueText = [valueNum stringValue];
 				break;
 			case HEIGHT_ROW: // TODO: convert height to inches & feet if in USA
-				valueNum = [me height];
-				valueText = [NSString stringWithFormat:@"%@ cm", [me height]];
+				valueNum = [myUser height];
+				valueText = [NSString stringWithFormat:@"%@ cm", [myUser height]];
 				break;
 			case WEIGHT_ROW: // TODO: convert weight to kilos if not in USA
-				valueNum = [me weight];
-				valueText = [NSString stringWithFormat:@"%@ lbs", [me weight]];
+				valueNum = [myUser weight];
+				valueText = [NSString stringWithFormat:@"%@ lbs", [myUser weight]];
 				break;
 			case ETHNICITY_ROW:
-				valueNum = [me ethnicity];
-				valueText = [Ethnicities objectAtIndex:[[me ethnicity] intValue]];
+				valueNum = [myUser ethnicity];
+				valueText = [Ethnicities objectAtIndex:[[myUser ethnicity] intValue]];
 				break;
 			default:
 				break;
@@ -890,27 +890,27 @@ static NSString* kAppId = @"132443680103133";
 
 	switch (editIndexPath.row) {
 		case SEX_ROW:
-			[valueSelect selectRow:[[me sex] intValue] inComponent:0 animated:NO];
+			[valueSelect selectRow:[[myUser sex] intValue] inComponent:0 animated:NO];
 			break;
 		case LIKES_ROW:
-			[valueSelect selectRow:[[me likes] intValue] inComponent:0 animated:NO];
+			[valueSelect selectRow:[[myUser likes] intValue] inComponent:0 animated:NO];
 			break;
 		case AGE_ROW:
-			[valueSelect selectRow:[[me age] intValue] inComponent:0 animated:NO];
+			[valueSelect selectRow:[[myUser age] intValue] inComponent:0 animated:NO];
 			break;
 		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			if (TRUE) { // detect if we're in USA. how?
-				[valueSelect selectRow:[[me height] intValue] inComponent:0 animated:NO]; // feet
-				[valueSelect selectRow:[[me height] intValue] inComponent:1 animated:NO]; // inches
+				[valueSelect selectRow:[[myUser height] intValue] inComponent:0 animated:NO]; // feet
+				[valueSelect selectRow:[[myUser height] intValue] inComponent:1 animated:NO]; // inches
 			} else {
-				[valueSelect selectRow:[[me height] intValue] inComponent:0 animated:NO]; // cm
+				[valueSelect selectRow:[[myUser height] intValue] inComponent:0 animated:NO]; // cm
 			}
 			break;
 		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
-			[valueSelect selectRow:[[me weight] intValue] inComponent:0 animated:NO];
+			[valueSelect selectRow:[[myUser weight] intValue] inComponent:0 animated:NO];
 			break;
 		case ETHNICITY_ROW:
-			[valueSelect selectRow:[[me ethnicity] intValue] inComponent:0 animated:NO];
+			[valueSelect selectRow:[[myUser ethnicity] intValue] inComponent:0 animated:NO];
 			break;
 		default:
 //			[valueSelect selectRow:0 inComponent:0 animated:NO];
@@ -929,29 +929,29 @@ static NSString* kAppId = @"132443680103133";
 
 	switch (editIndexPath.row) {
 		case SEX_ROW:
-			[me setSex:[NSNumber numberWithInt:row]];
+			[myUser setSex:[NSNumber numberWithInt:row]];
 			break;
 		case LIKES_ROW:
-			[me setLikes:[NSNumber numberWithInt:row]];
+			[myUser setLikes:[NSNumber numberWithInt:row]];
 			break;
 		case AGE_ROW:
-			[me setAge:[NSNumber numberWithInt:row]];
+			[myUser setAge:[NSNumber numberWithInt:row]];
 			break;
 		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			// we should create a global mutable array: heightPicked = [int feet, int inches]
 			// actually, do we need mutable? can we use nsarray since we are not adding objects?
 			// just changing them in place...
 			// something like this..
-//			NSMutableArray *heightPicked = [[NSMutableArray alloc] initWithObjects:[self feetFromHeight([me height])],
-//											[self inchesFromHeight([me height])]];
+//			NSMutableArray *heightPicked = [[NSMutableArray alloc] initWithObjects:[self feetFromHeight([myUser height])],
+//											[self inchesFromHeight([myUser height])]];
 			
 			// calculate total inches and convert to cm and save to height
 //			int heightInCm = 67; // calculate...
-//			[me setHeight:[NSNumber numberWithInt:heightInCm]];
-			[me setHeight:[NSNumber numberWithInt:row]];
+//			[myUser setHeight:[NSNumber numberWithInt:heightInCm]];
+			[myUser setHeight:[NSNumber numberWithInt:row]];
 			break;
 		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
-			[me setWeight:[NSNumber numberWithInt:row]];
+			[myUser setWeight:[NSNumber numberWithInt:row]];
 			if (TRUE) {
 				valueText = [NSString stringWithFormat:@"%@ lbs", valueText];
 			} else {
@@ -959,7 +959,7 @@ static NSString* kAppId = @"132443680103133";
 			}
 			break;
 		case ETHNICITY_ROW:
-			[me setEthnicity:[NSNumber numberWithInt:row]];
+			[myUser setEthnicity:[NSNumber numberWithInt:row]];
 			break;
 		default:
 			break;
@@ -1060,7 +1060,7 @@ static NSString* kAppId = @"132443680103133";
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	switch (textView.tag) {
 		case ABOUT_TAG:
-			[me setAbout:aboutInput.text];
+			[myUser setAbout:aboutInput.text];
 			break;
 		default:
 			break;
@@ -1070,13 +1070,13 @@ static NSString* kAppId = @"132443680103133";
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	switch (textField.tag) {
 		case NAME_TAG:
-			[me setName:profileName.text];
+			[myUser setName:profileName.text];
 			break;
 		case HEADLINE_TAG:
-			[me setHeadline:headlineInput.text];
+			[myUser setHeadline:headlineInput.text];
 			break;
 		case FB_USERNAME_TAG:
-			[me setFbUsername:valueInput.text];
+			[myUser setFbUsername:valueInput.text];
 			break;
 		default:
 			break;
@@ -1138,7 +1138,7 @@ static NSString* kAppId = @"132443680103133";
 	[super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.fb = nil;
-	// me is set in init, so I'm not sure if we should set it to nil here.
+	// myUser is set in init, so I don't think we should set it to nil here.
 
 	self.saveButton = nil;
 	self.doneButton = nil;
@@ -1164,7 +1164,7 @@ static NSString* kAppId = @"132443680103133";
 
 - (void)dealloc {
 	[fb release];
-	[me release];
+	[myUser release];
 
 	[saveButton release];
 	[doneButton release];

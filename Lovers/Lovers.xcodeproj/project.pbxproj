@@ -33,6 +33,8 @@
 		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
+		C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* Lovers.sql */; };
+		C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */; };
 		C96221A712445C7D00059C58 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C962219E12445C7D00059C58 /* Profile.m */; };
 		C96221A812445C7D00059C58 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A012445C7D00059C58 /* Location.m */; };
 		C96221A912445C7D00059C58 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C96221A212445C7D00059C58 /* Message.m */; };
@@ -104,6 +106,8 @@
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Lovers.xcdatamodel; path = Classes/Lovers.xcdatamodel; sourceTree = "<group>"; };
+		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
+		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
 		C962219D12445C7D00059C58 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = ../Profile.h; sourceTree = "<group>"; };
 		C962219E12445C7D00059C58 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = ../Profile.m; sourceTree = "<group>"; };
 		C962219F12445C7D00059C58 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = ../Location.h; sourceTree = "<group>"; };
@@ -229,6 +233,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */,
+				C93B6923127C9EB200CC4E85 /* Lovers.sql */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
 				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
 				1331AC1B11906025004ABBC6 /* logo_bg.png */,
@@ -472,6 +478,8 @@
 				AD7162BB1217477500351B3D /* BlockButton.png in Resources */,
 				C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */,
 				C9D76021124CD99D0001A448 /* FBDialog.bundle in Resources */,
+				C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */,
+				C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
