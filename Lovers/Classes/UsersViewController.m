@@ -57,7 +57,7 @@
 //	[fetchRequest setPredicate:predicate];
 	
 	// TODO: What should we sort by? Last diplayed?
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[sortDescriptor release];
 	[fetchRequest setSortDescriptors:sortDescriptors];
@@ -361,7 +361,7 @@
 	
 	// Update myUser first.
 	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
-	
+
 	// Fetch matching local users and update their attributes if necesary.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
@@ -377,6 +377,8 @@
 		}
 	}
 	NSLog(@"servedUids: %@", servedUids);
+	NSInteger oIndex = [[myUser order] integerValue] - index;
+	[myUser setOrder:[NSNumber numberWithInteger:oIndex]];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uid IN %@", servedUids]];
 
 	// Perform the fetch.
@@ -408,12 +410,14 @@
 					if ([[usrObj updated] timeIntervalSince1970] <
 						[[usrDict valueForKey:@"t"] doubleValue]) {
 						[usrObj updateWithDictionary:usrDict];
+						[usrObj setOrder:[NSNumber numberWithInteger:++oIndex]];
 						NSLog(@"update user: %@", [usrObj name]);
 					}
 				} else { // insert new served user
 					NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
-					[User insertWithDictionary:usrDict
-						inManagedObjectContext:managedObjectContext];
+					User *oUsr = [User insertWithDictionary:usrDict
+									 inManagedObjectContext:managedObjectContext];
+					[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
 				}
 			}
 		}
@@ -423,8 +427,9 @@
 		index = -1;
 		for (NSDictionary *usrDict in usrDicts) {
 			if (++index != 0) {
-				[User insertWithDictionary:usrDict
-					inManagedObjectContext:managedObjectContext];
+				User *oUsr = [User insertWithDictionary:usrDict
+								 inManagedObjectContext:managedObjectContext];
+				[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
 			}
 		}
 	}

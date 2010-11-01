@@ -7,3 +7,5 @@ build/*
 */build/*
 *.mode1v3
 *.pbxuser
+
+rmdb.sh
