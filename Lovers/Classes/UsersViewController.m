@@ -377,8 +377,6 @@
 		}
 	}
 	NSLog(@"servedUids: %@", servedUids);
-	NSInteger oIndex = [[myUser order] integerValue] - index;
-	[myUser setOrder:[NSNumber numberWithInteger:oIndex]];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uid IN %@", servedUids]];
 
 	// Perform the fetch.
@@ -388,49 +386,61 @@
 	if (fetchedUsers == nil) {
 		// TODO: Handle the error appropriately.
 		NSLog(@"batch fetch users error %@, %@", error, [error userInfo]);
-	} else if ([fetchedUsers count] > 0) {
-		NSLog(@"fetched users: %@", fetchedUsers);
+	} else {
+		// Store served users in Core Data.
+		// Set the order attribute.
+		NSInteger oIndex = [[myUser order] integerValue] - index;
+		[myUser setOrder:[NSNumber numberWithInteger:oIndex]];		
+		
+		if ([fetchedUsers count] > 0) {
+			NSLog(@"fetched users: %@", fetchedUsers);
 
-		// Store fetched users in dictionary with uids as keys.
-		NSMutableDictionary *uidFetc = [[NSMutableDictionary alloc]
-										initWithCapacity:[fetchedUsers count]];
-		for (User *fUsr in fetchedUsers) {
-			[uidFetc setObject:fUsr forKey:[fUsr uid]];
-		}
+			// Store fetched users in dictionary with uids as keys.
+			NSMutableDictionary *uidFetc = [[NSMutableDictionary alloc]
+											initWithCapacity:[fetchedUsers count]];
+			for (User *fUsr in fetchedUsers) {
+				[uidFetc setObject:fUsr forKey:[fUsr uid]];
+			}
 
-		// Iterate over served Users 
-		index = -1; User *usrObj;
-		NSUInteger sIndex = -1;
-		for (NSDictionary *usrDict in usrDicts) {
-			if (++index != 0) {
-				// Check if served user is already stored on iPhone.
-				if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:++sIndex]]) {
-					NSLog(@"%@ exists already", [usrObj name]);
-					// Update each fetched user only if served user is more recent.
-					if ([[usrObj updated] timeIntervalSince1970] <
-						[[usrDict valueForKey:@"t"] doubleValue]) {
-						[usrObj updateWithDictionary:usrDict];
-						[usrObj setOrder:[NSNumber numberWithInteger:++oIndex]];
-						NSLog(@"update user: %@", [usrObj name]);
+			// Iterate over served Users 
+			index = -1; User *usrObj;
+			NSUInteger sIndex = -1;
+			for (NSDictionary *usrDict in usrDicts) {
+				if (++index != 0) {
+					// Check if served user is already stored on iPhone.
+					if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:++sIndex]]) {
+						NSLog(@"%@ exists already", [usrObj name]);
+						// Update each fetched user only if served user is more recent.
+						if ([[usrObj updated] timeIntervalSince1970] <
+							[[usrDict valueForKey:@"t"] doubleValue]) {
+							[usrObj updateWithDictionary:usrDict];
+							[usrObj setOrder:[NSNumber numberWithInteger:++oIndex]];
+							NSLog(@"update user: %@", [usrObj name]);
+						}
+					} else { // insert new served user
+						NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
+						User *oUsr = [User insertWithDictionary:usrDict
+										 inManagedObjectContext:managedObjectContext];
+						[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
 					}
-				} else { // insert new served user
-					NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
+				}
+			}
+			[uidFetc release];
+		} else { // insert all served users cause none found locally
+			NSLog(@"no users exist. all inserted");
+			index = -1;
+			for (NSDictionary *usrDict in usrDicts) {
+				if (++index != 0) {
 					User *oUsr = [User insertWithDictionary:usrDict
 									 inManagedObjectContext:managedObjectContext];
 					[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
 				}
 			}
 		}
-		[uidFetc release];
-	} else { // insert all served users cause none exist locally
-		NSLog(@"no users exist. all inserted");
-		index = -1;
-		for (NSDictionary *usrDict in usrDicts) {
-			if (++index != 0) {
-				User *oUsr = [User insertWithDictionary:usrDict
-								 inManagedObjectContext:managedObjectContext];
-				[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
-			}
+		
+		// If order index is within 100 of min, reorder users.
+		if ([[myUser order] integerValue] < -32660) { // -32768 is min
+			[self orderUsers];
 		}
 	}
 	[servedUids release];
@@ -441,6 +451,19 @@
 
 	if (![self.navigationItem.rightBarButtonItem isEnabled]) {
 	   [self.navigationItem.rightBarButtonItem setEnabled:YES];
+	}
+}
+
+
+#pragma mark -
+#pragma mark Fetched results maintenance
+
+- (void)orderUsers {
+	NSArray *users = [fetchedResultsController fetchedObjects];
+	NSInteger oIndex = 32760 - [users count]; // 32767 is max
+
+	for (User *oUsr in [fetchedResultsController fetchedObjects]) {
+		[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
 	}
 }
 
