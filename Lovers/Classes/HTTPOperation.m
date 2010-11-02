@@ -56,6 +56,8 @@
 }
 
 - (void)main {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
 	// Create the PUT data from the PUT dictionary
 	NSData *putData = [self generateFormDataFromDictionary:params];
 	
@@ -82,6 +84,7 @@
 	// Return results
     NSString *outstring = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
 	[self cleanup:outstring];
+	[pool release];
 }
 
 @end

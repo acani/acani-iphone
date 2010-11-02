@@ -8,6 +8,9 @@
 #import "ThumbsCell.h"
 #import "JSON.h"
 
+#define MAX_USERS 3000
+#define MIN_ORDER -32660
+#define MAX_ORDER 32760
 
 @implementation UsersViewController
 
@@ -438,10 +441,7 @@
 			}
 		}
 		
-		// If order index is within 100 of min, reorder users.
-		if ([[myUser order] integerValue] < -32660) { // -32768 is min
-			[self orderUsers];
-		}
+		[self cleanUpUsers];
 	}
 	[servedUids release];
 
@@ -458,12 +458,24 @@
 #pragma mark -
 #pragma mark Fetched results maintenance
 
-- (void)orderUsers {
+// TODO: This should probably be run in background with NSOperationQueue.
+- (void)cleanUpUsers {
 	NSArray *users = [fetchedResultsController fetchedObjects];
-	NSInteger oIndex = 32760 - [users count]; // 32767 is max
 
-	for (User *oUsr in [fetchedResultsController fetchedObjects]) {
-		[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
+	// If order index is within 100 of min, reorder users.
+	if ([[myUser order] integerValue] < MIN_ORDER) { // -32768 is min
+		NSInteger oIndex = MAX_ORDER - [users count]; // 32767 is max
+		for (User *oUsr in [fetchedResultsController fetchedObjects]) {
+			[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
+		}
+	}
+	
+	// If users count is over 1,000, delete however many got served.
+	NSUInteger numUsers = [users count];
+	if (numUsers > MAX_USERS) {
+		for (NSUInteger i = numUsers; i > numUsers-30; --i) {
+			[managedObjectContext deleteObject:[users objectAtIndex:i]];
+		}
 	}
 }
 

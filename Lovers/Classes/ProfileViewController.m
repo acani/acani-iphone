@@ -277,15 +277,6 @@ static NSString* kAppId = @"132443680103133";
 #pragma mark -
 #pragma mark Initialization
 
-/*
- - (id)initWithStyle:(UITableViewStyle)style {
- // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
- if ((self = [super initWithStyle:style])) {
- }
- return self;
- }
- */
-
 - (id)initWithMe:(User *)user {
 	if (!(self = [super init])) return self;
 	self.myUser = user;

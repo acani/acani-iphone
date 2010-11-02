@@ -50,15 +50,7 @@
 
 
 #pragma mark -
-#pragma mark Initialization
-
-//- (id)initWithStyle:(UITableViewStyle)style {
-//    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-//    if ((self = [super initWithStyle:style])) {
-//    }
-//    return self;
-//}
-
+#pragma mark Text view delegate
 
 - (void)done:(id)sender {
 	[chatInput resignFirstResponder]; // temporary
