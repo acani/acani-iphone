@@ -275,32 +275,30 @@ BOOL overlayHide = NO;
 
 // TODO: Refactor this function
 - (void)handleSingleTap {
-	if (self.view.window != nil) {
-		if (overlayHide == NO) {
-			[UIView beginAnimations:nil context:nil];
-			[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-			[UIView setAnimationDuration:0.3f];
-			
-			overlay.frame = CGRectMake(overlay.frame.origin.x, 480.0f, overlay.frame.size.width, overlay.frame.size.height);
-			overlaySide.frame = CGRectMake(320.0f, overlaySide.frame.origin.y, overlaySide.frame.size.width, overlaySide.frame.size.height);
-			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-			[self.navigationController setNavigationBarHidden:YES];
-			
-			[UIView commitAnimations];
-			overlayHide = YES;
-		} else { // overlayHide == YES
-			[UIView beginAnimations:nil context:nil];
-			[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-			[UIView setAnimationDuration:0.3f];
-			
-			overlay.frame = CGRectMake(overlay.frame.origin.x, 380.0f, overlay.frame.size.width, overlay.frame.size.height);
-			overlaySide.frame = CGRectMake(160.0f, overlaySide.frame.origin.y, overlaySide.frame.size.width, overlaySide.frame.size.height);
-			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-			[self.navigationController setNavigationBarHidden:NO];
-			
-			[UIView commitAnimations];
-			overlayHide = NO;
-		}
+	if (overlayHide == NO) {
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+		[UIView setAnimationDuration:0.3f];
+		
+		overlay.frame = CGRectMake(overlay.frame.origin.x, 480.0f, overlay.frame.size.width, overlay.frame.size.height);
+		overlaySide.frame = CGRectMake(320.0f, overlaySide.frame.origin.y, overlaySide.frame.size.width, overlaySide.frame.size.height);
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+		[self.navigationController setNavigationBarHidden:YES];
+		
+		[UIView commitAnimations];
+		overlayHide = YES;
+	} else { // overlayHide == YES
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+		[UIView setAnimationDuration:0.3f];
+		
+		overlay.frame = CGRectMake(overlay.frame.origin.x, 380.0f, overlay.frame.size.width, overlay.frame.size.height);
+		overlaySide.frame = CGRectMake(160.0f, overlaySide.frame.origin.y, overlaySide.frame.size.width, overlaySide.frame.size.height);
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+		[self.navigationController setNavigationBarHidden:NO];
+		
+		[UIView commitAnimations];
+		overlayHide = NO;
 	}
 }
 

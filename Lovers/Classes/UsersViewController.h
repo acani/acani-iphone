@@ -30,5 +30,7 @@
 - (void)goToProfile;
 - (void)loadUsers;
 - (void)loadMoreUsers;
-	
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)cleanUpUsers;
+
 @end

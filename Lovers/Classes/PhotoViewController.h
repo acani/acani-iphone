@@ -15,7 +15,7 @@
 - (void)backButtonClicked:(id)sender;
 - (void)goToChat:(id)sender;
 - (id)initWithUser:(User *)user;
-- (void)profilePicReady:(UIImage *)downloadedImage; 
+- (void)profilePicReady:(UIImage *)downloadedImage;
 - (void)handleSingleTap;
 - (void)favoriteAction:(id)sender;
 - (void)blockAction:(id)sender;

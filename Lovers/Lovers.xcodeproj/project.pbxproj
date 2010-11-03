@@ -41,6 +41,7 @@
 		C93B6A4B127DEE9900CC4E85 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A43127DEE9900CC4E85 /* User.m */; };
 		C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A45127DEE9900CC4E85 /* Account.m */; };
 		C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A47127DEE9900CC4E85 /* Thumb.m */; };
+		C93B6C981280F8C800CC4E85 /* ClearBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6C971280F8C800CC4E85 /* ClearBar.m */; };
 		C962C11612668F6700D0B1DD /* ThumbsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C962C11512668F6700D0B1DD /* ThumbsCell.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
@@ -121,6 +122,8 @@
 		C93B6A45127DEE9900CC4E85 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = ../Account.m; sourceTree = "<group>"; };
 		C93B6A46127DEE9900CC4E85 /* Thumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thumb.h; path = ../Thumb.h; sourceTree = "<group>"; };
 		C93B6A47127DEE9900CC4E85 /* Thumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Thumb.m; path = ../Thumb.m; sourceTree = "<group>"; };
+		C93B6C961280F8C800CC4E85 /* ClearBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearBar.h; sourceTree = "<group>"; };
+		C93B6C971280F8C800CC4E85 /* ClearBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClearBar.m; sourceTree = "<group>"; };
 		C962C11412668F6700D0B1DD /* ThumbsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbsCell.h; sourceTree = "<group>"; };
 		C962C11512668F6700D0B1DD /* ThumbsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsCell.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -302,6 +305,8 @@
 		C9A183E5126A0BD4007A512B /* UsersViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C93B6C961280F8C800CC4E85 /* ClearBar.h */,
+				C93B6C971280F8C800CC4E85 /* ClearBar.m */,
 				F56D024211886CF000F2A797 /* UsersViewControllerOld.h */,
 				F56D024311886CF000F2A797 /* UsersViewControllerOld.m */,
 				C9119F2A12518371008A26BB /* UsersViewController.h */,
@@ -531,6 +536,7 @@
 				C93B6A4B127DEE9900CC4E85 /* User.m in Sources */,
 				C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */,
 				C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */,
+				C93B6C981280F8C800CC4E85 /* ClearBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

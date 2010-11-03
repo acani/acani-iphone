@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "ThumbsCell.h"
 #import "JSON.h"
+#import "ClearBar.h"
 
 #define MAX_USERS 3000
 #define MIN_ORDER -32660
@@ -44,10 +45,41 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	// Add Profile button as rightBarButtonItem.
-	UIBarButtonItem *profileButton = BAR_BUTTON(@"Profile", @selector(goToProfile));
-	[profileButton setEnabled:NO]; // Enable once we get myUser.
-	self.navigationItem.rightBarButtonItem = profileButton;
+	// Create a toolbar to have two buttons on the right.
+	// http://osmorphis.blogspot.com/2009/05/multiple-buttons-on-navigation-bar.html
+	UIToolbar *tools = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 103.0f, 44.01f)]; // 44.01f shifts up by 1px
+	tools.clearsContextBeforeDrawing = NO;
+	tools.clipsToBounds = NO;
+	tools.tintColor = [UIColor colorWithWhite:0.305f alpha:0.0f]; // eye estimate. TODO: make perfect.
+	tools.barStyle = -1; // clear background
+	NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
+
+	// Create a standard refresh button.
+	UIBarButtonItem *bi = [[UIBarButtonItem alloc]
+		  initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadUsers)];
+	[buttons addObject:bi];
+	[bi release];
+
+	// Create a spacer.
+	bi = [[UIBarButtonItem alloc]
+		  initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	bi.width = 12.0f;
+	[buttons addObject:bi];
+	[bi release];
+
+	// Add profile button.
+	bi = BAR_BUTTON(@"Profile", @selector(goToProfile));
+	bi.style = UIBarButtonItemStyleBordered;
+	[buttons addObject:bi];
+	[bi release];
+	
+	// Add buttons to toolbar and toolbar to nav bar.
+	[tools setItems:buttons animated:NO];
+	[buttons release];
+	UIBarButtonItem *twoButtons = [[UIBarButtonItem alloc] initWithCustomView:tools];
+	[tools release];
+	self.navigationItem.rightBarButtonItem = twoButtons;
+	[twoButtons release];
 
 	// Fetch 20 closest users from Core Data.
 	// Create and configure a fetch request.
@@ -204,11 +236,7 @@
 	NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	[urlRequest release];
 	if (urlConnection) {
-		if (userData == nil) {
-			self.userData = [NSMutableData data];
-		} else {
-			[userData setLength:0]; // reset data
-		}
+		userData = [[NSMutableData data] retain];
 	} else {
 		// Inform the user that the connection failed.
 		NSLog(@"Failure to create URL connection.");
@@ -251,12 +279,15 @@
 
 //	thumbsCell.setUp;
 
-	// Configure the cell to show the name of user.
-	User *user = [fetchedResultsController objectAtIndexPath:indexPath];
-
-	thumbsCell.textLabel.text = [user name]; // temporary
+	[self configureCell:thumbsCell atIndexPath:indexPath];
 
     return thumbsCell;
+}
+
+// Configure the cell to show the name of user.
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    User *user = [fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [user name];
 }
 
 /*
@@ -448,10 +479,6 @@
 	// Save. In memory-changes trump conflicts in external store.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	[managedObjectContext save:nil]; // causes duplicates
-
-	if (![self.navigationItem.rightBarButtonItem isEnabled]) {
-	   [self.navigationItem.rightBarButtonItem setEnabled:YES];
-	}
 }
 
 
@@ -499,6 +526,10 @@
 		case NSFetchedResultsChangeDelete:
 			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			break;
+
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
 	}
 }
 
