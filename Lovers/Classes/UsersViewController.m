@@ -5,9 +5,8 @@
 #import "Constants.h"
 #import "User.h"
 #import "Account.h"
-#import "ThumbsCell.h"
+#import "ThumbView.h"
 #import "JSON.h"
-#import "ClearBar.h"
 
 #define MAX_USERS 3000
 #define MIN_ORDER -32660
@@ -267,7 +266,7 @@
     
     static NSString *CellIdentifier = @"ThumbsCell";
     
-    UITableViewCell *thumbsCell = (ThumbsCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *thumbsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (thumbsCell == nil) {
         thumbsCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
