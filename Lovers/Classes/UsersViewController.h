@@ -3,18 +3,16 @@
 @class User;
 
 @interface UsersViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
-	NSInteger columnCount;
-
+	NSUInteger columnCount;
+	NSUInteger usersCount;
 	User *myUser;
 
     NSManagedObjectContext *managedObjectContext;
 	NSFetchedResultsController *fetchedResultsController;
 
 	CLLocation *location;
-	NSMutableData *userData;
+	NSMutableData *urlData;
 }
-
-@property (nonatomic, assign) NSInteger columnCount;
 
 @property (nonatomic, retain) User *myUser;
 
@@ -22,7 +20,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, retain) CLLocation *location;
-@property (nonatomic, retain) NSMutableData *userData;
+@property (nonatomic, retain) NSMutableData *urlData;
 
 - (id)initWithMe:(User *)user;
 - (void)logout;

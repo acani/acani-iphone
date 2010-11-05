@@ -17,19 +17,19 @@
 
 #define RESET_CHAT_BAR_HEIGHT	SET_CHAT_BAR_HEIGHT(CHAT_BAR_HEIGHT_1)
 #define EXPAND_CHAT_BAR_HEIGHT	SET_CHAT_BAR_HEIGHT(CHAT_BAR_HEIGHT_4)
-#define	SET_CHAT_BAR_HEIGHT(HEIGHT) \
-	CGRect chatContentFrame = chatContent.frame; \
-	chatContentFrame.size.height = VIEW_HEIGHT - HEIGHT; \
-	[UIView beginAnimations:nil context:NULL]; \
-	[UIView setAnimationDuration:0.1f]; \
-	chatContent.frame = chatContentFrame; \
-	chatBar.frame = CGRectMake(chatBar.frame.origin.x, chatContentFrame.size.height, VIEW_WIDTH, HEIGHT); \
-	[UIView commitAnimations]; \
+#define	SET_CHAT_BAR_HEIGHT(HEIGHT)\
+	CGRect chatContentFrame = chatContent.frame;\
+	chatContentFrame.size.height = VIEW_HEIGHT - HEIGHT;\
+	[UIView beginAnimations:nil context:NULL];\
+	[UIView setAnimationDuration:0.1f];\
+	chatContent.frame = chatContentFrame;\
+	chatBar.frame = CGRectMake(chatBar.frame.origin.x, chatContentFrame.size.height, VIEW_WIDTH, HEIGHT);\
+	[UIView commitAnimations]
 
 #define ENABLE_SEND_BUTTON	SET_SEND_BUTTON(YES, 1.0f)
 #define DISABLE_SEND_BUTTON	SET_SEND_BUTTON(NO, 0.5f)
-#define SET_SEND_BUTTON(ENABLED, ALPHA) \
-	sendButton.enabled = ENABLED; \
+#define SET_SEND_BUTTON(ENABLED, ALPHA)\
+	sendButton.enabled = ENABLED;\
 	sendButton.titleLabel.alpha = ALPHA
 
 @implementation ChatViewController

@@ -8,13 +8,16 @@
 #import "ThumbView.h"
 #import "JSON.h"
 
+#define CELL_HEIGHT 77.0f
+#define THUMB_SIZE 75.0f
+#define THUMB_PADDING 4.0f
 #define MAX_USERS 3000
 #define MIN_ORDER -32660
 #define MAX_ORDER 32760
+#define USERS_COUNT \
+	(usersCount ? usersCount : (usersCount = [[fetchedResultsController fetchedObjects] count]))
 
 @implementation UsersViewController
-
-@synthesize columnCount;
 
 @synthesize myUser;
 
@@ -22,7 +25,7 @@
 @synthesize fetchedResultsController;
 
 @synthesize location; // TODO: change this to sharedLocation in appDelegate
-@synthesize userData;
+@synthesize urlData;
 
 
 #pragma mark -
@@ -32,6 +35,7 @@
 	if (!(self = [super initWithStyle:UITableViewStylePlain])) return self;
 	self.wantsFullScreenLayout = YES;
 	self.myUser = user;
+	columnCount = 4; // TODO: make variable (4,6), based on orientation
 	// TODO: make the navBar title a logo.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
     return self;
@@ -228,14 +232,14 @@
 	NSLog(@"urlString: %@", urlString);
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
-	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url
+	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 													 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
 												 timeoutInterval:60.0]; // default
 	[url release];
-	NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-	[urlRequest release];
-	if (urlConnection) {
-		userData = [[NSMutableData data] retain];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+	[request release];
+	if (connection) {
+		urlData = [[NSMutableData data] retain];
 	} else {
 		// Inform the user that the connection failed.
 		NSLog(@"Failure to create URL connection.");
@@ -258,7 +262,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[fetchedResultsController fetchedObjects] count];
+	return USERS_COUNT / columnCount;
 }
 
 // Customize the appearance of table view cells.
@@ -266,28 +270,44 @@
     
     static NSString *CellIdentifier = @"ThumbsCell";
     
-    UITableViewCell *thumbsCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (thumbsCell == nil) {
-        thumbsCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-	
-//    UITableViewCell *thumbsCell = (ThumbsCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (thumbsCell == nil) {
-//        thumbsCell = [[[ThumbsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-//    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-//	thumbsCell.setUp;
+		// Add thumbViews as subviews.
+		CGFloat x_pos = THUMB_PADDING;
+		NSUInteger i = [indexPath row] * columnCount;
+		for (NSUInteger j = 0; j < columnCount && i < usersCount; ++j) {
+			ThumbView *thumbView = [[ThumbView alloc]
+									initWithFrame:CGRectMake(x_pos, 1.0f, THUMB_SIZE, THUMB_SIZE)
+									user:[fetchedResultsController objectAtIndexPath:
+										  [NSIndexPath indexPathForRow:i inSection:[indexPath section]]]];
+			[cell.contentView addSubview:thumbView];
+			[thumbView release];
+			x_pos += THUMB_SIZE + THUMB_PADDING; ++i;
+		}
+	}
 
-	[self configureCell:thumbsCell atIndexPath:indexPath];
+	[self configureCell:cell atIndexPath:indexPath];
 
-    return thumbsCell;
+    return cell;
 }
 
 // Configure the cell to show the name of user.
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    User *user = [fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [user name];
+	NSUInteger i = [indexPath row] * columnCount;
+	for (ThumbView *thumbView in cell.contentView.subviews) {
+		thumbView.user = [fetchedResultsController objectAtIndexPath:
+						  [NSIndexPath indexPathForRow:i++ inSection:[indexPath section]]];
+	}
+//    cell.textLabel.text = [user name];
+//	[cell setNeedsLayout];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
+	return CELL_HEIGHT;
+} 
 
 /*
 // Override to support conditional editing of the table view.
@@ -355,15 +375,15 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [userData setLength:0]; // reset data
+    [urlData setLength:0]; // reset data
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [userData appendData:data]; // append incoming data
+    [urlData appendData:data]; // append incoming data
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [connection release]; [userData release];
+    [connection release]; [urlData release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if ([error code] == kCFURLErrorNotConnectedToInternet) {
@@ -386,9 +406,9 @@
 	// TODO: Use performance tools to determine if we should use NSOperation to
 	// parse JSON & create users in managedObjectContext. See top apps example.
 
-	// Parse userData to JSON object.
-	NSString *usersJson = [[NSString alloc] initWithData:userData encoding:NSUTF8StringEncoding];
-	[userData release];
+	// Parse urlData to JSON object.
+	NSString *usersJson = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+	[urlData release];
 	NSArray *usrDicts = [usersJson JSONValue];
 	[usersJson release];
 	
@@ -477,7 +497,8 @@
 
 	// Save. In memory-changes trump conflicts in external store.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-	[managedObjectContext save:nil]; // causes duplicates
+	[managedObjectContext save:nil];
+	[self.tableView reloadData];
 }
 
 
@@ -518,6 +539,7 @@
 	  newIndexPath:(NSIndexPath *)newIndexPath {
 	
 	switch(type) {
+			// TODO: fix updates
 		case NSFetchedResultsChangeInsert:
 			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 			break;
@@ -562,7 +584,7 @@
 	[managedObjectContext release];
 
 	[location release];
-//	[userData release]; // How should we release this?
+//	[urlData release]; // How should we release this?
     [super dealloc];
 }
 

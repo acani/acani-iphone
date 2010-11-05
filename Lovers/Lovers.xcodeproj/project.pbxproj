@@ -105,7 +105,7 @@
 		C91FE7671225FEAC003C266E /* ZTWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZTWebSocket.h; sourceTree = "<group>"; };
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Lovers.xcdatamodel; path = Classes/Lovers.xcdatamodel; sourceTree = "<group>"; };
+		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Lovers.xcdatamodel; sourceTree = "<group>"; };
 		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
 		C93B6A3C127DEE9900CC4E85 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = ../Profile.h; sourceTree = "<group>"; };
@@ -226,7 +226,6 @@
 			children = (
 				C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
-				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
 				F56D02911188781800F2A797 /* images */,
 				8D1107310486CEB800E47090 /* Lovers-Info.plist */,
 			);
@@ -248,6 +247,7 @@
 		C9119F5212522657008A26BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
 				C93B6A3C127DEE9900CC4E85 /* Profile.h */,
 				C93B6A3D127DEE9900CC4E85 /* Profile.m */,
 				C93B6A3E127DEE9900CC4E85 /* Location.h */,
