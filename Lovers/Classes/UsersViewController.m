@@ -14,8 +14,7 @@
 #define MAX_USERS 3000
 #define MIN_ORDER -32660
 #define MAX_ORDER 32760
-#define USERS_COUNT \
-	(usersCount ? usersCount : (usersCount = [[fetchedResultsController fetchedObjects] count]))
+
 
 @implementation UsersViewController
 
@@ -262,7 +261,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return USERS_COUNT / columnCount;
+	NSInteger num_rows = [[fetchedResultsController fetchedObjects] count] / columnCount;
+	NSLog(@"num_rows: %i", num_rows);
+	return num_rows;
 }
 
 // Customize the appearance of table view cells.
@@ -278,16 +279,19 @@
 		// Add thumbViews as subviews.
 		CGFloat x_pos = THUMB_PADDING;
 		NSUInteger i = [indexPath row] * columnCount;
+		NSUInteger usersCount = [[fetchedResultsController fetchedObjects] count];
 		for (NSUInteger j = 0; j < columnCount && i < usersCount; ++j) {
 			ThumbView *thumbView = [[ThumbView alloc]
 									initWithFrame:CGRectMake(x_pos, 1.0f, THUMB_SIZE, THUMB_SIZE)
 									user:[fetchedResultsController objectAtIndexPath:
 										  [NSIndexPath indexPathForRow:i inSection:[indexPath section]]]];
 			[cell.contentView addSubview:thumbView];
+			NSLog(@"thumbView: %@", thumbView);
 			[thumbView release];
 			x_pos += THUMB_SIZE + THUMB_PADDING; ++i;
 		}
 	}
+	NSLog(@"cell: %@", cell);
 
 	[self configureCell:cell atIndexPath:indexPath];
 
@@ -306,7 +310,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
-	return CELL_HEIGHT;
+	return THUMB_SIZE + THUMB_PADDING;
 } 
 
 /*
@@ -498,7 +502,6 @@
 	// Save. In memory-changes trump conflicts in external store.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	[managedObjectContext save:nil];
-	[self.tableView reloadData];
 }
 
 
@@ -531,7 +534,7 @@
 #pragma mark Fetched results controller
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-	[self.tableView beginUpdates];
+//	[self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
@@ -539,23 +542,25 @@
 	  newIndexPath:(NSIndexPath *)newIndexPath {
 	
 	switch(type) {
-			// TODO: fix updates
-		case NSFetchedResultsChangeInsert:
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-			
-		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
+//		// TODO: fix updates
+//		case NSFetchedResultsChangeInsert:
+//			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//			
+//		case NSFetchedResultsChangeDelete:
+//			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//
+//        case NSFetchedResultsChangeUpdate:
+//            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+//            break;
 	}
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	[self.tableView endUpdates];
+	[self.tableView reloadData];
+	NSLog(@"reload data");
+//	[self.tableView endUpdates];
 }
 
 

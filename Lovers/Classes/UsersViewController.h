@@ -4,7 +4,6 @@
 
 @interface UsersViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
 	NSUInteger columnCount;
-	NSUInteger usersCount;
 	User *myUser;
 
     NSManagedObjectContext *managedObjectContext;

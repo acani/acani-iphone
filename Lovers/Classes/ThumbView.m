@@ -20,6 +20,7 @@
 			NSLog(@"thumb: %@", [theUser thumb]);
 			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser thumb] image]);
 		} else {
+			NSLog(@"user: %@", theUser);
 			[self downloadThumb];
 		}
 	}
@@ -64,7 +65,7 @@
 	
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [connection release];
-
+	NSLog(@"got here");
 	// Store urlData to user's thumb, and set view's background image.
 	[user setThumb:[NSEntityDescription
 					insertNewObjectForEntityForName:@"Thumb"
@@ -75,6 +76,7 @@
 	[[user managedObjectContext] save:nil]; // TODO: do this once at the end.
 
 //    [self setNeedsLayout];
+//	[self.superview setNeedsLayout];
     [urlData release];
 }
 
