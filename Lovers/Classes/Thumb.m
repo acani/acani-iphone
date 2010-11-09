@@ -2,7 +2,7 @@
 //  Thumb.m
 //  Lovers
 //
-//  Created by Matt Di Pasquale on 10/31/10.
+//  Created by Matt Di Pasquale on 11/8/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
@@ -12,7 +12,8 @@
 
 @implementation Thumb 
 
-@dynamic image;
+@dynamic oid;
+@dynamic data;
 @dynamic user;
 
 @end

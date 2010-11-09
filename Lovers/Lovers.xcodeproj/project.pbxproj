@@ -40,9 +40,9 @@
 		C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A41127DEE9900CC4E85 /* Message.m */; };
 		C93B6A4B127DEE9900CC4E85 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A43127DEE9900CC4E85 /* User.m */; };
 		C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A45127DEE9900CC4E85 /* Account.m */; };
-		C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A47127DEE9900CC4E85 /* Thumb.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
+		C98EEDDD1288DBF000B79B79 /* Thumb.m in Sources */ = {isa = PBXBuildFile; fileRef = C98EEDDC1288DBF000B79B79 /* Thumb.m */; };
 		C9D75D93124AE8790001A448 /* HTTPOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75D92124AE8790001A448 /* HTTPOperation.m */; };
 		C9D75DD3124B843D0001A448 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75DD2124B843D0001A448 /* Constants.m */; };
 		C9D76021124CD99D0001A448 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9D76009124CD99D0001A448 /* FBDialog.bundle */; };
@@ -118,10 +118,10 @@
 		C93B6A43127DEE9900CC4E85 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ../User.m; sourceTree = "<group>"; };
 		C93B6A44127DEE9900CC4E85 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Account.h; path = ../Account.h; sourceTree = "<group>"; };
 		C93B6A45127DEE9900CC4E85 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = ../Account.m; sourceTree = "<group>"; };
-		C93B6A46127DEE9900CC4E85 /* Thumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thumb.h; path = ../Thumb.h; sourceTree = "<group>"; };
-		C93B6A47127DEE9900CC4E85 /* Thumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Thumb.m; path = ../Thumb.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
+		C98EEDDB1288DBF000B79B79 /* Thumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thumb.h; sourceTree = "<group>"; };
+		C98EEDDC1288DBF000B79B79 /* Thumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thumb.m; sourceTree = "<group>"; };
 		C9D75D91124AE8790001A448 /* HTTPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPOperation.h; sourceTree = "<group>"; };
 		C9D75D92124AE8790001A448 /* HTTPOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPOperation.m; sourceTree = "<group>"; };
 		C9D75DD2124B843D0001A448 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Classes/Constants.m; sourceTree = "<group>"; };
@@ -258,8 +258,8 @@
 				C93B6A43127DEE9900CC4E85 /* User.m */,
 				C93B6A44127DEE9900CC4E85 /* Account.h */,
 				C93B6A45127DEE9900CC4E85 /* Account.m */,
-				C93B6A46127DEE9900CC4E85 /* Thumb.h */,
-				C93B6A47127DEE9900CC4E85 /* Thumb.m */,
+				C98EEDDB1288DBF000B79B79 /* Thumb.h */,
+				C98EEDDC1288DBF000B79B79 /* Thumb.m */,
 			);
 			name = Models;
 			path = Classes;
@@ -524,7 +524,7 @@
 				C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */,
 				C93B6A4B127DEE9900CC4E85 /* User.m in Sources */,
 				C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */,
-				C93B6A4D127DEE9900CC4E85 /* Thumb.m in Sources */,
+				C98EEDDD1288DBF000B79B79 /* Thumb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,8 +17,9 @@
 		self.clearsContextBeforeDrawing = NO;
 		self.user = theUser;
 		if ([theUser thumb]) {
+//		if ((Thumb *thumb = [theUser thumb]) && [thumb oid] == 1) {
 			NSLog(@"thumb: %@", [theUser thumb]);
-			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser thumb] image]);
+			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser thumb] data]);
 		} else {
 			NSLog(@"user: %@", theUser);
 			[self downloadThumb];
@@ -70,7 +71,7 @@
 	[user setThumb:[NSEntityDescription
 					insertNewObjectForEntityForName:@"Thumb"
 					inManagedObjectContext:[user managedObjectContext]]];
-	[(Thumb *)[user thumb] setImage:urlData];
+	[(Thumb *)[user thumb] setData:urlData];
 	SET_BACKGROUND_IMAGE_WITH_DATA(urlData);
 
 	[[user managedObjectContext] save:nil]; // TODO: do this once at the end.
