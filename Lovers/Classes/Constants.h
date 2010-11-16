@@ -1,5 +1,5 @@
-//#define SINATRA @"acani.heroku.com"
-#define SINATRA @"localhost:4567"
+#define SINATRA @"acani.heroku.com"
+//#define SINATRA @"localhost:4567"
 
 #define BAR_BUTTON(TITLE, SELECTOR) [[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
 #define BAR_BUTTON_TARGET(TITLE, TARGET, SELECTOR) [[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:TARGET action:SELECTOR]

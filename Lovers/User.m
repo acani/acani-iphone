@@ -73,6 +73,7 @@
 - (User *)updateWithDictionary:(NSDictionary *)dictionary {
 	[self setUid:[[dictionary valueForKey:@"_id"] valueForKey:@"$oid"]];
 	[self setAbout:[dictionary valueForKey:@"a"]];
+	[self setWeight:[dictionary valueForKey:@"b"]];
 	[self setShowDistance:[dictionary valueForKey:@"d"]];
 	[self setEthnicity:[dictionary valueForKey:@"e"]];
 	[self setHeight:[dictionary valueForKey:@"h"]];
@@ -81,7 +82,6 @@
 	[[self location] setLongitude:[[dictionary valueForKey:@"l"] objectAtIndex:1]];
 	[self setName:[dictionary valueForKey:@"n"]];
 	[self setOnlineStatus:[dictionary valueForKey:@"o"]];
-	[self setWeight:[dictionary valueForKey:@"p"]];
 	[self setHeadline:[dictionary valueForKey:@"q"]];
 	[self setLastOnline:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"r"] doubleValue]]];
 	[self setSex:[dictionary valueForKey:@"s"]];
@@ -95,13 +95,13 @@
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary {
 	NSDictionary *encoder = [[NSDictionary alloc] initWithObjectsAndKeys:
 							 @"a", @"about",
+							 @"b", @"weight",
 							 @"d", @"showDistance",
 							 @"e", @"ethnicity",
 							 @"h", @"height",
 							 @"i", @"fbId",
 							 @"n", @"name",
 							 @"o", @"onlineStatus", // not yet used
-							 @"p", @"weight",
 							 @"q", @"headline",
 							 @"r", @"lastOnline", // not yet used
 							 @"s", @"sex",
