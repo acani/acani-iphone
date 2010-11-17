@@ -2,7 +2,7 @@
 //  Message.h
 //  Lovers
 //
-//  Created by Matt Di Pasquale on 10/31/10.
+//  Created by Matt Di Pasquale on 11/17/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
@@ -14,13 +14,21 @@
 {
 }
 
+@property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * channel;
 @property (nonatomic, retain) NSNumber * timestamp;
 @property (nonatomic, retain) NSNumber * unread;
-@property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSSet* receivers;
 @property (nonatomic, retain) Profile * sender;
 
 @end
 
 
+@interface Message (CoreDataGeneratedAccessors)
+- (void)addReceiversObject:(Profile *)value;
+- (void)removeReceiversObject:(Profile *)value;
+- (void)addReceivers:(NSSet *)value;
+- (void)removeReceivers:(NSSet *)value;
+
+@end
 

@@ -4,7 +4,6 @@
 #import "LoversAppDelegate.h"
 #import "Constants.h"
 #import "User.h"
-#import "Account.h"
 #import "ThumbView.h"
 #import "JSON.h"
 
@@ -224,7 +223,7 @@
 - (void)loadUsers {
 	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%@/%@",
 						   SINATRA,
-						   [[myUser uid] length] ? [myUser uid] : @"0", // @"" if it's first time using app
+						   [[myUser oid] length] ? [myUser oid] : @"0", // @"" if it's first time using app
 						   [[UIDevice currentDevice] uniqueIdentifier],
 						   [[myUser location] latitude],
 						   [[myUser location] longitude]];
@@ -425,16 +424,16 @@
 											  inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
-	// Create predicate with uids of users fetched from server.
+	// Create predicate with oids of users fetched from server.
 	NSUInteger index = -1; // so we can pre-increment (faster?)
-	NSMutableArray *servedUids = [[NSMutableArray alloc] initWithCapacity:[usrDicts count]];
+	NSMutableArray *servedOids = [[NSMutableArray alloc] initWithCapacity:[usrDicts count]];
 	for (NSDictionary *usrDict in usrDicts) {
 		if (++index != 0) {
-			[servedUids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
+			[servedOids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
 		}
 	}
-	NSLog(@"servedUids: %@", servedUids);
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uid IN %@", servedUids]];
+	NSLog(@"servedOids: %@", servedOids);
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"oid IN %@", servedOids]];
 
 	// Perform the fetch.
 	NSError *error = nil;
@@ -452,11 +451,11 @@
 		if ([fetchedUsers count] > 0) {
 			NSLog(@"fetched users: %@", fetchedUsers);
 
-			// Store fetched users in dictionary with uids as keys.
-			NSMutableDictionary *uidFetc = [[NSMutableDictionary alloc]
+			// Store fetched users in dictionary with oids as keys.
+			NSMutableDictionary *oidFetc = [[NSMutableDictionary alloc]
 											initWithCapacity:[fetchedUsers count]];
 			for (User *fUsr in fetchedUsers) {
-				[uidFetc setObject:fUsr forKey:[fUsr uid]];
+				[oidFetc setObject:fUsr forKey:[fUsr oid]];
 			}
 
 			// Iterate over served Users 
@@ -465,7 +464,7 @@
 			for (NSDictionary *usrDict in usrDicts) {
 				if (++index != 0) {
 					// Check if served user is already stored on iPhone.
-					if(usrObj = [uidFetc objectForKey:[servedUids objectAtIndex:++sIndex]]) {
+					if(usrObj = [oidFetc objectForKey:[servedOids objectAtIndex:++sIndex]]) {
 						NSLog(@"%@ exists already", [usrObj name]);
 						// Update each fetched user only if served user is more recent.
 						if ([[usrObj updated] timeIntervalSince1970] <
@@ -482,7 +481,7 @@
 					}
 				}
 			}
-			[uidFetc release];
+			[oidFetc release];
 		} else { // insert all served users cause none found locally
 			NSLog(@"no users exist. all inserted");
 			index = -1;
@@ -497,7 +496,7 @@
 		
 		[self cleanUpUsers];
 	}
-	[servedUids release];
+	[servedOids release];
 
 	// Save. In memory-changes trump conflicts in external store.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];

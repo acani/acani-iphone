@@ -1,8 +1,8 @@
 #import "LoversAppDelegate.h"
 #import "UsersViewController.h"
 #import "ChatViewController.h"
-#import "Account.h"
 #import "User.h"
+#import "Account.h"
 #import "Message.h"
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
@@ -250,9 +250,9 @@
 		[logButton release];
 	}
 	// should be mongodb _id for user, not device id.
-	// So, open WebSocket after sinatra responds w my uid
-	[webSocket send:[NSString stringWithFormat:@"{\"uid\":\"%@\"}",
-					 [(User *)[myAccount user] uid]]];
+	// So, open WebSocket after sinatra responds w my oid
+	[webSocket send:[NSString stringWithFormat:@"{\"oid\":\"%@\"}",
+					 [(User *)[myAccount user] oid]]];
 }
 
 - (void)webSocket:(ZTWebSocket *)webSocket didFailWithError:(NSError *)error {
@@ -290,14 +290,14 @@
 		[msg setChannel:[msgDict valueForKey:@"channel"]];
 
 		// Fetch the msg sender based on the BSON ObjectId.
-		NSString *senderUid = [msgDict valueForKey:@"sender"];
-		User *sender = [User findByUid:senderUid];
+		NSString *senderOid = [msgDict valueForKey:@"sender"];
+		User *sender = [User findByOid:senderOid];
 		// If the sender is not found on the iPhone, request her asynchronously from the server.
 		if (!sender) {
 			NSLog(@"Get sender from Sinatra");
 			sender = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User"
 														   inManagedObjectContext:managedObjectContext];
-			[sender setUid:senderUid];
+			[sender setOid:senderOid];
 			// TODO: Request other attributes from the server asynchronously.
 		}
 
@@ -378,15 +378,15 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"];
 
-	// If the expected store doesn't exist, copy the default store.
-	// This is basically like shipping the app with a default user account
-	// already created so that we can assume it exists.
-	if (![fileManager fileExistsAtPath:storePath]) {
-		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
-		if (defaultStorePath) {
-			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
-		}
-	}
+//	// If the expected store doesn't exist, copy the default store.
+//	// This is basically like shipping the app with a default user account
+//	// already created so that we can assume it exists.
+//	if (![fileManager fileExistsAtPath:storePath]) {
+//		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
+//		if (defaultStorePath) {
+//			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+//		}
+//	}
 
 	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	

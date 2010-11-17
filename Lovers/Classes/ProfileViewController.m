@@ -8,7 +8,7 @@
 #define ABOUT_ROW 0
 #define SEX_ROW 1
 #define LIKES_ROW 2
-#define AGE_ROW 3
+#define BIRTHDAY_ROW 3
 #define HEIGHT_ROW 4
 #define WEIGHT_ROW 5
 #define ETHNICITY_ROW 6
@@ -71,7 +71,7 @@ static NSString* kAppId = @"132443680103133";
  */
 - (void)getPublicInfo:(id)sender {
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								   @"SELECT uid,name FROM user WHERE uid=4", @"query",
+								   @"SELECT oid,name FROM user WHERE oid=4", @"query",
 								   nil];
 	[fb requestWithMethodName: @"fql.query" 
 						   andParams: params
@@ -193,14 +193,14 @@ static NSString* kAppId = @"132443680103133";
 		NSString *about = [result valueForKey:@"about"]; // should this be headline?
 		[aboutInput setText:about]; [myUser setAbout:about];
 
-		[myUser setFbId:[NSNumber numberWithInt:[[result valueForKey:@"id"] intValue]]];
+		[myUser setFbId:[NSNumber numberWithInteger:[[result valueForKey:@"id"] intValue]]];
 
 		NSString *fullName = [result valueForKey:@"name"];
 		[myUser setName:fullName]; [profileName setText:fullName];
 
 		//	[myUser setHeadline:[result valueForKey:@"about"]];
 		NSString *sex = [[result valueForKey:@"gender"] capitalizedString];
-		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInt:2] : [NSNumber numberWithInt:1]];
+		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInteger:2] : [NSNumber numberWithInteger:1]];
 		[[[self.tableView cellForRowAtIndexPath:
 		   [NSIndexPath indexPathForRow:1 inSection:0]] detailTextLabel] setText:sex];
 
@@ -259,11 +259,11 @@ static NSString* kAppId = @"132443680103133";
 		NSLog(@"Error saving profile to iPhone: %@", error);
 	}
 
-	// Send a PUT request to: /{uid}
+	// Send a PUT request to: /{oid}
 	// See sample in sample-profile-put-request.txt
 	HTTPOperation *operation = [[[HTTPOperation alloc] init] autorelease];
 	operation.delegate = (LoversAppDelegate *)[[UIApplication sharedApplication] delegate];
-	operation.oid = myUser.uid;
+	operation.oid = myUser.oid;
 	operation.params = [User encodeKeysInDictionary:changes];
 	
 	NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
@@ -704,7 +704,7 @@ static NSString* kAppId = @"132443680103133";
 		NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
 		NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
-		NSNumber *valueNum = [[NSNumber alloc] initWithInt:0];
+		NSNumber *valueNum;
 		switch (indexPath.row) {
 			case SEX_ROW:
 				// If I try to set cell.detailTextLabel directly here, I get readonly error.
@@ -715,8 +715,7 @@ static NSString* kAppId = @"132443680103133";
 				valueNum = [myUser likes];
 				valueText = [Likes objectAtIndex:[valueNum intValue]];
 				break;
-			case AGE_ROW:
-				valueNum = [myUser age];
+			case BIRTHDAY_ROW:
 				valueText = [valueNum stringValue];
 				break;
 			case HEIGHT_ROW: // TODO: convert height to inches & feet if in USA
@@ -735,7 +734,7 @@ static NSString* kAppId = @"132443680103133";
 				break;
 		}
 		
-		if ([valueNum intValue] == 0) {
+		if ([valueNum intValue] == 0) { // indexPath.row != BIRTHDAY_ROW &&
 			valueText = @"Optional";
 		}
 
@@ -886,8 +885,8 @@ static NSString* kAppId = @"132443680103133";
 		case LIKES_ROW:
 			[valueSelect selectRow:[[myUser likes] intValue] inComponent:0 animated:NO];
 			break;
-		case AGE_ROW:
-			[valueSelect selectRow:[[myUser age] intValue] inComponent:0 animated:NO];
+		case BIRTHDAY_ROW:
+			[valueSelect selectRow:0 inComponent:0 animated:NO]; // TODO: fix
 			break;
 		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			if (TRUE) { // detect if we're in USA. how?
@@ -920,13 +919,13 @@ static NSString* kAppId = @"132443680103133";
 
 	switch (editIndexPath.row) {
 		case SEX_ROW:
-			[myUser setSex:[NSNumber numberWithInt:row]];
+			[myUser setSex:[NSNumber numberWithInteger:row]];
 			break;
 		case LIKES_ROW:
-			[myUser setLikes:[NSNumber numberWithInt:row]];
+			[myUser setLikes:[NSNumber numberWithInteger:row]];
 			break;
-		case AGE_ROW:
-			[myUser setAge:[NSNumber numberWithInt:row]];
+		case BIRTHDAY_ROW:
+//			[myUser setBirthday:[NSNumber numberWithInteger:row]]; // parse values from picker into NSDate
 			break;
 		case HEIGHT_ROW: // TODO: display metric system unless user local is USA
 			// we should create a global mutable array: heightPicked = [int feet, int inches]
@@ -938,11 +937,11 @@ static NSString* kAppId = @"132443680103133";
 			
 			// calculate total inches and convert to cm and save to height
 //			int heightInCm = 67; // calculate...
-//			[myUser setHeight:[NSNumber numberWithInt:heightInCm]];
-			[myUser setHeight:[NSNumber numberWithInt:row]];
+//			[myUser setHeight:[NSNumber numberWithInteger:heightInCm]];
+			[myUser setHeight:[NSNumber numberWithInteger:row]];
 			break;
 		case WEIGHT_ROW: // TODO: display metric system unless user local is USA
-			[myUser setWeight:[NSNumber numberWithInt:row]];
+			[myUser setWeight:[NSNumber numberWithInteger:row]];
 			if (TRUE) {
 				valueText = [NSString stringWithFormat:@"%@ lbs", valueText];
 			} else {
@@ -950,7 +949,7 @@ static NSString* kAppId = @"132443680103133";
 			}
 			break;
 		case ETHNICITY_ROW:
-			[myUser setEthnicity:[NSNumber numberWithInt:row]];
+			[myUser setEthnicity:[NSNumber numberWithInteger:row]];
 			break;
 		default:
 			break;

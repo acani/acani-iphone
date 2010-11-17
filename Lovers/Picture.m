@@ -1,18 +1,19 @@
 // 
-//  Account.m
+//  Picture.m
 //  Lovers
 //
 //  Created by Matt Di Pasquale on 11/17/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
-#import "Account.h"
+#import "Picture.h"
 
-#import "User.h"
+#import "Profile.h"
 
-@implementation Account 
+@implementation Picture 
 
-@dynamic email;
-@dynamic user;
+@dynamic thumb;
+@dynamic pid;
+@dynamic profile;
 
 @end

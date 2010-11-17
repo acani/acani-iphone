@@ -136,11 +136,11 @@ const enum downloadType JSON = _json;
 	}
 	NSLog(@"loc %6d", location.horizontalAccuracy);
 	self.locNoticelabel.text = [[NSString alloc] initWithFormat:@"Accuracy +-%.1f mts", location.horizontalAccuracy];
-	NSString *myUid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid];
-	NSLog(@"myUid %@", myUid == nil ? @"0" : myUid);
+	NSString *myOid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid];
+	NSLog(@"myOid %@", myOid == nil ? @"0" : myOid);
 	NSString *tempUrl = [NSString stringWithFormat:@"http://%@/users/%@/%@/%f/%f",
 						 SINATRA,
-						 myUid == nil ? @"0" : myUid,
+						 myOid == nil ? @"0" : myOid,
 						 [[UIDevice currentDevice] uniqueIdentifier],
 						 location.coordinate.latitude, location.coordinate.longitude];
 	[self downloadJsonFromInternet: tempUrl];
@@ -212,9 +212,9 @@ const enum downloadType JSON = _json;
 // download thumbnail images from internet and feed into users
 	for (int i = 0; i < [self.Users count]; i++){
 		User *user = [self.Users objectAtIndex:i];
-		//NSLog(@"user id %@", user.uid);
+		//NSLog(@"user id %@", user.oid);
 		//NSLog(@"user fbid %d", user.fbid);
-		NSString *imageUrl = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user uid]];
+		NSString *imageUrl = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user oid]];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
 		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl userInfo:i];
 		[thumbnailLoad DownloadData:self];

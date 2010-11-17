@@ -347,8 +347,8 @@
 							stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 	NSLog(@"escapedMSG: %@", escapedMsg);
 	NSString *msgJson = [NSString stringWithFormat:
-						 @"{\"type\":\"txt\",\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_uid_public\":\"bob\"}",
-						 [msg timestamp], [msg channel], [(User *)[msg sender] uid], escapedMsg];
+						 @"{\"type\":\"txt\",\"timestamp\":%@,\"channel\":\"%@\",\"sender\":\"%@\",\"text\":\"%@\",\"to_oid_public\":\"bob\"}",
+						 [msg timestamp], [msg channel], [(User *)[msg sender] oid], escapedMsg];
 	[webSocket send:msgJson];
 
 	// Clear chatInput.
@@ -503,8 +503,8 @@ CGFloat msgTimestampHeight;
 						 constrainedToSize:CGSizeMake(240.0f, CGFLOAT_MAX)
 							 lineBreakMode:UILineBreakModeWordWrap];
 	UIImage *balloon;
-	if ([[(User *)[msg sender] uid] isEqualToString:
-		 [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] uid]]) {
+	if ([[(User *)[msg sender] oid] isEqualToString:
+		 [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid]]) {
 		msgBackground.frame = CGRectMake(chatContent.frame.size.width - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 		msgText.frame = CGRectMake(chatContent.frame.size.width - 22.0f - size.width,

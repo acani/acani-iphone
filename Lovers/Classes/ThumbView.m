@@ -1,5 +1,6 @@
 #import "ThumbView.h"
 #import "User.h"
+#import "Picture.h"
 #import "Constants.h"
 
 #define	SET_BACKGROUND_IMAGE_WITH_DATA(DATA)\
@@ -16,10 +17,10 @@
 	if (self = [super initWithFrame:frame]) {
 		self.clearsContextBeforeDrawing = NO;
 		self.user = theUser;
-		if ([theUser thumb]) {
+		if ([theUser picture]) {
 //		if ((Thumb *thumb = [theUser thumb]) && [thumb oid] == 1) {
-			NSLog(@"thumb: %@", [theUser thumb]);
-			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser thumb] data]);
+			NSLog(@"picture: %@", [theUser picture]);
+			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser picture] thumb]); // use thumb2 for iPhone4
 		} else {
 			NSLog(@"user: %@", theUser);
 			[self downloadThumb];
@@ -29,7 +30,7 @@
 }
 
 - (void)downloadThumb {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user uid]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user oid]];
 	NSLog(@"thumb urlString: %@", urlString);
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
@@ -68,10 +69,10 @@
     [connection release];
 	NSLog(@"got here");
 	// Store urlData to user's thumb, and set view's background image.
-	[user setThumb:[NSEntityDescription
-					insertNewObjectForEntityForName:@"Thumb"
-					inManagedObjectContext:[user managedObjectContext]]];
-	[(Thumb *)[user thumb] setData:urlData];
+	[user setPicture:[NSEntityDescription
+					  insertNewObjectForEntityForName:@"Picture"
+					  inManagedObjectContext:[user managedObjectContext]]];
+	[[user picture] setThumb:urlData];
 	SET_BACKGROUND_IMAGE_WITH_DATA(urlData);
 
 	[[user managedObjectContext] save:nil]; // TODO: do this once at the end.

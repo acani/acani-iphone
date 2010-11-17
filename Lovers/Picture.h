@@ -1,5 +1,5 @@
 //
-//  Location.h
+//  Picture.h
 //  Lovers
 //
 //  Created by Matt Di Pasquale on 11/17/10.
@@ -10,12 +10,12 @@
 
 @class Profile;
 
-@interface Location :  NSManagedObject  
+@interface Picture :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSNumber * longitude;
-@property (nonatomic, retain) NSNumber * latitude;
+@property (nonatomic, retain) NSData * thumb;
+@property (nonatomic, retain) NSString * pid;
 @property (nonatomic, retain) Profile * profile;
 
 @end

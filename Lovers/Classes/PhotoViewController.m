@@ -24,7 +24,7 @@ BOOL overlayHide = NO;
 
 - (void)goToChat:(id)sender {
 	ChatViewController *chatView = [[ChatViewController alloc] init];
-	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", [targetUser uid]];
+	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", [targetUser oid]];
 	chatView.title = [targetUser name];
 	[self.navigationController pushViewController:chatView animated:YES];
 	[chatView release];
@@ -52,7 +52,7 @@ BOOL overlayHide = NO;
 
 - (void)viewDidLoad {
 	// Create the request.
-	NSString *picUrl = [NSString stringWithFormat:@"http://%@/%@/picture?type=large", SINATRA, [targetUser uid]];
+	NSString *picUrl = [NSString stringWithFormat:@"http://%@/%@/picture?type=large", SINATRA, [targetUser oid]];
 	NSURLRequest *picRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:picUrl]
 												cachePolicy:NSURLRequestUseProtocolCachePolicy
 											timeoutInterval:60.0];
@@ -185,7 +185,7 @@ BOOL overlayHide = NO;
 	NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
 	NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
-	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", [targetUser age]];
+	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", 25]; //[targetUser age]];
 	likesLabel.text =     [NSString stringWithFormat:@"Likes %@",
 						   [[Likes objectAtIndex:[[targetUser likes] intValue]] lowercaseString]];
 	heightLabel.text =    [NSString stringWithFormat:@"%@ cm", [targetUser height]];

@@ -35,16 +35,16 @@
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
 		C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* Lovers.sql */; };
 		C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */; };
-		C93B6A48127DEE9900CC4E85 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A3D127DEE9900CC4E85 /* Profile.m */; };
-		C93B6A49127DEE9900CC4E85 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A3F127DEE9900CC4E85 /* Location.m */; };
-		C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A41127DEE9900CC4E85 /* Message.m */; };
-		C93B6A4B127DEE9900CC4E85 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A43127DEE9900CC4E85 /* User.m */; };
-		C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B6A45127DEE9900CC4E85 /* Account.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
-		C98EEDDD1288DBF000B79B79 /* Thumb.m in Sources */ = {isa = PBXBuildFile; fileRef = C98EEDDC1288DBF000B79B79 /* Thumb.m */; };
 		C98EEF7E128BB2F800B79B79 /* Cedar-iPhone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98EEE98128BADC600B79B79 /* Cedar-iPhone.framework */; };
 		C98EEF83128BB33400B79B79 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C98EEF82128BB33400B79B79 /* main.m */; };
+		C99C91CA129471210093227A /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91BF129471210093227A /* Profile.m */; };
+		C99C91CB129471210093227A /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91C1129471210093227A /* Location.m */; };
+		C99C91CC129471210093227A /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91C3129471210093227A /* Message.m */; };
+		C99C91CD129471210093227A /* Picture.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91C5129471210093227A /* Picture.m */; };
+		C99C91CE129471210093227A /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91C7129471210093227A /* User.m */; };
+		C99C91CF129471210093227A /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C99C91C9129471210093227A /* Account.m */; };
 		C9D75D93124AE8790001A448 /* HTTPOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75D92124AE8790001A448 /* HTTPOperation.m */; };
 		C9D75DD3124B843D0001A448 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D75DD2124B843D0001A448 /* Constants.m */; };
 		C9D76021124CD99D0001A448 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9D76009124CD99D0001A448 /* FBDialog.bundle */; };
@@ -110,24 +110,24 @@
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Lovers.xcdatamodel; sourceTree = "<group>"; };
 		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
-		C93B6A3C127DEE9900CC4E85 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Profile.h; path = ../Profile.h; sourceTree = "<group>"; };
-		C93B6A3D127DEE9900CC4E85 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Profile.m; path = ../Profile.m; sourceTree = "<group>"; };
-		C93B6A3E127DEE9900CC4E85 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Location.h; path = ../Location.h; sourceTree = "<group>"; };
-		C93B6A3F127DEE9900CC4E85 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = ../Location.m; sourceTree = "<group>"; };
-		C93B6A40127DEE9900CC4E85 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Message.h; path = ../Message.h; sourceTree = "<group>"; };
-		C93B6A41127DEE9900CC4E85 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Message.m; path = ../Message.m; sourceTree = "<group>"; };
-		C93B6A42127DEE9900CC4E85 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ../User.h; sourceTree = "<group>"; };
-		C93B6A43127DEE9900CC4E85 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = ../User.m; sourceTree = "<group>"; };
-		C93B6A44127DEE9900CC4E85 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Account.h; path = ../Account.h; sourceTree = "<group>"; };
-		C93B6A45127DEE9900CC4E85 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = ../Account.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
-		C98EEDDB1288DBF000B79B79 /* Thumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thumb.h; sourceTree = "<group>"; };
-		C98EEDDC1288DBF000B79B79 /* Thumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thumb.m; sourceTree = "<group>"; };
 		C98EEE98128BADC600B79B79 /* Cedar-iPhone.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Cedar-iPhone.framework"; path = "/Users/matt/Sources/cedar/build/Debug-iphoneuniversal/Cedar-iPhone.framework"; sourceTree = "<absolute>"; };
 		C98EEF69128BB29100B79B79 /* Spec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Spec-Info.plist"; sourceTree = "<group>"; };
 		C98EEF7A128BB2E800B79B79 /* Spec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C98EEF82128BB33400B79B79 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Spec/main.m; sourceTree = "<group>"; };
+		C99C91BE129471210093227A /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = SOURCE_ROOT; };
+		C99C91BF129471210093227A /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = SOURCE_ROOT; };
+		C99C91C0129471210093227A /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = SOURCE_ROOT; };
+		C99C91C1129471210093227A /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = SOURCE_ROOT; };
+		C99C91C2129471210093227A /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = SOURCE_ROOT; };
+		C99C91C3129471210093227A /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = SOURCE_ROOT; };
+		C99C91C4129471210093227A /* Picture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picture.h; sourceTree = SOURCE_ROOT; };
+		C99C91C5129471210093227A /* Picture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picture.m; sourceTree = SOURCE_ROOT; };
+		C99C91C6129471210093227A /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
+		C99C91C7129471210093227A /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
+		C99C91C8129471210093227A /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = SOURCE_ROOT; };
+		C99C91C9129471210093227A /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = SOURCE_ROOT; };
 		C9D75D91124AE8790001A448 /* HTTPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPOperation.h; sourceTree = "<group>"; };
 		C9D75D92124AE8790001A448 /* HTTPOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPOperation.m; sourceTree = "<group>"; };
 		C9D75DD2124B843D0001A448 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Classes/Constants.m; sourceTree = "<group>"; };
@@ -265,19 +265,19 @@
 		C9119F5212522657008A26BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C99C91BE129471210093227A /* Profile.h */,
+				C99C91BF129471210093227A /* Profile.m */,
+				C99C91C0129471210093227A /* Location.h */,
+				C99C91C1129471210093227A /* Location.m */,
+				C99C91C2129471210093227A /* Message.h */,
+				C99C91C3129471210093227A /* Message.m */,
+				C99C91C4129471210093227A /* Picture.h */,
+				C99C91C5129471210093227A /* Picture.m */,
+				C99C91C6129471210093227A /* User.h */,
+				C99C91C7129471210093227A /* User.m */,
+				C99C91C8129471210093227A /* Account.h */,
+				C99C91C9129471210093227A /* Account.m */,
 				C91FE8A912289596003C266E /* Lovers.xcdatamodel */,
-				C93B6A3C127DEE9900CC4E85 /* Profile.h */,
-				C93B6A3D127DEE9900CC4E85 /* Profile.m */,
-				C93B6A3E127DEE9900CC4E85 /* Location.h */,
-				C93B6A3F127DEE9900CC4E85 /* Location.m */,
-				C93B6A40127DEE9900CC4E85 /* Message.h */,
-				C93B6A41127DEE9900CC4E85 /* Message.m */,
-				C93B6A42127DEE9900CC4E85 /* User.h */,
-				C93B6A43127DEE9900CC4E85 /* User.m */,
-				C93B6A44127DEE9900CC4E85 /* Account.h */,
-				C93B6A45127DEE9900CC4E85 /* Account.m */,
-				C98EEDDB1288DBF000B79B79 /* Thumb.h */,
-				C98EEDDC1288DBF000B79B79 /* Thumb.m */,
 			);
 			name = Models;
 			path = Classes;
@@ -570,12 +570,12 @@
 				C9D7602B124CD99D0001A448 /* FBDialog.m in Sources */,
 				C9D76534124F02BB0001A448 /* ThumbView.m in Sources */,
 				C9119F2C12518371008A26BB /* UsersViewController.m in Sources */,
-				C93B6A48127DEE9900CC4E85 /* Profile.m in Sources */,
-				C93B6A49127DEE9900CC4E85 /* Location.m in Sources */,
-				C93B6A4A127DEE9900CC4E85 /* Message.m in Sources */,
-				C93B6A4B127DEE9900CC4E85 /* User.m in Sources */,
-				C93B6A4C127DEE9900CC4E85 /* Account.m in Sources */,
-				C98EEDDD1288DBF000B79B79 /* Thumb.m in Sources */,
+				C99C91CA129471210093227A /* Profile.m in Sources */,
+				C99C91CB129471210093227A /* Location.m in Sources */,
+				C99C91CC129471210093227A /* Message.m in Sources */,
+				C99C91CD129471210093227A /* Picture.m in Sources */,
+				C99C91CE129471210093227A /* User.m in Sources */,
+				C99C91CF129471210093227A /* Account.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
