@@ -2,6 +2,7 @@
 #import "ChatViewController.h"
 #import "User.h"
 #import "Location.h"
+#import "Picture.h"
 #import "Constants.h"
 #import "LoversAppDelegate.h"
 
@@ -52,7 +53,7 @@ BOOL overlayHide = NO;
 
 - (void)viewDidLoad {
 	// Create the request.
-	NSString *picUrl = [NSString stringWithFormat:@"http://%@/%@/picture?type=large", SINATRA, [targetUser oid]];
+	NSString *picUrl = [NSString stringWithFormat:@"http://%@/pictures/%@?type=large", SINATRA, [[targetUser picture] pid]];
 	NSURLRequest *picRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:picUrl]
 												cachePolicy:NSURLRequestUseProtocolCachePolicy
 											timeoutInterval:60.0];

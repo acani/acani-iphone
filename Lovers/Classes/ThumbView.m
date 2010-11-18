@@ -17,12 +17,10 @@
 	if (self = [super initWithFrame:frame]) {
 		self.clearsContextBeforeDrawing = NO;
 		self.user = theUser;
-		if ([theUser picture]) {
+		if ([[theUser picture] thumb]) { // TODO: test if picture_id is new
 //		if ((Thumb *thumb = [theUser thumb]) && [thumb oid] == 1) {
-			NSLog(@"picture: %@", [theUser picture]);
 			SET_BACKGROUND_IMAGE_WITH_DATA([[theUser picture] thumb]); // use thumb2 for iPhone4
 		} else {
-			NSLog(@"user: %@", theUser);
 			[self downloadThumb];
 		}
 	}
@@ -30,8 +28,7 @@
 }
 
 - (void)downloadThumb {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user oid]];
-	NSLog(@"thumb urlString: %@", urlString);
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/pictures/%@", SINATRA, [[user picture] pid]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
@@ -67,7 +64,6 @@
 	
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [connection release];
-	NSLog(@"got here");
 	// Store urlData to user's thumb, and set view's background image.
 	[user setPicture:[NSEntityDescription
 					  insertNewObjectForEntityForName:@"Picture"

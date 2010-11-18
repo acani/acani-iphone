@@ -4,6 +4,7 @@
 #import "LoversAppDelegate.h"
 #import "Constants.h"
 #import "User.h"
+#import "Location.h"
 #import "ThumbView.h"
 #import "JSON.h"
 
@@ -115,8 +116,6 @@
 		// TODO: Handle the error appropriately.
 		NSLog(@"fetch users error %@, %@", error, [error userInfo]);
 	}
-//	NSLog(@"fetched sections count: %i", [[fetchedResultsController sections] count]);
-//	NSLog(@"fetched objects first: %@", [[fetchedResultsController fetchedObjects] objectAtIndex:0]);
 
 	[self loadUsers];
 
@@ -227,7 +226,6 @@
 						   [[UIDevice currentDevice] uniqueIdentifier],
 						   [[myUser location] latitude],
 						   [[myUser location] longitude]];
-	NSLog(@"urlString: %@", urlString);
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
@@ -261,7 +259,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger num_rows = [[fetchedResultsController fetchedObjects] count] / columnCount;
-	NSLog(@"num_rows: %i", num_rows);
 	return num_rows;
 }
 
@@ -285,12 +282,10 @@
 									user:[fetchedResultsController objectAtIndexPath:
 										  [NSIndexPath indexPathForRow:i inSection:[indexPath section]]]];
 			[cell.contentView addSubview:thumbView];
-			NSLog(@"thumbView: %@", thumbView);
 			[thumbView release];
 			x_pos += THUMB_SIZE + THUMB_PADDING; ++i;
 		}
 	}
-	NSLog(@"cell: %@", cell);
 
 	[self configureCell:cell atIndexPath:indexPath];
 
@@ -432,7 +427,6 @@
 			[servedOids addObject:[[usrDict valueForKey:@"_id"] valueForKey:@"$oid"]];
 		}
 	}
-	NSLog(@"servedOids: %@", servedOids);
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"oid IN %@", servedOids]];
 
 	// Perform the fetch.
@@ -449,7 +443,6 @@
 		[myUser setOrder:[NSNumber numberWithInteger:oIndex]];		
 		
 		if ([fetchedUsers count] > 0) {
-			NSLog(@"fetched users: %@", fetchedUsers);
 
 			// Store fetched users in dictionary with oids as keys.
 			NSMutableDictionary *oidFetc = [[NSMutableDictionary alloc]
@@ -465,16 +458,13 @@
 				if (++index != 0) {
 					// Check if served user is already stored on iPhone.
 					if(usrObj = [oidFetc objectForKey:[servedOids objectAtIndex:++sIndex]]) {
-						NSLog(@"%@ exists already", [usrObj name]);
 						// Update each fetched user only if served user is more recent.
 						if ([[usrObj updated] timeIntervalSince1970] <
 							[[usrDict valueForKey:@"t"] doubleValue]) {
 							[usrObj updateWithDictionary:usrDict];
 							[usrObj setOrder:[NSNumber numberWithInteger:++oIndex]];
-							NSLog(@"update user: %@", [usrObj name]);
 						}
 					} else { // insert new served user
-						NSLog(@"%@ inserted cause doesn't exist yet", [usrObj name]);
 						User *oUsr = [User insertWithDictionary:usrDict
 										 inManagedObjectContext:managedObjectContext];
 						[oUsr setOrder:[NSNumber numberWithInteger:++oIndex]];
@@ -483,7 +473,6 @@
 			}
 			[oidFetc release];
 		} else { // insert all served users cause none found locally
-			NSLog(@"no users exist. all inserted");
 			index = -1;
 			for (NSDictionary *usrDict in usrDicts) {
 				if (++index != 0) {
@@ -558,7 +547,6 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView reloadData];
-	NSLog(@"reload data");
 //	[self.tableView endUpdates];
 }
 

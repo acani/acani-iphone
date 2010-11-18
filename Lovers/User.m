@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "Location.h"
 #import "Picture.h"
 #import "LoversAppDelegate.h"
 
@@ -69,6 +70,8 @@
 	[self setEthnicity:[dictionary valueForKey:@"e"]];
 	[self setHeight:[dictionary valueForKey:@"h"]];
 	[self setFbId:[dictionary valueForKey:@"i"]];
+	[self setPhone:[dictionary valueForKey:@"j"]];
+//	[self setRelStat:[dictionary valueForKey:@"k"]];
 	[[self location] setLatitude:[[dictionary valueForKey:@"l"] objectAtIndex:0]];
 	[[self location] setLongitude:[[dictionary valueForKey:@"l"] objectAtIndex:1]];
 	[self setName:[dictionary valueForKey:@"n"]];
@@ -80,10 +83,16 @@
 	[self setUpdated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"t"] doubleValue]]];
 	[self setFbUsername:[dictionary valueForKey:@"u"]];
 	[self setLikes:[dictionary valueForKey:@"v"]];
-	[self setBirthday:[dictionary valueForKey:@"y"]];
+//	[self setWebsite:[dictionary valueForKey:@"w"]]; // TODO: add to user model
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"yyyy-MM-dd"];
+	[self setBirthday:[df dateFromString:[dictionary valueForKey:@"y"]]];
+	[df release];
+	[self setShowAge:[dictionary valueForKey:@"z"]];
 	return self;
 }
 
+// Encodes user data before posting to server.
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary {
 	NSDictionary *encoder = [[NSDictionary alloc] initWithObjectsAndKeys:
 							 @"a", @"about",
@@ -91,15 +100,20 @@
 							 @"d", @"showDistance",
 							 @"e", @"ethnicity",
 							 @"h", @"height",
-							 @"i", @"fbId",
+							 // fbId won't be changed.
+							 @"j", @"phone", // not yet used
+							 @"k", @"relStat", // not yet used
 							 @"n", @"name",
 							 @"o", @"onlineStatus", // not yet used
+							 // picId we get from the server's response.
 							 @"q", @"headline",
 							 @"r", @"lastOnline", // not yet used
 							 @"s", @"sex",
+							 // updated we get from the server's response.
 							 @"u", @"fbUsername",
 							 @"v", @"likes",
-							 @"y", @"age", nil];
+							 @"y", @"birthday",
+							 @"z", @"showBirthday", nil];
 	
 	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithCapacity:[encoder count]];
 	NSLog(@"dicionary: %@", dictionary);

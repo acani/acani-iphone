@@ -50,6 +50,8 @@
 		// Present account login screen to pick account
 	}
 
+	NSLog(@"myUser: %@", [myAccount user]);
+
 	// Create window, navigationController & usersViewController
 	usersViewController = [[UsersViewController alloc] initWithMe:[myAccount user]];
 	usersViewController.managedObjectContext = managedObjectContext;
@@ -378,15 +380,15 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"];
 
-//	// If the expected store doesn't exist, copy the default store.
-//	// This is basically like shipping the app with a default user account
-//	// already created so that we can assume it exists.
-//	if (![fileManager fileExistsAtPath:storePath]) {
-//		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
-//		if (defaultStorePath) {
-//			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
-//		}
-//	}
+	// If the expected store doesn't exist, copy the default store.
+	// This is basically like shipping the app with a default user account
+	// already created so that we can assume it exists.
+	if (![fileManager fileExistsAtPath:storePath]) {
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
+		if (defaultStorePath) {
+			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
+		}
+	}
 
 	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	

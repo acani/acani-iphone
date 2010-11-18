@@ -1,6 +1,7 @@
 #import "LoversAppDelegate.h"
 #import "InternetImage.h"
 #import "SBJSON.h"
+#import "Account.h"
 #import "User.h"
 #import "Location.h"
 
