@@ -186,7 +186,7 @@ BOOL overlayHide = NO;
 	NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
 	NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
-	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", 25]; //[targetUser age]];
+	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", @"25"]; //[targetUser age]];
 	likesLabel.text =     [NSString stringWithFormat:@"Likes %@",
 						   [[Likes objectAtIndex:[[targetUser likes] intValue]] lowercaseString]];
 	heightLabel.text =    [NSString stringWithFormat:@"%@ cm", [targetUser height]];

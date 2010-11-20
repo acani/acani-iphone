@@ -39,14 +39,16 @@
 	
 	NSError *error;
 	NSArray *accounts = [managedObjectContext executeFetchRequest:request error:&error];
+	NSUInteger actCnt = [accounts count];
 	[request release];
-	if (accounts == nil) {
+	if (accounts == nil || actCnt == 0) {
 		// TODO: Handle the error appropriately.
 		NSLog(@"fetch accounts error %@, %@", error, [error userInfo]);
-	} else if ([accounts count] == 1) { // app ships with at least 1 account
+	} else if (actCnt == 1) { // app ships with at least 1 account
+		NSLog(@"got 1 account");
 		self.myAccount = [accounts objectAtIndex:0];
 		[webSocket open];
-	} else if ([accounts count] > 1) {
+	} else if (actCnt > 1) {
 		// Present account login screen to pick account
 	}
 

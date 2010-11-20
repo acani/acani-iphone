@@ -65,9 +65,6 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [connection release];
 	// Store urlData to user's thumb, and set view's background image.
-	[user setPicture:[NSEntityDescription
-					  insertNewObjectForEntityForName:@"Picture"
-					  inManagedObjectContext:[user managedObjectContext]]];
 	[[user picture] setThumb:urlData];
 	SET_BACKGROUND_IMAGE_WITH_DATA(urlData);
 

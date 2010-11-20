@@ -488,6 +488,8 @@
 	[servedOids release];
 
 	// Save. In memory-changes trump conflicts in external store.
+	// In case user edits profile before data just received from server,
+	// the line below keeps user edits over downloaded data.
 	[managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	[managedObjectContext save:nil];
 }
