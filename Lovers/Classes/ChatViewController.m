@@ -241,6 +241,7 @@
 
 	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
