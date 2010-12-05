@@ -14,6 +14,31 @@
 */
 
 - (void)loadView {
+	// Set up view.
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	contentView.backgroundColor = [UIColor lightGrayColor]; // default is nil (white)
+	contentView.clearsContextBeforeDrawing = NO;
+
+	// Add connect with Facebook button.
+	UIButton *connectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	connectButton.clearsContextBeforeDrawing = NO;
+	connectButton.frame = CGRectMake(40.0f, 360.0f, 240.0f, 44.0f);
+//	UIImage *connectButtonBackground = [UIImage imageNamed:@"connectButton.png"];
+//	[connectButton setBackgroundImage:connectButtonBackground forState:UIControlStateNormal];
+//	[connectButton setBackgroundImage:connectButtonBackground forState:UIControlStateDisabled];	
+	connectButton.titleLabel.font = [UIFont boldSystemFontOfSize: 16];
+	connectButton.backgroundColor = [UIColor blueColor];
+	[connectButton setTitle:@"Connect with Facebook" forState:UIControlStateNormal];
+	[connectButton addTarget:self action:@selector(connect) forControlEvents:UIControlEventTouchUpInside];
+//	connectButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
+//	connectButton.clipsToBounds = YES; // not necessary now that we'are using background image
+	[contentView addSubview:connectButton];
+
+	self.view = contentView;
+	[contentView release];	
+}
+
+- (void)connect {
 	
 }
 
