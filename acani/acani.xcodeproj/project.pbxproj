@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1331AC1C11906025004ABBC6 /* logo_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 1331AC1B11906025004ABBC6 /* logo_bg.png */; };
 		137342BE118F1D66006CCB0E /* InternetImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 137342BD118F1D66006CCB0E /* InternetImage.m */; };
-		1D3623260D0F684500981E51 /* LoversAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LoversAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -33,8 +33,8 @@
 		C91FE7691225FEAC003C266E /* ZTWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C91FE7681225FEAC003C266E /* ZTWebSocket.m */; };
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
-		C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* Lovers.sql */; };
-		C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */; };
+		C93B6924127C9EB200CC4E85 /* acani.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* acani.sql */; };
+		C93B6926127C9F4F00CC4E85 /* acani.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* acani.sqlite */; };
 		C93D158F129C6470000104EF /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C93D158E129C6470000104EF /* WelcomeViewController.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
@@ -73,14 +73,14 @@
 		137342BC118F1D66006CCB0E /* InternetImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InternetImage.h; path = Classes/InternetImage.h; sourceTree = "<group>"; };
 		137342BD118F1D66006CCB0E /* InternetImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InternetImage.m; path = Classes/InternetImage.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* LoversAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoversAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* LoversAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoversAppDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
-		1D6058910D05DD3D006BFB54 /* Lovers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lovers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
+		1D6058910D05DD3D006BFB54 /* acani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = acani.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* Lovers_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lovers_Prefix.pch; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Lovers-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lovers-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* acani_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acani_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* acani-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "acani-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		AD7162791217415700351B3D /* red-x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red-x.png"; sourceTree = "<group>"; };
 		AD71627A1217415700351B3D /* gold-star-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "gold-star-2.jpg"; sourceTree = "<group>"; };
 		AD7162BA1217477500351B3D /* BlockButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlockButton.png; sourceTree = "<group>"; };
@@ -109,8 +109,8 @@
 		C91FE7681225FEAC003C266E /* ZTWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZTWebSocket.m; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Lovers.xcdatamodel; sourceTree = "<group>"; };
-		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
-		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
+		C93B6923127C9EB200CC4E85 /* acani.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = acani.sql; sourceTree = "<group>"; };
+		C93B6925127C9F4F00CC4E85 /* acani.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = acani.sqlite; sourceTree = "<group>"; };
 		C93D158D129C6470000104EF /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		C93D158E129C6470000104EF /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -198,7 +198,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Lovers.app */,
+				1D6058910D05DD3D006BFB54 /* acani.app */,
 				C98EEF7A128BB2E800B79B79 /* Spec.app */,
 			);
 			name = Products;
@@ -232,8 +232,8 @@
 			isa = PBXGroup;
 			children = (
 				C93B6ABE127E4F6E00CC4E85 /* Vendor */,
-				C93B6923127C9EB200CC4E85 /* Lovers.sql */,
-				32CA4F630368D1EE00C91783 /* Lovers_Prefix.pch */,
+				C93B6923127C9EB200CC4E85 /* acani.sql */,
+				32CA4F630368D1EE00C91783 /* acani_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -242,10 +242,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */,
+				C93B6925127C9F4F00CC4E85 /* acani.sqlite */,
 				C96BD0D3122E0A18002CCDE0 /* basicsound.wav */,
 				F56D02911188781800F2A797 /* images */,
-				8D1107310486CEB800E47090 /* Lovers-Info.plist */,
+				8D1107310486CEB800E47090 /* acani-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -371,8 +371,8 @@
 		C9A183E8126A0C62007A512B /* Application Delegate */ = {
 			isa = PBXGroup;
 			children = (
-				1D3623240D0F684500981E51 /* LoversAppDelegate.h */,
-				1D3623250D0F684500981E51 /* LoversAppDelegate.m */,
+				1D3623240D0F684500981E51 /* AppDelegate.h */,
+				1D3623250D0F684500981E51 /* AppDelegate.m */,
 			);
 			name = "Application Delegate";
 			path = Classes;
@@ -459,9 +459,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Lovers */ = {
+		1D6058900D05DD3D006BFB54 /* acani */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Lovers" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "acani" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -471,9 +471,9 @@
 			);
 			dependencies = (
 			);
-			name = Lovers;
+			name = acani;
 			productName = Lovers;
-			productReference = 1D6058910D05DD3D006BFB54 /* Lovers.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* acani.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C98EEF79128BB2E800B79B79 /* Spec */ = {
@@ -498,7 +498,7 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "acani" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -512,7 +512,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Lovers */,
+				1D6058900D05DD3D006BFB54 /* acani */,
 				C98EEF79128BB2E800B79B79 /* Spec */,
 			);
 		};
@@ -538,8 +538,8 @@
 				AD7162BB1217477500351B3D /* BlockButton.png in Resources */,
 				C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */,
 				C9D76021124CD99D0001A448 /* FBDialog.bundle in Resources */,
-				C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */,
-				C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */,
+				C93B6924127C9EB200CC4E85 /* acani.sql in Resources */,
+				C93B6926127C9F4F00CC4E85 /* acani.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,7 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* LoversAppDelegate.m in Sources */,
+				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				F56D024411886CF000F2A797 /* UsersViewControllerOld.m in Sources */,
 				F56D02641188743D00F2A797 /* PhotoViewController.m in Sources */,
 				137342BE118F1D66006CCB0E /* InternetImage.m in Sources */,
@@ -616,11 +616,11 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Lovers_Prefix.pch;
+				GCC_PREFIX_HEADER = acani_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = "Lovers-Info.plist";
-				PRODUCT_NAME = Lovers;
+				INFOPLIST_FILE = "acani-Info.plist";
+				PRODUCT_NAME = acani;
 			};
 			name = Debug;
 		};
@@ -634,9 +634,9 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Lovers_Prefix.pch;
-				INFOPLIST_FILE = "Lovers-Info.plist";
-				PRODUCT_NAME = Lovers;
+				GCC_PREFIX_HEADER = acani_Prefix.pch;
+				INFOPLIST_FILE = "acani-Info.plist";
+				PRODUCT_NAME = acani;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -737,7 +737,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Lovers" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "acani" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -746,7 +746,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "acani" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

@@ -7,7 +7,7 @@
 @class Account;
 @class WelcomeViewController;
 
-@interface LoversAppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
 	Account *myAccount;
 
 	SystemSoundID receiveMessageSound;

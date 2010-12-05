@@ -1,4 +1,4 @@
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "WelcomeViewController.h"
 #import "ChatViewController.h"
 #import "User.h"
@@ -8,7 +8,7 @@
 #import "SBJSON.h"
 #import "Constants.h"
 
-@implementation LoversAppDelegate
+@implementation AppDelegate
 
 @synthesize window;
 @synthesize myAccount;
@@ -380,13 +380,13 @@
 	if (persistentStoreCoordinator) return persistentStoreCoordinator;
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Lovers.sqlite"];
+	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"acani.sqlite"];
 
 	// If the expected store doesn't exist, copy the default store.
 	// This is basically like shipping the app with a default user account
 	// already created so that we can assume it exists.
 	if (![fileManager fileExistsAtPath:storePath]) {
-		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Lovers" ofType:@"sqlite"];
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"acani" ofType:@"sqlite"];
 		if (defaultStorePath) {
 			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
 		}

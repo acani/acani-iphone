@@ -1,7 +1,7 @@
 #import "Constants.h"
 #import "UsersViewControllerOld.h"
 #import "PhotoViewController.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "ProfileViewController.h"
 #import "InternetImage.h"
 #import "ThumbnailDownload.h"
@@ -136,7 +136,7 @@ const enum downloadType JSON = _json;
 	}
 	NSLog(@"loc %6d", location.horizontalAccuracy);
 	self.locNoticelabel.text = [[NSString alloc] initWithFormat:@"Accuracy +-%.1f mts", location.horizontalAccuracy];
-	NSString *myOid = [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid];
+	NSString *myOid = [(User *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid];
 	NSLog(@"myOid %@", myOid == nil ? @"0" : myOid);
 	NSString *tempUrl = [NSString stringWithFormat:@"http://%@/users/%@/%@/%f/%f",
 						 SINATRA,
@@ -345,7 +345,7 @@ const enum downloadType JSON = _json;
 	User *user = [self.Users objectAtIndex:selectedImage.tag];
 	
 	PhotoViewController *aController = [(PhotoViewController *)[PhotoViewController alloc] initWithUser:user];
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
+	[[(AppDelegate *)[[UIApplication sharedApplication] delegate] navigationController] pushViewController:aController animated:YES];
 	[aController release];
 }
 
@@ -368,7 +368,7 @@ const enum downloadType JSON = _json;
 	switch (alertView.tag) {
 		case LOGOUT_ALERT:
 			if (index == LOGOUT) {
-				[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+				[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
 			}
 			break;
 		case TERMS_ALERT:
@@ -405,13 +405,13 @@ Review | Agree
 	if (YES) {
 		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other users."];
 	} else {
-		[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+		[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
 		// Then go to loginView like Facebook iPhone app does.
 	}
 }
 
 - (void)login:(id)sender {
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
+	[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
 }
 
 @end

@@ -1,5 +1,5 @@
 #import "ProfileViewController.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "Constants.h"
 #import "FBConnect.h"
 
@@ -233,7 +233,7 @@ static NSString* kAppId = @"132443680103133";
 		[self doneEditingText:self];
 	}
 	
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	[managedObjectContext refreshObject:myUser mergeChanges:NO]; // get rid of changes
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -252,7 +252,7 @@ static NSString* kAppId = @"132443680103133";
 //	[myUser setUpdated:now];
 //	[now release];
 
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
 		// Handle the error. What's the best way to handle this?
@@ -262,7 +262,7 @@ static NSString* kAppId = @"132443680103133";
 	// Send a PUT request to: /{oid}
 	// See sample in sample-profile-put-request.txt
 	HTTPOperation *operation = [[[HTTPOperation alloc] init] autorelease];
-	operation.delegate = (LoversAppDelegate *)[[UIApplication sharedApplication] delegate];
+	operation.delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	operation.oid = myUser.oid;
 	operation.params = [User encodeKeysInDictionary:changes];
 	
@@ -700,9 +700,9 @@ static NSString* kAppId = @"132443680103133";
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		}
 
-		NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
-		NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
-		NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
+		NSArray *Sexes = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
+		NSArray *Ethnicities = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
+		NSArray *Likes = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
 		NSNumber *valueNum;
 		switch (indexPath.row) {
@@ -1093,7 +1093,7 @@ static NSString* kAppId = @"132443680103133";
 }
 
 - (void)clearChats:(id)sender {
-	NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];

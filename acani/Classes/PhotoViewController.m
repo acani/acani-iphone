@@ -4,7 +4,7 @@
 #import "Location.h"
 #import "Picture.h"
 #import "Constants.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 
 @implementation PhotoViewController
 
@@ -175,16 +175,16 @@ BOOL overlayHide = NO;
 	CLLocation *targetLocation = [[CLLocation alloc] initWithLatitude:[[[targetUser location] latitude] doubleValue]
 															longitude:[[[targetUser location] longitude] doubleValue]];
 	locationLabel.text = [NSString stringWithFormat:@"%.1f meters away",
-						  [[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] bestEffortAtLocation]
+						  [[(AppDelegate *)[[UIApplication sharedApplication] delegate] bestEffortAtLocation]
 						  distanceFromLocation:targetLocation]]; // @"420 feet away";
 	[targetLocation release];
 
 	lastOnlineLabel.text = [NSString stringWithFormat:@"Online%@", // @"Online 10 mins ago";
 							[self statusFromDate:[targetUser lastOnline]]];
 	
-	NSArray *Sexes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
-	NSArray *Ethnicities = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
-	NSArray *Likes = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
+	NSArray *Sexes = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Sexes];
+	NSArray *Ethnicities = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Ethnicities];
+	NSArray *Likes = [(AppDelegate *)[[UIApplication sharedApplication] delegate] Likes];
 
 	ageLabel.text =       [NSString stringWithFormat:@"%@ years old", @"25"]; //[targetUser age]];
 	likesLabel.text =     [NSString stringWithFormat:@"Likes %@",

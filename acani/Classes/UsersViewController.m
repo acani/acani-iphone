@@ -1,7 +1,7 @@
 #import "UsersViewController.h"
 #import "ProfileViewController.h"
 #import "PhotoViewController.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "Constants.h"
 #import "User.h"
 #import "Location.h"
@@ -128,7 +128,7 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 	
 	// Set login button if connected to WebSocket.
-	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];	
+	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];	
 	UIBarButtonItem *loginButton;
 	if ([webSocket connected]) {
 		loginButton = BAR_BUTTON(@"Logout", @selector(logout));
@@ -177,7 +177,7 @@
 	switch (alertView.tag) {
 		case LOGOUT_ALERT:
 			if (index == LOGOUT) {
-				[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+				[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
 			}
 			break;
 		case TERMS_ALERT:
@@ -200,13 +200,13 @@
 	if (YES) {
 		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other users."];
 	} else {
-		[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
+		[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
 		// Then go to loginView like Facebook iPhone app does.
 	}
 }
 
 - (void)login {
-	[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
+	[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
 }
 
 - (void)goToProfile {

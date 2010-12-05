@@ -1,7 +1,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @class InternetImage;
-@class LoversAppDelegate;
+@class AppDelegate;
 
 @interface UsersViewControllerOld : UIViewController {
 	UIButton *selectedImage;

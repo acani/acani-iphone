@@ -1,4 +1,4 @@
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "InternetImage.h"
 #import "SBJSON.h"
 #import "Account.h"
@@ -134,7 +134,7 @@ static enum downloadType _data = _json;
 - (NSMutableArray *)createUsers: (NSString *)jsonResponse {
 	NSMutableArray *users = [NSMutableArray array];
     if (jsonResponse) {
-		NSManagedObjectContext *managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+		NSManagedObjectContext *managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 		NSError *error = nil;
         SBJSON *json = [[SBJSON alloc] init];    
         NSArray *results = [json objectWithString:jsonResponse error:&error];
@@ -146,7 +146,7 @@ static enum downloadType _data = _json;
 	
 		User *me = [User insertWithDictionary:[e nextObject] // The first result is me
 					   inManagedObjectContext:managedObjectContext];
-		[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] setUser:me];
+		[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] setUser:me];
 		if (![managedObjectContext save:&error]) {
 			// Handle the error.
 			NSLog(@"Error saving myAccount & me! %@", error);
@@ -160,7 +160,7 @@ static enum downloadType _data = _json;
 		NSLog(@"user: %@", [users objectAtIndex:19]);
     }
 
-	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
 	if (![webSocket connected]) {
 		[webSocket open];
 	} 

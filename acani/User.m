@@ -1,6 +1,6 @@
 // 
 //  User.m
-//  Lovers
+//  acani
 //
 //  Created by Matt Di Pasquale on 11/17/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
@@ -9,7 +9,7 @@
 #import "User.h"
 #import "Location.h"
 #import "Picture.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 
 
 @implementation User 
@@ -25,7 +25,7 @@
 @dynamic account;
 
 + (User *)findByOid:(NSString *)oid {
-	LoversAppDelegate *appDelegate = (LoversAppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	NSManagedObjectContext *managedObjectContext = [appDelegate managedObjectContext];
 	return [User findByOid:oid inManagedObjectContext:managedObjectContext];
 }

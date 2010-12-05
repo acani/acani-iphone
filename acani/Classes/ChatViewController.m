@@ -1,5 +1,5 @@
 #import "ChatViewController.h"
-#import "LoversAppDelegate.h"
+#import "AppDelegate.h"
 #import "Message.h"
 #import "User.h"
 #import "Constants.h"
@@ -241,7 +241,7 @@
 
 	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	managedObjectContext = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
@@ -319,7 +319,7 @@
 	//	// TODO: Show progress indicator like iPhone Message app does. (Icebox)
 	//	[activityIndicator startAnimating];
 
-	ZTWebSocket *webSocket = [(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
+	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
 	if (![webSocket connected]) {
 		NSLog(@"Cannot send message, not connected");
 		return;
@@ -329,7 +329,7 @@
 	Message *msg = (Message *)[NSEntityDescription insertNewObjectForEntityForName:@"Message"
 															inManagedObjectContext:managedObjectContext];
 	[msg setText:chatInput.text];
-	[msg setSender:(Profile *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]];
+	[msg setSender:(Profile *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]];
 	[msg setChannel:channel];
 	time_t now; time(&now);
 	latestTimestamp = now;
@@ -505,7 +505,7 @@ CGFloat msgTimestampHeight;
 							 lineBreakMode:UILineBreakModeWordWrap];
 	UIImage *balloon;
 	if ([[(User *)[msg sender] oid] isEqualToString:
-		 [(User *)[[(LoversAppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid]]) {
+		 [(User *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid]]) {
 		msgBackground.frame = CGRectMake(chatContent.frame.size.width - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
 		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
 		msgText.frame = CGRectMake(chatContent.frame.size.width - 22.0f - size.width,
