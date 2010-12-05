@@ -1,5 +1,5 @@
 #import "LoversAppDelegate.h"
-#import "UsersViewController.h"
+#import "WelcomeViewController.h"
 #import "ChatViewController.h"
 #import "User.h"
 #import "Account.h"
@@ -16,7 +16,7 @@
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
-@synthesize usersViewController;
+@synthesize viewController;
 @synthesize webSocket;
 @synthesize Sexes;
 @synthesize Ethnicities;
@@ -54,15 +54,15 @@
 
 	NSLog(@"myUser: %@", [myAccount user]);
 
-	// Create window, navigationController & usersViewController
-	usersViewController = [[UsersViewController alloc] initWithMe:[myAccount user]];
-	usersViewController.managedObjectContext = managedObjectContext;
+	// Create window, navigationController & viewController
+//	viewController = [[WelcomeViewController alloc] initWithMe:[myAccount user]];
+//	viewController.managedObjectContext = managedObjectContext;
 
 //	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
 //	chatViewController.managedObjectContext = managedObjectContext; // for testing chat
 
 	navigationController = [[UINavigationController alloc]
-							initWithRootViewController:usersViewController];
+							initWithRootViewController:[[WelcomeViewController alloc] init]];
 //							initWithRootViewController:chatViewController]; [chatViewController release]; // for testing chat
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
@@ -185,41 +185,41 @@
 #pragma mark -
 #pragma mark Location manager interactions
 
-- (void)findLocation {
-	// Should we use presentModelviewcontroller like urbanspoon to use last location?
-	self.locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-   
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
-	[locationManager startUpdatingLocation];
-    //[self performSelector:@selector(stopUpdatingLocation:) withObject:@"Timed Out" afterDelay:[[setupInfo objectForKey:kSetupInfoKeyTimeout] doubleValue]];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	if (locationMeasurements == nil) {
-		self.locationMeasurements = [[NSMutableArray alloc] init];
-	}
-	[locationMeasurements addObject:newLocation];
-	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
-    if (locationAge > 5.0) return;
-	if (newLocation.horizontalAccuracy < 0) return;
-    if (bestEffortAtLocation == nil || bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
-        // store the location as the "best effort" as well as setting UsersViewController's CLlocation
-        self.bestEffortAtLocation = newLocation;
-		usersViewController.location = newLocation;
-                if (newLocation.horizontalAccuracy <= manager.desiredAccuracy) {
-					[manager stopUpdatingLocation];
-            // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
-			// [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:nil];
-        }
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if ([error code] != kCLErrorLocationUnknown) {
-        [manager stopUpdatingLocation];
-    }
-}
+//- (void)findLocation {
+//	// Should we use presentModelviewcontroller like urbanspoon to use last location?
+//	self.locationManager = [[CLLocationManager alloc] init];
+//    locationManager.delegate = self;
+//   
+//    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+//	[locationManager startUpdatingLocation];
+//    //[self performSelector:@selector(stopUpdatingLocation:) withObject:@"Timed Out" afterDelay:[[setupInfo objectForKey:kSetupInfoKeyTimeout] doubleValue]];
+//}
+//
+//- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+//	if (locationMeasurements == nil) {
+//		self.locationMeasurements = [[NSMutableArray alloc] init];
+//	}
+//	[locationMeasurements addObject:newLocation];
+//	NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
+//    if (locationAge > 5.0) return;
+//	if (newLocation.horizontalAccuracy < 0) return;
+//    if (bestEffortAtLocation == nil || bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
+//        // store the location as the "best effort" as well as setting viewController's CLlocation
+//        self.bestEffortAtLocation = newLocation;
+//		viewController.location = newLocation;
+//                if (newLocation.horizontalAccuracy <= manager.desiredAccuracy) {
+//					[manager stopUpdatingLocation];
+//            // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
+//			// [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:nil];
+//        }
+//    }
+//}
+//
+//- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+//    if ([error code] != kCLErrorLocationUnknown) {
+//        [manager stopUpdatingLocation];
+//    }
+//}
 
 
 #pragma mark -
@@ -239,18 +239,18 @@
 
 - (void)webSocketDidClose:(ZTWebSocket *)webSocket {
 	NSLog(@"Disconnected");
-	if (usersViewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", usersViewController, @selector(login));
-		usersViewController.navigationItem.leftBarButtonItem = logButton;
+	if (viewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", viewController, @selector(login));
+		viewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 }
 
 - (void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
 	NSLog(@"Connected");
-	if (usersViewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", usersViewController, @selector(logout));
-		usersViewController.navigationItem.leftBarButtonItem = logButton;
+	if (viewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", viewController, @selector(logout));
+		viewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 	// should be mongodb _id for user, not device id.
@@ -448,7 +448,7 @@
 	[locationMeasurements release];
 	[bestEffortAtLocation release];
 
-	[usersViewController release];
+	[viewController release];
 	[navigationController release];
 	[window release];
     [super dealloc];

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,6 +35,7 @@
 		C91FE8AA12289596003C266E /* Lovers.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* Lovers.xcdatamodel */; };
 		C93B6924127C9EB200CC4E85 /* Lovers.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* Lovers.sql */; };
 		C93B6926127C9F4F00CC4E85 /* Lovers.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */; };
+		C93D158F129C6470000104EF /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C93D158E129C6470000104EF /* WelcomeViewController.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = C96BD0D3122E0A18002CCDE0 /* basicsound.wav */; };
 		C98EEF7E128BB2F800B79B79 /* Cedar-iPhone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98EEE98128BADC600B79B79 /* Cedar-iPhone.framework */; };
@@ -110,6 +111,8 @@
 		C91FE8A912289596003C266E /* Lovers.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Lovers.xcdatamodel; sourceTree = "<group>"; };
 		C93B6923127C9EB200CC4E85 /* Lovers.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Lovers.sql; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* Lovers.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lovers.sqlite; sourceTree = "<group>"; };
+		C93D158D129C6470000104EF /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		C93D158E129C6470000104EF /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C96BD0D3122E0A18002CCDE0 /* basicsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = basicsound.wav; sourceTree = "<group>"; };
 		C98EEE98128BADC600B79B79 /* Cedar-iPhone.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Cedar-iPhone.framework"; path = "/Users/matt/Sources/cedar/build/Debug-iphoneuniversal/Cedar-iPhone.framework"; sourceTree = "<absolute>"; };
@@ -293,6 +296,15 @@
 			name = Vendor;
 			sourceTree = "<group>";
 		};
+		C93D1593129C65F4000104EF /* WelcomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C93D158D129C6470000104EF /* WelcomeViewController.h */,
+				C93D158E129C6470000104EF /* WelcomeViewController.m */,
+			);
+			name = WelcomeViewController;
+			sourceTree = "<group>";
+		};
 		C98EEF56128BB16800B79B79 /* Spec */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,8 +316,9 @@
 		C9A183E3126A0B7D007A512B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C9A183E6126A0BE6007A512B /* ProfileViewController */,
+				C93D1593129C65F4000104EF /* WelcomeViewController */,
 				C9A183E5126A0BD4007A512B /* UsersViewController */,
+				C9A183E6126A0BE6007A512B /* ProfileViewController */,
 				C9A183E7126A0C16007A512B /* PhotoViewController */,
 				C9A183E4126A0BAF007A512B /* ChatViewController */,
 			);
@@ -486,7 +499,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Lovers" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -576,6 +589,7 @@
 				C99C91CD129471210093227A /* Picture.m in Sources */,
 				C99C91CE129471210093227A /* User.m in Sources */,
 				C99C91CF129471210093227A /* Account.m in Sources */,
+				C93D158F129C6470000104EF /* WelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,8 +651,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../facebook-ios-sdk/src/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -650,9 +666,11 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
