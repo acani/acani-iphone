@@ -1,4 +1,5 @@
 #import "WelcomeViewController.h"
+#import "InterestsViewController.h"
 
 
 @implementation WelcomeViewController

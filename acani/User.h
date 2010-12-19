@@ -2,13 +2,14 @@
 //  User.h
 //  acani
 //
-//  Created by Matt Di Pasquale on 11/17/10.
+//  Created by Matt Di Pasquale on 12/19/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
 #import "Profile.h"
 
+@class Account;
 
 @interface User :  Profile  
 {
@@ -22,7 +23,7 @@
 @property (nonatomic, retain) NSDate * birthday;
 @property (nonatomic, retain) NSNumber * likes;
 @property (nonatomic, retain) NSNumber * sex;
-@property (nonatomic, retain) NSManagedObject * account;
+@property (nonatomic, retain) Account * account;
 
 + (User *)findByOid:(NSString *)oid;
 + (User *)findByOid:(NSString *)oid inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -33,3 +34,6 @@
 - (User *)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end
+
+
+

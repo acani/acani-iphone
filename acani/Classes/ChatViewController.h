@@ -3,7 +3,6 @@
 
     NSManagedObjectContext *managedObjectContext;
 	NSFetchedResultsController *fetchedResultsController;
-	time_t latestTimestamp;
 
 	UITableView *chatContent;
 
@@ -18,7 +17,6 @@
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, assign) time_t latestTimestamp;
 
 @property (nonatomic, retain) UITableView *chatContent;
 

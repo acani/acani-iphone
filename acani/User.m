@@ -2,7 +2,7 @@
 //  User.m
 //  acani
 //
-//  Created by Matt Di Pasquale on 11/17/10.
+//  Created by Matt Di Pasquale on 12/19/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
@@ -11,6 +11,7 @@
 #import "Picture.h"
 #import "AppDelegate.h"
 
+#import "Account.h"
 
 @implementation User 
 
@@ -71,7 +72,7 @@
 	[self setHeight:[dictionary valueForKey:@"h"]];
 	[self setFbId:[dictionary valueForKey:@"i"]];
 	[self setPhone:[dictionary valueForKey:@"j"]];
-//	[self setRelStat:[dictionary valueForKey:@"k"]];
+	//	[self setRelStat:[dictionary valueForKey:@"k"]];
 	[[self location] setLatitude:[[dictionary valueForKey:@"l"] objectAtIndex:0]];
 	[[self location] setLongitude:[[dictionary valueForKey:@"l"] objectAtIndex:1]];
 	[self setName:[dictionary valueForKey:@"n"]];
@@ -83,7 +84,7 @@
 	[self setUpdated:[NSDate dateWithTimeIntervalSince1970:[[dictionary valueForKey:@"t"] doubleValue]]];
 	[self setFbUsername:[dictionary valueForKey:@"u"]];
 	[self setLikes:[dictionary valueForKey:@"v"]];
-//	[self setWebsite:[dictionary valueForKey:@"w"]]; // TODO: add to user model
+	//	[self setWebsite:[dictionary valueForKey:@"w"]]; // TODO: add to user model
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	[df setDateFormat:@"yyyy-MM-dd"];
 	[self setBirthday:[df dateFromString:[dictionary valueForKey:@"y"]]];

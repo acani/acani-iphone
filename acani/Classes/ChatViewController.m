@@ -38,7 +38,6 @@
 
 @synthesize managedObjectContext;
 @synthesize fetchedResultsController;
-@synthesize latestTimestamp;
 
 @synthesize chatContent;
 
@@ -331,9 +330,9 @@
 	[msg setText:chatInput.text];
 	[msg setSender:(Profile *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]];
 	[msg setChannel:channel];
-	time_t now; time(&now);
-	latestTimestamp = now;
-	[msg setTimestamp:[NSNumber numberWithLong:now]];
+	NSDate *now = [[NSDate alloc] init];
+	[msg setTimestamp:now];
+	[now release];
 
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
@@ -485,14 +484,12 @@ CGFloat msgTimestampHeight;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
-		
-		NSDate *date = [NSDate dateWithTimeIntervalSince1970:[[msg timestamp] doubleValue]];
-		
+
 		NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
 		[dateFormatter setLocale:usLocale];
 		[usLocale release];
 		
-		msgTimestamp.text = [dateFormatter stringFromDate:date];
+		msgTimestamp.text = [dateFormatter stringFromDate:[msg timestamp]];
 		[dateFormatter release];
 	} else {
 		msgTimestampHeight = 0.0f;

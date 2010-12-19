@@ -1092,6 +1092,7 @@ static NSString* kAppId = @"132443680103133";
 	}
 }
 
+// TODO: Refactor out to work with other objects, like Interest.
 - (void)clearChats:(id)sender {
 	NSManagedObjectContext *managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 

@@ -19,6 +19,7 @@
 @implementation UsersViewController
 
 @synthesize myUser;
+@synthesize theInterest;
 
 @synthesize managedObjectContext;
 @synthesize fetchedResultsController;
@@ -30,10 +31,11 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithMe:(User *)user {
+- (id)initWithMe:(User *)user interest:(Interest *)interest {
 	if (!(self = [super initWithStyle:UITableViewStylePlain])) return self;
 	self.wantsFullScreenLayout = YES;
 	self.myUser = user;
+	self.theInterest = interest;
 	columnCount = 4; // TODO: make variable (4,6), based on orientation
 	// TODO: make the navBar title a logo.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
@@ -58,7 +60,7 @@
 
 	// Create a standard refresh button.
 	UIBarButtonItem *bi = [[UIBarButtonItem alloc]
-		  initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(loadUsers)];
+		  initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
 	[buttons addObject:bi];
 	[bi release];
 
@@ -117,7 +119,7 @@
 		NSLog(@"fetch users error %@, %@", error, [error userInfo]);
 	}
 
-	[self loadUsers];
+	[self refresh];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -219,7 +221,7 @@
 }
 
 // GET nearest users from server if connected to internet; limit => 20.
-- (void)loadUsers {
+- (void)refresh {
 	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%@/%@",
 						   SINATRA,
 						   [[myUser oid] length] ? [myUser oid] : @"0", // @"" if it's first time using app
@@ -245,7 +247,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;	
 }
 
-- (void)loadMoreUsers {
+- (void)loadMore {
 	
 }
 
@@ -573,6 +575,7 @@
 
 - (void)dealloc {
 	[myUser release];
+	[theInterest release];
 
 	[fetchedResultsController release];
 	[managedObjectContext release];

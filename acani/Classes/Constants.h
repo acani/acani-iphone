@@ -9,3 +9,5 @@
 
 //#define showAlert(format, ...) myShowAlert(__LINE__, (char *)__FUNCTION__, format, ##__VA_ARGS__)
 //void myShowAlert(int line, char *functname, id formatstring,...);
+
+//void displayRefreshButton(UIViewController controller, NSString buttonTitle, SEL buttonSelector);
