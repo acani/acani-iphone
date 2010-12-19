@@ -39,7 +39,9 @@
 }
 
 - (void)connect {
-	
+	InterestsViewController *interestsView = [[InterestsViewController alloc] init];
+	[self.navigationController pushViewController:interestsView animated:YES];
+	[interestsView release];
 }
 
 /*
