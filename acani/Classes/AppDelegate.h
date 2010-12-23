@@ -6,6 +6,7 @@
 
 @class Account;
 @class WelcomeViewController;
+@class InterestsViewController;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
 	Account *myAccount;
@@ -24,7 +25,8 @@
 
 	UIWindow *window;
 	UINavigationController *navigationController;
-	WelcomeViewController *viewController;
+	WelcomeViewController *welcomeViewController;
+	InterestsViewController *interestsViewController;
 	
 	NSArray *Sexes;
 	NSArray *Ethnicities;
@@ -37,7 +39,8 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) WelcomeViewController *viewController;
+@property (nonatomic, retain) WelcomeViewController *welcomeViewController;
+@property (nonatomic, retain) InterestsViewController *interestsViewController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

@@ -134,7 +134,7 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 	
 	// Set login button if connected to WebSocket.
-	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];	
+	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
 	UIBarButtonItem *loginButton;
 	if ([webSocket connected]) {
 		loginButton = BAR_BUTTON(@"Logout", @selector(logout));
@@ -167,61 +167,6 @@
  return (interfaceOrientation == UIInterfaceOrientationPortrait);
  }
  */
-
-
-#pragma mark -
-#pragma mark Button actions
-
-
-#define TERMS_ALERT 901
-#define	REVIEW 1
-#define	LOGOUT_ALERT 902
-#define LOGOUT 1
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)index {
-	switch (alertView.tag) {
-		case LOGOUT_ALERT:
-			if (index == LOGOUT) {
-				[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
-			}
-			break;
-		case TERMS_ALERT:
-			if (index == REVIEW) {
-				UIApplication *app = [UIApplication sharedApplication];
-				[app openURL:[NSURL URLWithString:@"http://www.acani.com/terms"]];
-			}
-			break;
-	}
-	[alertView release];
-}
-- (void)showAlert:(NSString *)message {
-	UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Logout" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Logout", nil];
-	av.tag = LOGOUT_ALERT;
-	[av show];
-}
-
-- (void)logout {
-	// Only display this alert on first logout.
-	if (YES) {
-		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other interests."];
-	} else {
-		[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
-		// Then go to loginView like Facebook iPhone app does.
-	}
-}
-
-- (void)login {
-	[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
-}
-
-- (void)goToProfile {
-	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:myUser];
-	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
-	[profileVC release];
-	[self presentModalViewController:navController animated:YES];
-	[navController release];
-}
 
 // GET nearest interests from server if connected to internet.
 - (void)refresh {
@@ -356,7 +301,7 @@
 
 - (void)handleError:(NSError *)error {
     NSString *errorMessage = [error localizedDescription];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cannot Show Users"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cannot Show Interests"
 														message:errorMessage
 													   delegate:nil
 											  cancelButtonTitle:@"OK"

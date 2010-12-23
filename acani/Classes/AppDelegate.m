@@ -1,8 +1,11 @@
 #import "AppDelegate.h"
 #import "WelcomeViewController.h"
+#import "InterestsViewController.h"
 #import "ChatViewController.h"
-#import "User.h"
+#import "ProfileViewController.h"
 #import "Account.h"
+#import "User.h"
+#import "Location.h"
 #import "Message.h"
 #import "ZTWebSocket.h"
 #import "SBJSON.h"
@@ -16,7 +19,7 @@
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
-@synthesize viewController;
+@synthesize interestsViewController;
 @synthesize webSocket;
 @synthesize Sexes;
 @synthesize Ethnicities;
@@ -32,47 +35,41 @@
 		NSLog(@"managedObjectContext error!");
     }
 
-	// Get myAccount.
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:managedObjectContext];
-	[request setEntity:entity];
-	
-	NSError *error;
-	NSArray *accounts = [managedObjectContext executeFetchRequest:request error:&error];
-	NSUInteger actCnt = [accounts count];
-	[request release];
-	if (accounts == nil || actCnt == 0) {
-		// TODO: Handle the error appropriately.
-		NSLog(@"fetch accounts error %@, %@", error, [error userInfo]);
-	} else if (actCnt == 1) { // app ships with at least 1 account
-		NSLog(@"got 1 account");
-		self.myAccount = [accounts objectAtIndex:0];
-		[webSocket open];
-	} else if (actCnt > 1) {
-		// Present account login screen to pick account
-	}
+//	// To seed Core Data Database, run once after changing .xcdatamodel file.
+//	// Delete Z_METADATA row.
+//	Account *account = (Account *)[NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
+//	User *user = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
+//	Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
+//	[user setLocation:location];
+//	[account setUser:user];
+//	[user setOnlineStatus:[NSNumber numberWithInteger:1]];
+//	NSError *error;
+//	if ([managedObjectContext save:&error]) {
+//		NSLog(@"Success! Seeded Core Data Database.");
+//	} else {
+//		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//	}
+//	abort();
 
-	NSLog(@"myUser: %@", [myAccount user]);
-
-	// Create window, navigationController & viewController
-//	viewController = [[WelcomeViewController alloc] initWithMe:[myAccount user]];
-//	viewController.managedObjectContext = managedObjectContext;
-
-//	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
-//	chatViewController.managedObjectContext = managedObjectContext; // for testing chat
-
+	interestsViewController = [[InterestsViewController alloc] init];
+	interestsViewController.managedObjectContext = managedObjectContext;
 	navigationController = [[UINavigationController alloc]
-							initWithRootViewController:[[WelcomeViewController alloc] init]];
-//							initWithRootViewController:chatViewController]; [chatViewController release]; // for testing chat
+								 initWithRootViewController:interestsViewController];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
 
+	// Create window, navigationController & interestsViewController
+	welcomeViewController = [[WelcomeViewController alloc] init];
+	welcomeViewController.managedObjectContext = managedObjectContext;
+	//	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
+	//	chatViewController.managedObjectContext = managedObjectContext; // for testing chat
+	
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [window addSubview:navigationController.view];
+    [window addSubview:welcomeViewController.view];
     [window makeKeyAndVisible];
 
-
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
+	[webSocket open];
 
 //	[self findLocation];
 	
@@ -186,7 +183,7 @@
 #pragma mark Location manager interactions
 
 //- (void)findLocation {
-//	// Should we use presentModelviewcontroller like urbanspoon to use last location?
+//	// Should we use presentModalViewController like urbanspoon to use last location?
 //	self.locationManager = [[CLLocationManager alloc] init];
 //    locationManager.delegate = self;
 //   
@@ -204,9 +201,9 @@
 //    if (locationAge > 5.0) return;
 //	if (newLocation.horizontalAccuracy < 0) return;
 //    if (bestEffortAtLocation == nil || bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
-//        // store the location as the "best effort" as well as setting viewController's CLlocation
+//        // store the location as the "best effort" as well as setting interestsViewController's CLlocation
 //        self.bestEffortAtLocation = newLocation;
-//		viewController.location = newLocation;
+//		interestsViewController.location = newLocation;
 //                if (newLocation.horizontalAccuracy <= manager.desiredAccuracy) {
 //					[manager stopUpdatingLocation];
 //            // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
@@ -235,22 +232,76 @@
 
 
 #pragma mark -
+#pragma mark Button actions
+
+#define TERMS_ALERT 901
+#define	REVIEW 1
+#define	LOGOUT_ALERT 902
+#define LOGOUT 1
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)index {
+	switch (alertView.tag) {
+		case LOGOUT_ALERT:
+			if (index == LOGOUT) {
+				[webSocket close];
+			}
+			break;
+		case TERMS_ALERT:
+			if (index == REVIEW) {
+				UIApplication *app = [UIApplication sharedApplication];
+				[app openURL:[NSURL URLWithString:@"http://www.acani.com/terms"]];
+			}
+			break;
+	}
+	[alertView release];
+}
+- (void)showAlert:(NSString *)message {
+	UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Logout" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Logout", nil];
+	av.tag = LOGOUT_ALERT;
+	[av show];
+}
+
+- (void)logout {
+	// Only display this alert on first logout.
+	if (YES) {
+		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other interests."];
+	} else {
+		[webSocket close];
+		// Then go to loginView like Facebook iPhone app does.
+	}
+}
+
+- (void)login {
+	[webSocket open];
+}
+
+- (void)goToProfile {
+	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[interestsViewController myUser]];
+	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
+	[profileVC release];
+	[interestsViewController presentModalViewController:navController animated:YES];
+	[navController release];
+}
+
+
+#pragma mark -
 #pragma mark WebSocket delegate
 
 - (void)webSocketDidClose:(ZTWebSocket *)webSocket {
 	NSLog(@"Disconnected");
-	if (viewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Login", viewController, @selector(login));
-		viewController.navigationItem.leftBarButtonItem = logButton;
+	if (interestsViewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON(@"Login", @selector(login));
+		interestsViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 }
 
 - (void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
 	NSLog(@"Connected");
-	if (viewController != nil) {
-		UIBarButtonItem *logButton = BAR_BUTTON_TARGET(@"Logout", viewController, @selector(logout));
-		viewController.navigationItem.leftBarButtonItem = logButton;
+	if (interestsViewController != nil) {
+		UIBarButtonItem *logButton = BAR_BUTTON(@"Logout", @selector(logout));
+		interestsViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 	// should be mongodb _id for user, not device id.
@@ -379,19 +430,18 @@
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
 	if (persistentStoreCoordinator) return persistentStoreCoordinator;
 
-	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *storePath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"acani.sqlite"];
 
-//	// If the expected store doesn't exist, copy the default store.
-//	// This is basically like shipping the app with a default user account
-//	// already created so that we can assume it exists.
+//	// If the expected store doesn't exist, copy the default store, which
+//	// contains initialized data.
+//	NSFileManager *fileManager = [NSFileManager defaultManager];
 //	if (![fileManager fileExistsAtPath:storePath]) {
 //		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"acani" ofType:@"sqlite"];
 //		if (defaultStorePath) {
 //			[fileManager copyItemAtPath:defaultStorePath toPath:storePath error:NULL];
 //		}
 //	}
-
+	
 	NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
 	
 	NSError *error;
@@ -448,7 +498,7 @@
 	[locationMeasurements release];
 	[bestEffortAtLocation release];
 
-	[viewController release];
+	[interestsViewController release];
 	[navigationController release];
 	[window release];
     [super dealloc];

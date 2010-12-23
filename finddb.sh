@@ -1,1 +1,1 @@
-find ~/Library/Application\ Support/iPhone\ Simulator/ -name *Lovers.sqlite
+find ~/Library/Application\ Support/iPhone\ Simulator/ -name *acani.sqlite

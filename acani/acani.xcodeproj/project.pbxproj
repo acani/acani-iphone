@@ -41,7 +41,6 @@
 		C939C72612BECACF002CDFEC /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C939C71D12BECACF002CDFEC /* Location.m */; };
 		C939C72712BECACF002CDFEC /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C939C71F12BECACF002CDFEC /* User.m */; };
 		C939C72812BECACF002CDFEC /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = C939C72112BECACF002CDFEC /* Message.m */; };
-		C93B6924127C9EB200CC4E85 /* acani.sql in Resources */ = {isa = PBXBuildFile; fileRef = C93B6923127C9EB200CC4E85 /* acani.sql */; };
 		C93B6926127C9F4F00CC4E85 /* acani.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* acani.sqlite */; };
 		C93D158F129C6470000104EF /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C93D158E129C6470000104EF /* WelcomeViewController.m */; };
 		C962660912AC342400C0BA45 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C96265F112AC342400C0BA45 /* FBDialog.bundle */; };
@@ -127,7 +126,6 @@
 		C939C71F12BECACF002CDFEC /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		C939C72012BECACF002CDFEC /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = SOURCE_ROOT; };
 		C939C72112BECACF002CDFEC /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = SOURCE_ROOT; };
-		C93B6923127C9EB200CC4E85 /* acani.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = acani.sql; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* acani.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = acani.sqlite; sourceTree = "<group>"; };
 		C93D158D129C6470000104EF /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		C93D158E129C6470000104EF /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
@@ -238,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				C93B6ABE127E4F6E00CC4E85 /* Vendor */,
-				C93B6923127C9EB200CC4E85 /* acani.sql */,
 				32CA4F630368D1EE00C91783 /* acani_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -554,7 +551,6 @@
 				AD71627C1217415700351B3D /* gold-star-2.jpg in Resources */,
 				AD7162BB1217477500351B3D /* BlockButton.png in Resources */,
 				C96BD0D4122E0A18002CCDE0 /* basicsound.wav in Resources */,
-				C93B6924127C9EB200CC4E85 /* acani.sql in Resources */,
 				C93B6926127C9F4F00CC4E85 /* acani.sqlite in Resources */,
 				C962660912AC342400C0BA45 /* FBDialog.bundle in Resources */,
 			);
