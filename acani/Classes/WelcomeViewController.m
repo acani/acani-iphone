@@ -84,7 +84,7 @@
 		tlInterest = [results objectAtIndex:0];
 	} else { // create tlInterest if not found
 		tlInterest = (Interest *)[NSEntityDescription insertNewObjectForEntityForName:@"Interest" inManagedObjectContext:managedObjectContext];
-		[tlInterest setName:@"Interests"];
+		[tlInterest setName:@"acani"];
 	}
 
 	// Save changes if any.

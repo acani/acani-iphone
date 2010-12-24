@@ -24,5 +24,6 @@
 - (void)login;
 - (void)goToProfile;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)clearInterests;	
 
 @end

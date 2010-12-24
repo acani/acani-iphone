@@ -351,7 +351,8 @@
 	// Delete all interests and insert them again.
 	[self clearInterests];
 	for (NSDictionary *interestDict in interestDicts) {
-		[Interest insertWithDictionary:interestDict inManagedObjectContext:managedObjectContext];
+		NSLog(@"Insert interest: %@",
+		[Interest insertWithDictionary:interestDict inManagedObjectContext:managedObjectContext]);
 	}
 	[managedObjectContext save:nil];
 }

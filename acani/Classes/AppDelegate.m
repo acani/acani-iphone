@@ -13,13 +13,14 @@
 
 @implementation AppDelegate
 
-@synthesize window;
 @synthesize myAccount;
+@synthesize window;
 @synthesize navigationController;
+@synthesize welcomeViewController;
+@synthesize interestsViewController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
-@synthesize interestsViewController;
 @synthesize webSocket;
 @synthesize Sexes;
 @synthesize Ethnicities;

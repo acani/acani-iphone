@@ -55,6 +55,6 @@
 @property (nonatomic, retain) NSArray *Likes;
 
 - (NSString *)applicationDocumentsDirectory;
-- (void)findLocation;
+//- (void)findLocation;
 
 @end

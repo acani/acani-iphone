@@ -19,6 +19,9 @@
 @property (nonatomic, retain) NSSet* children;
 @property (nonatomic, retain) NSManagedObject * parent;
 
++ (Interest *)findByOid:(NSString *)oid;
++ (Interest *)findByOid:(NSString *)oid inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
 + (Interest *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
