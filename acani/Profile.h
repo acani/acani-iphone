@@ -2,15 +2,19 @@
 //  Profile.h
 //  acani
 //
-//  Created by Matt Di Pasquale on 12/19/10.
+//  Created by Matt Di Pasquale on 12/24/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
+#import "Resource.h"
 
+@class Interest;
+@class Location;
+@class Message;
 @class Picture;
 
-@interface Profile :  NSManagedObject  
+@interface Profile :  Resource  
 {
 }
 
@@ -23,11 +27,10 @@
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSString * fbUsername;
-@property (nonatomic, retain) NSString * oid;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) Picture * picture;
 @property (nonatomic, retain) NSSet* sentMessages;
-@property (nonatomic, retain) NSManagedObject * location;
+@property (nonatomic, retain) Location * location;
 @property (nonatomic, retain) NSSet* receivedMessages;
 @property (nonatomic, retain) NSSet* interests;
 
@@ -35,18 +38,18 @@
 
 
 @interface Profile (CoreDataGeneratedAccessors)
-- (void)addSentMessagesObject:(NSManagedObject *)value;
-- (void)removeSentMessagesObject:(NSManagedObject *)value;
+- (void)addSentMessagesObject:(Message *)value;
+- (void)removeSentMessagesObject:(Message *)value;
 - (void)addSentMessages:(NSSet *)value;
 - (void)removeSentMessages:(NSSet *)value;
 
-- (void)addReceivedMessagesObject:(NSManagedObject *)value;
-- (void)removeReceivedMessagesObject:(NSManagedObject *)value;
+- (void)addReceivedMessagesObject:(Message *)value;
+- (void)removeReceivedMessagesObject:(Message *)value;
 - (void)addReceivedMessages:(NSSet *)value;
 - (void)removeReceivedMessages:(NSSet *)value;
 
-- (void)addInterestsObject:(NSManagedObject *)value;
-- (void)removeInterestsObject:(NSManagedObject *)value;
+- (void)addInterestsObject:(Interest *)value;
+- (void)removeInterestsObject:(Interest *)value;
 - (void)addInterests:(NSSet *)value;
 - (void)removeInterests:(NSSet *)value;
 

@@ -28,7 +28,7 @@
 - (void)logout;
 - (void)login;
 - (void)goToProfile;
-- (void)loadUsers;
+- (void)refresh;
 - (void)loadMore;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)cleanUpUsers;

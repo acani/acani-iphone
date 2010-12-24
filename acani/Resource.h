@@ -1,5 +1,5 @@
 //
-//  Account.h
+//  Resource.h
 //  acani
 //
 //  Created by Matt Di Pasquale on 12/24/10.
@@ -8,14 +8,12 @@
 
 #import <CoreData/CoreData.h>
 
-@class User;
 
-@interface Account :  NSManagedObject  
+@interface Resource :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) User * user;
+@property (nonatomic, retain) NSString * oid;
 
 @end
 

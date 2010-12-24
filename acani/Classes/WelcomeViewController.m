@@ -84,6 +84,7 @@
 		tlInterest = [results objectAtIndex:0];
 	} else { // create tlInterest if not found
 		tlInterest = (Interest *)[NSEntityDescription insertNewObjectForEntityForName:@"Interest" inManagedObjectContext:managedObjectContext];
+		[tlInterest setOid:@"0"];
 		[tlInterest setName:@"acani"];
 	}
 
@@ -100,6 +101,7 @@
 	InterestsViewController *interestsViewController = (InterestsViewController *)[navController topViewController];
 	interestsViewController.myUser = myUser;
 	interestsViewController.theInterest = tlInterest;
+	interestsViewController.title = [tlInterest name];
 
 	navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:navController animated:YES];

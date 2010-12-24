@@ -2,7 +2,7 @@
 //  Message.h
 //  acani
 //
-//  Created by Matt Di Pasquale on 12/19/10.
+//  Created by Matt Di Pasquale on 12/24/10.
 //  Copyright 2010 Diamond Dynasties, Inc. All rights reserved.
 //
 
@@ -14,9 +14,9 @@
 {
 }
 
+@property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSNumber * unread;
 @property (nonatomic, retain) NSString * channel;
-@property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSSet* receivers;
 @property (nonatomic, retain) Profile * sender;

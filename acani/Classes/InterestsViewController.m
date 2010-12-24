@@ -39,7 +39,8 @@
 	// self.navigationItem.leftBarButtonItem = segmentBarItem;
 	// self.navigationItem.titleView = segmentBarItem;
 	self.title = [theInterest name];
-    return self;	
+	self.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    return self;
 }
 
 
@@ -67,7 +68,7 @@
 						   initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
 	[buttons addObject:bi];
 	[bi release];
-	
+
 	// Create a spacer.
 	bi = [[UIBarButtonItem alloc]
 		  initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -96,7 +97,7 @@
 	[fetchRequest setEntity:entity];
 
 	// Set the predicate to only fetch the grandchildren of this parent.
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent.parent.name == %@", [theInterest name]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent.oid == %@", [theInterest oid]];
 	[fetchRequest setPredicate:predicate];
 
 	// Sort alphabetical by interest name
@@ -110,7 +111,7 @@
 	NSFetchedResultsController *aFetchedResultsController = \
 	[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
 										managedObjectContext:managedObjectContext
-										  sectionNameKeyPath:@"parent.name"
+										  sectionNameKeyPath:nil // @"parent.name"
 												   cacheName:@"Interest"];
 	[fetchRequest release];
 	self.fetchedResultsController = aFetchedResultsController;
@@ -131,7 +132,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 	
 	// Set login button if connected to WebSocket.
 	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
@@ -203,19 +203,23 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger numberOfRows = 0;
     if ([[fetchedResultsController sections] count] > 0) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections] objectAtIndex:section];
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[fetchedResultsController sections]
+														objectAtIndex:section];
         numberOfRows = [sectionInfo numberOfObjects];
     }
     return numberOfRows;
 }
 
+
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {	
+- (UITableViewCell *)tableView:(UITableView *)tableView
+		 cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+									   reuseIdentifier:CellIdentifier] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		
 		// TODO: Only put disclosure indicator on cells with children
@@ -226,7 +230,6 @@
 	
     return cell;
 }
-
 
 // Configure the cell to show the name of child interest.
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -285,10 +288,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Interest *interest = [fetchedResultsController objectAtIndexPath:indexPath];
 	if ([[interest children] count] == 0) {
-		UsersViewController *usersViewController = [[UsersViewController alloc] initWithMe:myUser interest:theInterest];
+		UsersViewController *usersViewController = [[UsersViewController alloc] initWithMe:myUser interest:interest];
 		[self.navigationController pushViewController:usersViewController animated:YES];
 		[usersViewController release];		
 	} else {
+		// The line below fixes error: "You have illegally mutated the NSFetchedResultsController's
+		// fetch request, its predicate, or its sort descriptor without either disabling caching or
+		// using +deleteCacheWithName:"
+		[NSFetchedResultsController deleteCacheWithName:@"Interest"];
 		InterestsViewController *interestsViewController = [[InterestsViewController alloc] initWithMe:myUser interest:interest];
 		[self.navigationController pushViewController:interestsViewController animated:YES];
 		[interestsViewController release];		
@@ -348,6 +355,7 @@
 	NSArray *interestDicts = [jsonString JSONValue];
 	[jsonString release];
 
+	NSString *theInterestOid = [theInterest oid];
 	// Delete all interests and insert them again.
 	[self clearInterests];
 	for (NSDictionary *interestDict in interestDicts) {
@@ -355,6 +363,7 @@
 		[Interest insertWithDictionary:interestDict inManagedObjectContext:managedObjectContext]);
 	}
 	[managedObjectContext save:nil];
+	self.theInterest = [Interest findByOid:theInterestOid];
 }
 
 - (void)clearInterests {	

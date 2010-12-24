@@ -39,6 +39,7 @@
 	columnCount = 4; // TODO: make variable (4,6), based on orientation
 	// TODO: make the navBar title a logo.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	self.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
     return self;
 }
 
