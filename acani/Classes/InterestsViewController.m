@@ -93,15 +93,19 @@
 	// Fetch interests from Core Data.
 	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Interest" inManagedObjectContext:managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Interest"
+											  inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
 	// Set the predicate to only fetch the grandchildren of this parent.
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent.oid == %@", [theInterest oid]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:
+							  @"parent.oid == %@ OR oid == %@",
+							  [theInterest oid], [theInterest oid]];
 	[fetchRequest setPredicate:predicate];
 
 	// Sort alphabetical by interest name
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
+																   ascending:YES];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[sortDescriptor release];
 	[fetchRequest setSortDescriptors:sortDescriptors];
@@ -112,7 +116,7 @@
 	[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
 										managedObjectContext:managedObjectContext
 										  sectionNameKeyPath:nil // @"parent.name"
-												   cacheName:@"Interest"];
+												   cacheName:nil];
 	[fetchRequest release];
 	self.fetchedResultsController = aFetchedResultsController;
 	[aFetchedResultsController release];
@@ -130,21 +134,11 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-	
-	// Set login button if connected to WebSocket.
-	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];
-	UIBarButtonItem *loginButton;
-	if ([webSocket connected]) {
-		loginButton = BAR_BUTTON(@"Logout", @selector(logout));
-	} else {
-		loginButton = BAR_BUTTON(@"Login", @selector(login));
-	}
-	self.navigationItem.leftBarButtonItem = loginButton;
-	[loginButton release];	
-}
-
+/*
+ - (void)viewWillAppear:(BOOL)animated {
+ [super viewWillAppear:animated];
+ }
+ */
 /*
  - (void)viewDidAppear:(BOOL)animated {
  [super viewDidAppear:animated];
@@ -168,24 +162,23 @@
  }
  */
 
-// GET nearest interests from server if connected to internet.
+// GET nearest interests from server if connected to Internet.
 - (void)refresh {
 	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests", SINATRA];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
-	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
+	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
 											  timeoutInterval:60.0]; // default
 	[url release];
-	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-	[request release];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+	[urlRequest release];
 	if (connection) {
 		urlData = [[NSMutableData data] retain];
 	} else {
 		// Inform the user that the connection failed.
 		NSLog(@"Failure to create URL connection.");
 	}
-	
     // Start network activity spinner in the status bar.
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;	
 }
@@ -287,15 +280,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Interest *interest = [fetchedResultsController objectAtIndexPath:indexPath];
-	if ([[interest children] count] == 0) {
+	if ([[interest children] count] == 0 || ([indexPath section] == 0 && [indexPath row] == 0)) { // TODO fix
 		UsersViewController *usersViewController = [[UsersViewController alloc] initWithMe:myUser interest:interest];
 		[self.navigationController pushViewController:usersViewController animated:YES];
 		[usersViewController release];		
 	} else {
-		// The line below fixes error: "You have illegally mutated the NSFetchedResultsController's
-		// fetch request, its predicate, or its sort descriptor without either disabling caching or
-		// using +deleteCacheWithName:"
-		[NSFetchedResultsController deleteCacheWithName:@"Interest"];
+//		// The line below fixes error: "You have illegally mutated the NSFetchedResultsController's
+//		// fetch request, its predicate, or its sort descriptor without either disabling caching or
+//		// using +deleteCacheWithName:"
+//		[NSFetchedResultsController deleteCacheWithName:@"Interest"];
 		InterestsViewController *interestsViewController = [[InterestsViewController alloc] initWithMe:myUser interest:interest];
 		[self.navigationController pushViewController:interestsViewController animated:YES];
 		[interestsViewController release];		

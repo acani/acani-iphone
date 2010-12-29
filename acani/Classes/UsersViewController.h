@@ -25,9 +25,10 @@
 @property (nonatomic, retain) NSMutableData *urlData;
 
 - (id)initWithMe:(User *)user interest:(Interest *)interest;
-- (void)logout;
-- (void)login;
-- (void)goToProfile;
+//- (void)goToProfile;
+- (void)join;
+- (void)leave;
+- (void)setMembership:(BOOL)join; // TODO: make private
 - (void)refresh;
 - (void)loadMore;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;

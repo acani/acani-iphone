@@ -38,7 +38,7 @@
 	self.theInterest = interest;
 	columnCount = 4; // TODO: make variable (4,6), based on orientation
 	// TODO: make the navBar title a logo.
-	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	self.title = [theInterest name];
 	self.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
     return self;
 }
@@ -73,7 +73,8 @@
 	[bi release];
 
 	// Add profile button.
-	bi = BAR_BUTTON(@"Profile", @selector(goToProfile));
+	bi = [myUser hasInterest:theInterest] ? BAR_BUTTON(@"Leave", @selector(leave)) :
+											BAR_BUTTON(@"Join", @selector(join));
 	bi.style = UIBarButtonItemStyleBordered;
 	[buttons addObject:bi];
 	[bi release];
@@ -108,7 +109,7 @@
 	[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
 										managedObjectContext:managedObjectContext
 										  sectionNameKeyPath:nil // only generate one section
-												   cacheName:@"User"];
+												   cacheName:nil];
 	[fetchRequest release];
 	self.fetchedResultsController = aFetchedResultsController;
 	[aFetchedResultsController release];
@@ -126,22 +127,12 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+/*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-	
-	// Set login button if connected to WebSocket.
-	ZTWebSocket *webSocket = [(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket];	
-	UIBarButtonItem *loginButton;
-	if ([webSocket connected]) {
-		loginButton = BAR_BUTTON(@"Logout", @selector(logout));
-	} else {
-		loginButton = BAR_BUTTON(@"Login", @selector(login));
-	}
-	self.navigationItem.leftBarButtonItem = loginButton;
-	[loginButton release];	
 }
-
+*/
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -169,83 +160,74 @@
 #pragma mark -
 #pragma mark Button actions
 
+//- (void)goToProfile {
+//	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:myUser];
+//	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
+//	[profileVC release];
+//	[self presentModalViewController:navController animated:YES];
+//	[navController release];
+//}
 
-#define TERMS_ALERT 901
-#define	REVIEW 1
-#define	LOGOUT_ALERT 902
-#define LOGOUT 1
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(int)index {
-	printf("User selected button %d\n", index);
-	switch (alertView.tag) {
-		case LOGOUT_ALERT:
-			if (index == LOGOUT) {
-				[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
-			}
-			break;
-		case TERMS_ALERT:
-			if (index == REVIEW) {
-				UIApplication *app = [UIApplication sharedApplication];
-				[app openURL:[NSURL URLWithString:@"http://www.acani.com/terms"]];
-			}
-			break;
-	}
-	[alertView release];
-}
-- (void)showAlert:(NSString *)message {
-	UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Logout" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Logout", nil];
-	av.tag = LOGOUT_ALERT;
-	[av show];
+// Add (POST) interest if connected to Internet.
+- (void)join {
+	[self setMembership:YES];
 }
 
-- (void)logout {
-	// Only display this alert on first logout.
-	if (YES) {
-		[self showAlert:@"If you logout, you will no longer be visible in acani and will not be able to chat with other users."];
-	} else {
-		[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] close];
-		// Then go to loginView like Facebook iPhone app does.
-	}
+// Remove (DELETE) interest if connected to Internet.
+- (void)leave {
+	[self setMembership:NO];
 }
 
-- (void)login {
-	[[(AppDelegate *)[[UIApplication sharedApplication] delegate] webSocket] open];
-}
-
-- (void)goToProfile {
-	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:myUser];
-	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
-	[profileVC release];
-	[self presentModalViewController:navController animated:YES];
-	[navController release];
-}
-
-// GET nearest users from server if connected to internet; limit => 20.
-- (void)refresh {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/users/%@/%@/%@/%@",
-						   SINATRA,
-						   [[myUser oid] length] ? [myUser oid] : @"0", // @"" if it's first time using app
-						   [[UIDevice currentDevice] uniqueIdentifier],
-						   [[myUser location] latitude],
-						   [[myUser location] longitude]];
+// TODO: Make this method private.
+// Add (POST) or remove (DELETE) interest if connected to Internet.
+- (void)setMembership:(BOOL)join {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests/%@",
+						   SINATRA, [theInterest oid]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
-	[urlString	release];
-	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
-													 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
-												 timeoutInterval:60.0]; // default
+	[urlString	release];	
+	NSMutableURLRequest *urlRequest =
+	[[NSMutableURLRequest alloc] initWithURL:url
+								 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
+							 timeoutInterval:60.0]; // default
 	[url release];
-	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-	[request release];
+	[urlRequest setHTTPMethod:(join ? @"POST" : @"DELETE")];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+	[urlRequest release];
 	if (connection) {
 		urlData = [[NSMutableData data] retain];
 	} else {
 		// Inform the user that the connection failed.
 		NSLog(@"Failure to create URL connection.");
 	}
-
     // Start network activity spinner in the status bar.
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;	
+}
+
+// GET nearest users from server if connected to Internet; limit => 20.
+- (void)refresh {
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests/%@/users/%@/%@/%@/%@",
+						   SINATRA, [theInterest oid],
+						   [[myUser oid] length] ? [myUser oid] : @"0", // @"" if it's first time using app
+						   [[UIDevice currentDevice] uniqueIdentifier],
+						   [[myUser location] latitude],
+						   [[myUser location] longitude]];
+	NSURL *url = [[NSURL alloc] initWithString:urlString];
+	[urlString	release];
+	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url
+													 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
+												 timeoutInterval:60.0]; // default
+	[url release];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+	[urlRequest release];
+	if (connection) {
+		urlData = [[NSMutableData data] retain];
+	} else {
+		// Inform the user that the connection failed.
+		NSLog(@"Failure to create URL connection.");
+	}
+    // Start network activity spinner in the status bar.
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (void)loadMore {
@@ -257,7 +239,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -413,8 +395,8 @@
 	NSArray *usrDicts = [usersJson JSONValue];
 	[usersJson release];
 	
-	// Update myUser first.
-	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
+//	// Update myUser first.
+//	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
 
 	// Fetch matching local users and update their attributes if necesary.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -446,14 +428,12 @@
 		[myUser setOrder:[NSNumber numberWithInteger:oIndex]];		
 		
 		if ([fetchedUsers count] > 0) {
-
 			// Store fetched users in dictionary with oids as keys.
 			NSMutableDictionary *oidFetc = [[NSMutableDictionary alloc]
 											initWithCapacity:[fetchedUsers count]];
 			for (User *fUsr in fetchedUsers) {
 				[oidFetc setObject:fUsr forKey:[fUsr oid]];
 			}
-
 			// Iterate over served Users 
 			index = -1; User *usrObj;
 			NSUInteger sIndex = -1;
@@ -485,7 +465,6 @@
 				}
 			}
 		}
-		
 		[self cleanUpUsers];
 	}
 	[servedOids release];

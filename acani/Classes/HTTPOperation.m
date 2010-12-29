@@ -67,7 +67,7 @@
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     if (!urlRequest) NOTIFY_AND_LEAVE(@"Error creating the URL Request");
 	
-    [urlRequest setHTTPMethod: @"PUT"];
+    [urlRequest setHTTPMethod:@"PUT"];
 	[urlRequest setValue:MULTIPART forHTTPHeaderField: @"Content-Type"];
     [urlRequest setHTTPBody:putData];
 	

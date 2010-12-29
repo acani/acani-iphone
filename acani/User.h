@@ -33,6 +33,8 @@
 
 - (User *)updateWithDictionary:(NSDictionary *)dictionary;
 
+- (BOOL)hasInterest:(Interest *)anInterest;
+
 @end
 
 

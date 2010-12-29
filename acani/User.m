@@ -135,4 +135,8 @@
 	return [NSDate dateWithTimeIntervalSince1970:timestamp];
 }
 
+- (BOOL)hasInterest:(Interest *)anInterest {
+	return [[self interests] containsObject:anInterest];
+}
+
 @end
