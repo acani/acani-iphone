@@ -164,7 +164,7 @@
 
 // GET nearest interests from server if connected to Internet.
 - (void)refresh {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests", SINATRA];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests", kHost];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
 	NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url

@@ -2,12 +2,6 @@
 #import "HTTPOperation.h"
 
 #define NOTIFY_AND_LEAVE(MSG) {[self cleanup:MSG]; return;}
-#define DATA(X)	[X dataUsingEncoding:NSUTF8StringEncoding]
-
-// Posting constants
-#define IMAGE_CONTENT @"Content-Disposition: form-data; name=\"%@\"; filename=\"image.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n"
-#define STRING_CONTENT @"Content-Disposition: form-data; name=\"%@\"\r\n\r\n"
-#define MULTIPART @"multipart/form-data; boundary=------------0x0x0x0x0x0x0x0x"
 
 @implementation HTTPOperation
 
@@ -23,36 +17,36 @@
 }
 
 - (NSData*)generateFormDataFromDictionary:(NSDictionary*)dict {
-    id boundary = @"------------0x0x0x0x0x0x0x0x";
     NSArray *keys = [dict allKeys];
-    NSMutableData* result = [NSMutableData data];
+    NSMutableData *body = [NSMutableData data];
 	NSString *formString;
 
     for (int i = 0; i < [keys count]; i++) {
 		id value = [dict valueForKey:[keys objectAtIndex:i]];
-		[result appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+		formString = [NSString stringWithFormat:@"--%@\r\n", kStringBoundary];
+		[body appendData:DATA_FROM_STRING(formString)];
 		
 		if ([value isKindOfClass:[NSData class]]) { // handle image data
-			formString = [NSString stringWithFormat:IMAGE_CONTENT, [keys objectAtIndex:i]];
-			[result appendData:DATA(formString)];
-			[result appendData:value];
+			formString = [NSString stringWithFormat:kImageContent, [keys objectAtIndex:i]];
+			[body appendData:DATA_FROM_STRING(formString)];
+			[body appendData:value];
 		} else { // assume all non-image fields are numbers or strings
-			formString = [NSString stringWithFormat:STRING_CONTENT, [keys objectAtIndex:i]];
-			[result appendData:DATA(formString)];
+			formString = [NSString stringWithFormat:kStringContent, [keys objectAtIndex:i]];
+			[body appendData:DATA_FROM_STRING(formString)];
 			if ([value isKindOfClass:[NSNumber class]]) {
 				value = [value stringValue];
 			}
 			NSLog(@"params key: %@ value: %@", formString, value);
-			[result appendData:DATA(value)];
+			[body appendData:DATA_FROM_STRING(value)];
 		}
-		
+
 		formString = @"\r\n";
-		[result appendData:DATA(formString)];
+		[body appendData:DATA_FROM_STRING(formString)];
     }
 
-	formString =[NSString stringWithFormat:@"--%@--\r\n", boundary];
-    [result appendData:DATA(formString)];
-    return result;
+	formString = [NSString stringWithFormat:@"--%@--\r\n", kStringBoundary];
+    [body appendData:DATA_FROM_STRING(formString)];
+    return body;
 }
 
 - (void)main {
@@ -62,27 +56,28 @@
 	NSData *putData = [self generateFormDataFromDictionary:params];
 	
 	// Establish the API request. Use upload vs uploadAndPost for skip tweet
-    NSString *baseurl = [NSString stringWithFormat:@"http://%@/%@", SINATRA, oid]; 
+    NSString *baseurl = [NSString stringWithFormat:@"http://%@/%@", kHost, oid]; 
     NSURL *url = [NSURL URLWithString:baseurl];
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     if (!urlRequest) NOTIFY_AND_LEAVE(@"Error creating the URL Request");
 	
     [urlRequest setHTTPMethod:@"PUT"];
-	[urlRequest setValue:MULTIPART forHTTPHeaderField: @"Content-Type"];
+	[urlRequest setValue:kUserAgent forHTTPHeaderField:@"User-Agent"];
+	[urlRequest setValue:kMultipart forHTTPHeaderField: @"Content-Type"];
     [urlRequest setHTTPBody:putData];
 	
-	// Submit & retrieve results
+	// Send request and receive response.
     NSError *error;
     NSURLResponse *response;
 	NSLog(@"Contacting HTTP....");
-    NSData* result = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
-    if (!result) {
+    NSData *body = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+    if (!body) {
 		[self cleanup:[NSString stringWithFormat:@"Submission error: %@", [error localizedDescription]]];
 		return;
 	}
 	
-	// Return results
-    NSString *outstring = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
+	// Return results.
+    NSString *outstring = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
 	[self cleanup:outstring];
 	[pool release];
 }

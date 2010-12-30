@@ -183,15 +183,29 @@
 // Add (POST) or remove (DELETE) interest if connected to Internet.
 - (void)setMembership:(BOOL)join {
 	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests/%@",
-						   SINATRA, [theInterest oid]];
+						   kHost, [theInterest oid]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
-	[urlString	release];	
+	[urlString	release];
+
 	NSMutableURLRequest *urlRequest =
 	[[NSMutableURLRequest alloc] initWithURL:url
 								 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData // dynamic response
 							 timeoutInterval:60.0]; // default
 	[url release];
 	[urlRequest setHTTPMethod:(join ? @"POST" : @"DELETE")];
+	[urlRequest setValue:kUserAgent forHTTPHeaderField:@"User-Agent"];
+	[urlRequest setValue:kMultipart forHTTPHeaderField: @"Content-Type"];
+	NSMutableData *body = [NSMutableData data];
+	NSString *formString;
+	formString = [NSString stringWithFormat:@"--%@\r\n", kStringBoundary];
+	[body appendData:DATA_FROM_STRING(formString)];
+	formString = [NSString stringWithFormat:kStringContent, @"uid"];
+	[body appendData:DATA_FROM_STRING(formString)];
+	[body appendData:DATA_FROM_STRING([myUser oid])];
+	formString = [NSString stringWithFormat:@"\r\n--%@--\r\n", kStringBoundary];
+	[body appendData:DATA_FROM_STRING(formString)];
+	[urlRequest setHTTPBody:body];
+	
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	[urlRequest release];
 	if (connection) {
@@ -207,7 +221,7 @@
 // GET nearest users from server if connected to Internet; limit => 20.
 - (void)refresh {
 	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/interests/%@/users/%@/%@/%@/%@",
-						   SINATRA, [theInterest oid],
+						   kHost, [theInterest oid],
 						   [[myUser oid] length] ? [myUser oid] : @"0", // @"" if it's first time using app
 						   [[UIDevice currentDevice] uniqueIdentifier],
 						   [[myUser location] latitude],

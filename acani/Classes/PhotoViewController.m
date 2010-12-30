@@ -53,7 +53,7 @@ BOOL overlayHide = NO;
 
 - (void)viewDidLoad {
 	// Create the request.
-	NSString *picUrl = [NSString stringWithFormat:@"http://%@/pictures/%@?type=large", SINATRA, [[targetUser picture] pid]];
+	NSString *picUrl = [NSString stringWithFormat:@"http://%@/pictures/%@?type=large", kHost, [[targetUser picture] pid]];
 	NSURLRequest *picRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:picUrl]
 												cachePolicy:NSURLRequestUseProtocolCachePolicy
 											timeoutInterval:60.0];

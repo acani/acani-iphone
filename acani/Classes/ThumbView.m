@@ -28,7 +28,7 @@
 }
 
 - (void)downloadThumb {
-	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/pictures/%@", SINATRA, [[user picture] pid]];
+	NSString *urlString = [[NSString alloc] initWithFormat:@"http://%@/pictures/%@", kHost, [[user picture] pid]];
 	NSURL *url = [[NSURL alloc] initWithString:urlString];
 	[urlString	release];
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url

@@ -139,7 +139,7 @@ const enum downloadType JSON = _json;
 	NSString *myOid = [(User *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid];
 	NSLog(@"myOid %@", myOid == nil ? @"0" : myOid);
 	NSString *tempUrl = [NSString stringWithFormat:@"http://%@/users/%@/%@/%f/%f",
-						 SINATRA,
+						 kHost,
 						 myOid == nil ? @"0" : myOid,
 						 [[UIDevice currentDevice] uniqueIdentifier],
 						 location.coordinate.latitude, location.coordinate.longitude];
@@ -214,7 +214,7 @@ const enum downloadType JSON = _json;
 		User *user = [self.Users objectAtIndex:i];
 		//NSLog(@"user id %@", user.oid);
 		//NSLog(@"user fbid %d", user.fbid);
-		NSString *imageUrl = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", SINATRA, [user oid]];
+		NSString *imageUrl = [[NSString alloc] initWithFormat:@"http://%@/%@/picture", kHost, [user oid]];
 //		imageUrl = [[NSString alloc] initWithFormat:@"http://graph.facebook.com/%d/picture", user.fbid];
 		ThumbnailDownload * thumbnailLoad = [[ThumbnailDownload alloc] initWithUrl:imageUrl userInfo:i];
 		[thumbnailLoad DownloadData:self];
