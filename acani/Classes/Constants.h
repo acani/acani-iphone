@@ -1,4 +1,4 @@
-//static NSString *kHost @"acani.heroku.com"
+//static NSString *kHost = @"acani.heroku.com";
 static NSString *kHost = @"localhost:4567";
 
 #define BAR_BUTTON(TITLE, SELECTOR) [[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
