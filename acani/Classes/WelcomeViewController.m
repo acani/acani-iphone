@@ -21,7 +21,7 @@
 */
 
 - (void)loadView {
-	// Set up view.
+	// Create & configure contentView.
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	contentView.backgroundColor = [UIColor lightGrayColor]; // default is nil (white)
 	contentView.clearsContextBeforeDrawing = NO;
@@ -47,18 +47,20 @@
 
 - (void)connectWithFB {
 	// Connect to Facebook.
-	
+
 	// Find user by Facebook ID.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbId == %@", @"123"]; // use fbId
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbId == %@", @"1112"]; // use fbId
 	[fetchRequest setPredicate:predicate];
 	NSArray *results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
+//	NSLog(@"results = %@", results);
 	[fetchRequest release];
 	User *myUser;
 	if ([results count] == 1) {
 		myUser = [results objectAtIndex:0];
+//		NSLog(@"myUser = %@", myUser);
 	} else { // create myUser from Facebook info if not found
 		Account *account = (Account *)[NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
 		myUser = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];

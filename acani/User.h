@@ -25,9 +25,6 @@
 @property (nonatomic, retain) NSNumber * sex;
 @property (nonatomic, retain) Account * account;
 
-+ (User *)findByOid:(NSString *)oid;
-+ (User *)findByOid:(NSString *)oid inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-
 + (User *)insertWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 + (NSDictionary *)encodeKeysInDictionary:(NSDictionary *)dictionary;
 

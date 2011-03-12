@@ -34,6 +34,7 @@
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
 		C91FE8AA12289596003C266E /* acani.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C91FE8A912289596003C266E /* acani.xcdatamodel */; };
 		C939C5F512BE6811002CDFEC /* InterestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C939C5F412BE6811002CDFEC /* InterestsViewController.m */; };
+		C93B2E49132B159F00840539 /* NSManagedObject+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C93B2E48132B159F00840539 /* NSManagedObject+Additions.m */; };
 		C93B6926127C9F4F00CC4E85 /* acani.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C93B6925127C9F4F00CC4E85 /* acani.sqlite */; };
 		C93D158F129C6470000104EF /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C93D158E129C6470000104EF /* WelcomeViewController.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
@@ -113,6 +114,9 @@
 		C91FE8A912289596003C266E /* acani.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = acani.xcdatamodel; sourceTree = "<group>"; };
 		C939C5F312BE6811002CDFEC /* InterestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestsViewController.h; sourceTree = "<group>"; };
 		C939C5F412BE6811002CDFEC /* InterestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestsViewController.m; sourceTree = "<group>"; };
+		C93B2DA71327C1EA00840539 /* Screenshot.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Screenshot.sh; sourceTree = "<group>"; };
+		C93B2E47132B159F00840539 /* NSManagedObject+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Additions.h"; sourceTree = "<group>"; };
+		C93B2E48132B159F00840539 /* NSManagedObject+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Additions.m"; sourceTree = "<group>"; };
 		C93B6925127C9F4F00CC4E85 /* acani.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = acani.sqlite; sourceTree = "<group>"; };
 		C93D158D129C6470000104EF /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		C93D158E129C6470000104EF /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C93B2E13132870F900840539 /* Features */,
 				C98EEF56128BB16800B79B79 /* Spec */,
 				C9A183E8126A0C62007A512B /* Application Delegate */,
 				C9119F5212522657008A26BB /* Models */,
@@ -291,6 +296,8 @@
 				C998056012C52B92008D5365 /* Message.h */,
 				C998056112C52B92008D5365 /* Message.m */,
 				C91FE8A912289596003C266E /* acani.xcdatamodel */,
+				C93B2E47132B159F00840539 /* NSManagedObject+Additions.h */,
+				C93B2E48132B159F00840539 /* NSManagedObject+Additions.m */,
 			);
 			name = Models;
 			path = Classes;
@@ -305,9 +312,17 @@
 			name = InterestsViewController;
 			sourceTree = "<group>";
 		};
+		C93B2E13132870F900840539 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Features;
+			sourceTree = "<group>";
+		};
 		C93B6ABE127E4F6E00CC4E85 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				C93B2DA71327C1EA00840539 /* Screenshot.sh */,
 				C998099612CAE6CD008D5365 /* FBConnect */,
 				C9F193FB121CB1BA00CAB471 /* AsyncSocket */,
 				C9F193F5121CB15F00CAB471 /* Zimt */,
@@ -611,6 +626,7 @@
 				C99809B712CAE6CE008D5365 /* Facebook.m in Sources */,
 				C99809B812CAE6CE008D5365 /* FBLoginDialog.m in Sources */,
 				C99809B912CAE6CE008D5365 /* FBDialog.m in Sources */,
+				C93B2E49132B159F00840539 /* NSManagedObject+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

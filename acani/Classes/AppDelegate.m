@@ -347,7 +347,8 @@
 
 		// Fetch the msg sender based on the BSON ObjectId.
 		NSString *senderOid = [msgDict valueForKey:@"sender"];
-		User *sender = [User findByOid:senderOid];
+		User *sender = [User findByAttribute:@"oid" value:senderOid
+								  entityName:@"User" inManagedObjectContext:managedObjectContext];
 		// If the sender is not found on the iPhone, request her asynchronously from the server.
 		if (!sender) {
 			NSLog(@"Get sender from Sinatra");

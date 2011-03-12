@@ -97,9 +97,9 @@
 											  inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
-	// Set the predicate to only fetch the grandchildren of this parent.
+	// Only fetch this interest and it's grandchildren.
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"parent.oid == %@ OR oid == %@",
+							  @"oid == %@ OR parent.oid == %@",
 							  [theInterest oid], [theInterest oid]];
 	[fetchRequest setPredicate:predicate];
 
@@ -134,11 +134,12 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-/*
- - (void)viewWillAppear:(BOOL)animated {
- [super viewWillAppear:animated];
- }
- */
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+}
+
 /*
  - (void)viewDidAppear:(BOOL)animated {
  [super viewDidAppear:animated];
@@ -348,20 +349,28 @@
 	NSArray *interestDicts = [jsonString JSONValue];
 	[jsonString release];
 
-	NSString *theInterestOid = [theInterest oid];
-	// Delete all interests and insert them again.
+	// Delete all interests and insert them again. Update theInterest from server.
+	NSString *theInterestOid = [theInterest oid]; // store because we delete theInterest next
+//	[managedObjectContext deleteObject:theInterest]; // since we fetch again next
 	[self clearInterests];
+	Interest *tempInterest;
 	for (NSDictionary *interestDict in interestDicts) {
-		NSLog(@"Insert interest: %@",
-		[Interest insertWithDictionary:interestDict inManagedObjectContext:managedObjectContext]);
+		tempInterest = [Interest insertWithDictionary:interestDict
+							   inManagedObjectContext:managedObjectContext];
+		if ([theInterestOid isEqualToString:[tempInterest oid]]) {
+			self.theInterest = tempInterest;
+		}
 	}
 	[managedObjectContext save:nil];
-	self.theInterest = [Interest findByOid:theInterestOid];
+//	self.theInterest = [Interest findByAttribute:@"oid" value:[theInterest oid]
+//									  entityName:@"Interest"
+//						  inManagedObjectContext:managedObjectContext];
 }
 
 - (void)clearInterests {	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Interest" inManagedObjectContext:managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Interest"
+											  inManagedObjectContext:managedObjectContext];
     [fetchRequest setEntity:entity];
     [fetchRequest setIncludesPropertyValues:NO];
 	
@@ -371,7 +380,7 @@
 	
     for (NSManagedObject *managedObject in items) {
         [managedObjectContext deleteObject:managedObject];
-        NSLog(@"%@ object deleted", @"Interest");
+        NSLog(@"%@ object deleted: %@", @"Interest", managedObject);
     }
     if (![managedObjectContext save:&error]) {
         NSLog(@"Error deleting %@ - error: %@", @"Interest", error);

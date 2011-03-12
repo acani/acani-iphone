@@ -33,13 +33,17 @@
 
 - (id)initWithMe:(User *)user interest:(Interest *)interest {
 	if (!(self = [super initWithStyle:UITableViewStylePlain])) return self;
-	self.wantsFullScreenLayout = YES;
+//	self.wantsFullScreenLayout = YES;
 	self.myUser = user;
+	NSLog(@"user = %@", user);
 	self.theInterest = interest;
 	columnCount = 4; // TODO: make variable (4,6), based on orientation
 	// TODO: make the navBar title a logo.
 	self.title = [theInterest name];
 	self.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//	self.tableView.backgroundColor = [UIColor blueColor];
+	self.tableView.contentInset = UIEdgeInsetsMake(1, 0, 0, 0);
     return self;
 }
 
@@ -127,12 +131,13 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-/*
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent
+												animated:YES];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -409,8 +414,8 @@
 	NSArray *usrDicts = [usersJson JSONValue];
 	[usersJson release];
 	
-//	// Update myUser first.
-//	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
+	// Update myUser first.
+	[myUser updateWithDictionary:[usrDicts objectAtIndex:0]];
 
 	// Fetch matching local users and update their attributes if necesary.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
