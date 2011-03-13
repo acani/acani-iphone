@@ -170,6 +170,13 @@
 		C9D75DD2124B843D0001A448 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = Classes/Constants.m; sourceTree = "<group>"; };
 		C9D76532124F02BB0001A448 /* ThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbView.h; sourceTree = "<group>"; };
 		C9D76533124F02BB0001A448 /* ThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbView.m; sourceTree = "<group>"; };
+		C9EA1801132D53C000139F53 /* finddb.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = finddb.sh; path = "Other Sources/Scripts/finddb.sh"; sourceTree = "<group>"; };
+		C9EA1802132D53C000139F53 /* rmdb.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = rmdb.sh; path = "Other Sources/Scripts/rmdb.sh"; sourceTree = "<group>"; };
+		C9EA1803132D53F100139F53 /* BlockButton.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BlockButton.ai; path = "Other Sources/Graphics/BlockButton.ai"; sourceTree = "<group>"; };
+		C9EA1804132D53F100139F53 /* ChatBar.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChatBar.ai; path = "Other Sources/Graphics/ChatBar.ai"; sourceTree = "<group>"; };
+		C9EA1805132D53F100139F53 /* ChatBarWithButton.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ChatBarWithButton.ai; path = "Other Sources/Graphics/ChatBarWithButton.ai"; sourceTree = "<group>"; };
+		C9EA1806132D53F100139F53 /* ChatBarWithButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChatBarWithButton.png; path = "Other Sources/Graphics/ChatBarWithButton.png"; sourceTree = "<group>"; };
+		C9EA1807132D53F100139F53 /* SendButton.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SendButton.ai; path = "Other Sources/Graphics/SendButton.ai"; sourceTree = "<group>"; };
 		C9F1923D121B60E700CAB471 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C9F19474121CCD8300CAB471 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		F56D024211886CF000F2A797 /* UsersViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersViewControllerOld.h; sourceTree = "<group>"; };
@@ -218,24 +225,13 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C9EA17F6132D521C00139F53 /* Classes */,
 				C93B2E13132870F900840539 /* Features */,
 				C98EEF56128BB16800B79B79 /* Spec */,
-				C9A183E8126A0C62007A512B /* Application Delegate */,
-				C9119F5212522657008A26BB /* Models */,
-				C9A183E3126A0B7D007A512B /* Controllers */,
-				ADB02B251204AEDF006FD53D /* Constants.h */,
-				C9D75DD2124B843D0001A448 /* Constants.m */,
-				137342BC118F1D66006CCB0E /* InternetImage.h */,
-				137342BD118F1D66006CCB0E /* InternetImage.m */,
-				AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */,
-				AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */,
-				ADA9564A11FA09930073D09A /* ThumbnailDownload.h */,
-				ADA9564B11FA09930073D09A /* ThumbnailDownload.m */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				C98EEF69128BB29100B79B79 /* Spec-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -243,6 +239,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C9EA1800132D538800139F53 /* Scripts */,
+				C9EA17FF132D537000139F53 /* Graphics */,
 				C93B6ABE127E4F6E00CC4E85 /* Vendor */,
 				32CA4F630368D1EE00C91783 /* acani_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -342,6 +340,7 @@
 		C98EEF56128BB16800B79B79 /* Spec */ = {
 			isa = PBXGroup;
 			children = (
+				C98EEF69128BB29100B79B79 /* Spec-Info.plist */,
 				C98EEF82128BB33400B79B79 /* main.m */,
 			);
 			name = Spec;
@@ -449,6 +448,45 @@
 			);
 			name = "Application Delegate";
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		C9EA17F6132D521C00139F53 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				ADB02B251204AEDF006FD53D /* Constants.h */,
+				C9D75DD2124B843D0001A448 /* Constants.m */,
+				C9A183E8126A0C62007A512B /* Application Delegate */,
+				C9119F5212522657008A26BB /* Models */,
+				C9A183E3126A0B7D007A512B /* Controllers */,
+				137342BC118F1D66006CCB0E /* InternetImage.h */,
+				137342BD118F1D66006CCB0E /* InternetImage.m */,
+				AD8BC9FB11F3BB9400F04751 /* CustomURLConnection.h */,
+				AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */,
+				ADA9564A11FA09930073D09A /* ThumbnailDownload.h */,
+				ADA9564B11FA09930073D09A /* ThumbnailDownload.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		C9EA17FF132D537000139F53 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				C9EA1803132D53F100139F53 /* BlockButton.ai */,
+				C9EA1804132D53F100139F53 /* ChatBar.ai */,
+				C9EA1805132D53F100139F53 /* ChatBarWithButton.ai */,
+				C9EA1806132D53F100139F53 /* ChatBarWithButton.png */,
+				C9EA1807132D53F100139F53 /* SendButton.ai */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		C9EA1800132D538800139F53 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				C9EA1801132D53C000139F53 /* finddb.sh */,
+				C9EA1802132D53C000139F53 /* rmdb.sh */,
+			);
+			name = Scripts;
 			sourceTree = "<group>";
 		};
 		C9F193F5121CB15F00CAB471 /* Zimt */ = {
