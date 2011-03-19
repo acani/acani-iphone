@@ -1,3 +1,5 @@
+#import <CoreData/CoreData.h>
+
 @interface NSManagedObject (acani)
 
 + (NSManagedObject *)findByAttribute:(NSString *)attribute

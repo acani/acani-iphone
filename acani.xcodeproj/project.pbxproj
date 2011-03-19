@@ -15,10 +15,17 @@
 		AD8BC9FD11F3BB9400F04751 /* CustomURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8BC9FC11F3BB9400F04751 /* CustomURLConnection.m */; };
 		ADA9564C11FA09930073D09A /* ThumbnailDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA9564B11FA09930073D09A /* ThumbnailDownload.m */; };
 		C91FE81612274DB3003C266E /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
+		C934DF3313339047004BE3C5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91FE81512274DB3003C266E /* CoreData.framework */; };
+		C934DF7813339C0E004BE3C5 /* acani.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C934DF7713339C0E004BE3C5 /* acani.xcdatamodel */; };
+		C934DF7913339C0E004BE3C5 /* acani.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C934DF7713339C0E004BE3C5 /* acani.xcdatamodel */; };
+		C934DFCE1334319A004BE3C5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82BE132EF9EF00256EC5 /* User.m */; };
+		C934DFD2133431BE004BE3C5 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82BA132EF9EF00256EC5 /* Profile.m */; };
+		C934DFD6133431D9004BE3C5 /* Resource.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82BC132EF9EF00256EC5 /* Resource.m */; };
+		C934E051133453DE004BE3C5 /* NSManagedObject+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82B6132EF9EF00256EC5 /* NSManagedObject+Additions.m */; };
 		C9407B341331763A00AAFDF1 /* Cedar-iPhone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9407B331331763A00AAFDF1 /* Cedar-iPhone.framework */; };
 		C9407B4F1331770800AAFDF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9407B4E1331770800AAFDF1 /* main.m */; };
 		C9407B8213317D5000AAFDF1 /* OCHamcrestIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9407B8113317D5000AAFDF1 /* OCHamcrestIOS.framework */; };
-		C9407BB813317E2600AAFDF1 /* NSManagedObject+Additions_spec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9407BB713317E2600AAFDF1 /* NSManagedObject+Additions_spec.m */; };
+		C9407BB813317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9407BB713317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m */; };
 		C96BD0B4122E0485002CCDE0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */; };
 		C9CA81B9132EDD2F00256EC5 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA81B8132EDD2F00256EC5 /* WelcomeViewController.m */; };
 		C9CA81BC132EDE1700256EC5 /* InterestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA81BB132EDE1700256EC5 /* InterestsViewController.m */; };
@@ -58,7 +65,6 @@
 		C9CA8294132EF80B00256EC5 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = C9CA8284132EF80B00256EC5 /* refresh.png */; };
 		C9CA8295132EF80B00256EC5 /* SendButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C9CA8285132EF80B00256EC5 /* SendButton.png */; };
 		C9CA82A4132EF8E900256EC5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82A3132EF8E900256EC5 /* main.m */; };
-		C9CA82BF132EF9EF00256EC5 /* acani.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82AC132EF9EF00256EC5 /* acani.xcdatamodel */; };
 		C9CA82C0132EF9EF00256EC5 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82AE132EF9EF00256EC5 /* Account.m */; };
 		C9CA82C1132EF9EF00256EC5 /* Interest.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82B0132EF9EF00256EC5 /* Interest.m */; };
 		C9CA82C2132EF9EF00256EC5 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CA82B2132EF9EF00256EC5 /* Location.m */; };
@@ -89,12 +95,13 @@
 		ADA9564B11FA09930073D09A /* ThumbnailDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThumbnailDownload.m; path = Classes/ThumbnailDownload.m; sourceTree = "<group>"; };
 		ADB02B251204AEDF006FD53D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Classes/Constants.h; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C934DF7713339C0E004BE3C5 /* acani.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = acani.xcdatamodel; sourceTree = "<group>"; };
 		C9407B1C1330F24F00AAFDF1 /* Spec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9407B1E1330F24F00AAFDF1 /* Spec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Spec-Info.plist"; sourceTree = "<group>"; };
 		C9407B331331763A00AAFDF1 /* Cedar-iPhone.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Cedar-iPhone.framework"; path = "../../../Sources/iphone/cedar/build/Release-iphoneuniversal/Cedar-iPhone.framework"; sourceTree = SOURCE_ROOT; };
 		C9407B4E1331770800AAFDF1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Spec/main.m; sourceTree = "<group>"; };
 		C9407B8113317D5000AAFDF1 /* OCHamcrestIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrestIOS.framework; path = "Other Sources/Vendor/OCHamcrestIOS.framework"; sourceTree = "<group>"; };
-		C9407BB713317E2600AAFDF1 /* NSManagedObject+Additions_spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+Additions_spec.m"; path = "Spec/NSManagedObject+Additions_spec.m"; sourceTree = "<group>"; };
+		C9407BB713317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+AdditionsSpec.m"; path = "Spec/NSManagedObject+AdditionsSpec.m"; sourceTree = "<group>"; };
 		C96BD0B3122E0485002CCDE0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C9CA81B7132EDD2F00256EC5 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WelcomeViewController.h; path = Controllers/WelcomeViewController/WelcomeViewController.h; sourceTree = "<group>"; };
 		C9CA81B8132EDD2F00256EC5 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WelcomeViewController.m; path = Controllers/WelcomeViewController/WelcomeViewController.m; sourceTree = "<group>"; };
@@ -162,7 +169,6 @@
 		C9CA8284132EF80B00256EC5 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
 		C9CA8285132EF80B00256EC5 /* SendButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SendButton.png; sourceTree = "<group>"; };
 		C9CA82A3132EF8E900256EC5 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Other Sources/main.m"; sourceTree = "<group>"; };
-		C9CA82AC132EF9EF00256EC5 /* acani.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = acani.xcdatamodel; path = Models/acani.xcdatamodel; sourceTree = "<group>"; };
 		C9CA82AD132EF9EF00256EC5 /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Account.h; path = Models/Account.h; sourceTree = "<group>"; };
 		C9CA82AE132EF9EF00256EC5 /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Account.m; path = Models/Account.m; sourceTree = "<group>"; };
 		C9CA82AF132EF9EF00256EC5 /* Interest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interest.h; path = Models/Interest.h; sourceTree = "<group>"; };
@@ -216,6 +222,7 @@
 			files = (
 				C9407B341331763A00AAFDF1 /* Cedar-iPhone.framework in Frameworks */,
 				C9407B8213317D5000AAFDF1 /* OCHamcrestIOS.framework in Frameworks */,
+				C934DF3313339047004BE3C5 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +268,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C934DF7713339C0E004BE3C5 /* acani.xcdatamodel */,
 				C9CA830C132EFB5400256EC5 /* acani-Info.plist */,
 				C9CA8276132EF80B00256EC5 /* acani.sqlite */,
 				C9CA8277132EF80B00256EC5 /* basicsound.wav */,
@@ -288,7 +296,6 @@
 		C9119F5212522657008A26BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C9CA82AC132EF9EF00256EC5 /* acani.xcdatamodel */,
 				C9CA82AD132EF9EF00256EC5 /* Account.h */,
 				C9CA82AE132EF9EF00256EC5 /* Account.m */,
 				C9CA82AF132EF9EF00256EC5 /* Interest.h */,
@@ -354,7 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				C9407B4E1331770800AAFDF1 /* main.m */,
-				C9407BB713317E2600AAFDF1 /* NSManagedObject+Additions_spec.m */,
+				C9407BB713317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m */,
 			);
 			name = Spec;
 			sourceTree = "<group>";
@@ -674,7 +681,6 @@
 				C9CA8266132EF55300256EC5 /* SBJsonWriter.m in Sources */,
 				C9CA8267132EF55300256EC5 /* ZTWebSocket.m in Sources */,
 				C9CA82A4132EF8E900256EC5 /* main.m in Sources */,
-				C9CA82BF132EF9EF00256EC5 /* acani.xcdatamodel in Sources */,
 				C9CA82C0132EF9EF00256EC5 /* Account.m in Sources */,
 				C9CA82C1132EF9EF00256EC5 /* Interest.m in Sources */,
 				C9CA82C2132EF9EF00256EC5 /* Location.m in Sources */,
@@ -684,6 +690,7 @@
 				C9CA82C6132EF9EF00256EC5 /* Profile.m in Sources */,
 				C9CA82C7132EF9EF00256EC5 /* Resource.m in Sources */,
 				C9CA82C8132EF9EF00256EC5 /* User.m in Sources */,
+				C934DF7913339C0E004BE3C5 /* acani.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,7 +699,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9407B4F1331770800AAFDF1 /* main.m in Sources */,
-				C9407BB813317E2600AAFDF1 /* NSManagedObject+Additions_spec.m in Sources */,
+				C9407BB813317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m in Sources */,
+				C934DF7813339C0E004BE3C5 /* acani.xcdatamodel in Sources */,
+				C934DFCE1334319A004BE3C5 /* User.m in Sources */,
+				C934DFD2133431BE004BE3C5 /* Profile.m in Sources */,
+				C934DFD6133431D9004BE3C5 /* Resource.m in Sources */,
+				C934E051133453DE004BE3C5 /* NSManagedObject+Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

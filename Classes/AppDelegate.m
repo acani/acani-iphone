@@ -421,7 +421,7 @@
 - (NSManagedObjectModel *)managedObjectModel {
 	if (managedObjectModel) return managedObjectModel;
 
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
     return managedObjectModel;
 }
 

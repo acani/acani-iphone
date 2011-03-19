@@ -3,7 +3,7 @@
 @implementation NSManagedObject (acani)
 
 + (NSManagedObject *)findByAttribute:(NSString *)attribute
-							  value:(NSString *)value
+							  value:(id)value
 						  entityName:(NSString *)entityName
 			 inManagedObjectContext:(NSManagedObjectContext *)context {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
