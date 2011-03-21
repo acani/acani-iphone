@@ -13,11 +13,11 @@
 
 @protocol ZTWebSocketDelegate<NSObject>
 @optional 
-    - (void)webSocket:(ZTWebSocket*)webSocket didFailWithError:(NSError*)error;
-    - (void)webSocketDidOpen:(ZTWebSocket*)webSocket;
-    - (void)webSocketDidClose:(ZTWebSocket*)webSocket;
-    - (void)webSocket:(ZTWebSocket*)webSocket didReceiveMessage:(NSString*)message;
-    - (void)webSocketDidSendMessage:(ZTWebSocket*)webSocket;
+- (void)webSocket:(ZTWebSocket*)webSocket didFailWithError:(NSError*)error;
+- (void)webSocketDidOpen:(ZTWebSocket*)webSocket;
+- (void)webSocketDidClose:(ZTWebSocket*)webSocket;
+- (void)webSocket:(ZTWebSocket*)webSocket didReceiveMessage:(NSString*)message;
+- (void)webSocketDidSendMessage:(ZTWebSocket*)webSocket;
 @end
 
 @interface ZTWebSocket : NSObject {
@@ -28,8 +28,6 @@
     NSString* origin;
     
     NSArray* runLoopModes;
-    
-    NSMutableArray* queuedMessages;
 }
 
 @property(nonatomic,assign) id<ZTWebSocketDelegate> delegate;
