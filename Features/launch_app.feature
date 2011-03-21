@@ -1,11 +1,11 @@
-Feature: user launches acani
+Feature: launch app
 
   As a user
   I want to launch acani
   So that I can meet people nearby with similar interests
 
   Background:
-    Given "Lovers.xcodeproj" is loaded in the iphone simulator
+    Given "acani.xcodeproj" is loaded in the iphone simulator
 
   # Scenario: launch app
   #   When I tap "New post"
@@ -15,7 +15,7 @@ Feature: user launches acani
   #   Then I should see "Published"
 
   Scenario: launch app
-    Then I should see "Lovers"
+    Then I should see "acani"
 
   # Scenario: create account
   #   Given I am not yet signed up for acani

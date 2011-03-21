@@ -209,10 +209,11 @@
 		ADA9564A11FA09930073D09A /* ThumbnailDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThumbnailDownload.h; path = Classes/ThumbnailDownload.h; sourceTree = "<group>"; };
 		ADA9564B11FA09930073D09A /* ThumbnailDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThumbnailDownload.m; path = Classes/ThumbnailDownload.m; sourceTree = "<group>"; };
 		ADB02B251204AEDF006FD53D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Classes/Constants.h; sourceTree = "<group>"; };
+		C910E75113368B270065A9D3 /* login.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = login.feature; path = Features/login.feature; sourceTree = "<group>"; };
 		C91FE81512274DB3003C266E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C934DF7713339C0E004BE3C5 /* acani.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = acani.xcdatamodel; sourceTree = "<group>"; };
 		C938454A1335380300ED3C1E /* Features-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Features-Info.plist"; sourceTree = "<group>"; };
-		C938470D133546E400ED3C1E /* acani.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = acani.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C938470D133546E400ED3C1E /* Features.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Features.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C93847121335475900ED3C1E /* frank_static_resources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = frank_static_resources.bundle; sourceTree = "<group>"; };
 		C93847151335475900ED3C1E /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		C93847161335475900ED3C1E /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
@@ -336,8 +337,8 @@
 		C93847921335475900ED3C1E /* UISpecCommandReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UISpecCommandReceiver.m; sourceTree = "<group>"; };
 		C93848431335583700ED3C1E /* my_first.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = my_first.feature; path = Features/my_first.feature; sourceTree = "<group>"; };
 		C93848451335583700ED3C1E /* launch_steps.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = launch_steps.rb; sourceTree = "<group>"; };
-		C93848461335583700ED3C1E /* user_edits_profile.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user_edits_profile.feature; path = Features/user_edits_profile.feature; sourceTree = "<group>"; };
-		C93848471335583700ED3C1E /* user_launches_acani.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user_launches_acani.feature; path = Features/user_launches_acani.feature; sourceTree = "<group>"; };
+		C93848461335583700ED3C1E /* edit_profile.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edit_profile.feature; path = Features/edit_profile.feature; sourceTree = "<group>"; };
+		C93848471335583700ED3C1E /* launch_app.feature */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = launch_app.feature; path = Features/launch_app.feature; sourceTree = "<group>"; };
 		C9407B1C1330F24F00AAFDF1 /* Spec.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spec.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9407B1E1330F24F00AAFDF1 /* Spec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Spec-Info.plist"; sourceTree = "<group>"; };
 		C9407B331331763A00AAFDF1 /* Cedar-iPhone.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Cedar-iPhone.framework"; path = "../../../Sources/iphone/cedar/build/Release-iphoneuniversal/Cedar-iPhone.framework"; sourceTree = SOURCE_ROOT; };
@@ -488,7 +489,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* acani.app */,
 				C9407B1C1330F24F00AAFDF1 /* Spec.app */,
-				C938470D133546E400ED3C1E /* acani.app */,
+				C938470D133546E400ED3C1E /* Features.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -503,8 +504,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				C9407B1E1330F24F00AAFDF1 /* Spec-Info.plist */,
-				C938454A1335380300ED3C1E /* Features-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -789,11 +788,13 @@
 		C93B2E13132870F900840539 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				C938454A1335380300ED3C1E /* Features-Info.plist */,
 				C93848441335583700ED3C1E /* step_definitions */,
 				C9CA81D2132EDFBA00256EC5 /* support */,
+				C93848461335583700ED3C1E /* edit_profile.feature */,
+				C93848471335583700ED3C1E /* launch_app.feature */,
+				C910E75113368B270065A9D3 /* login.feature */,
 				C93848431335583700ED3C1E /* my_first.feature */,
-				C93848461335583700ED3C1E /* user_edits_profile.feature */,
-				C93848471335583700ED3C1E /* user_launches_acani.feature */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -821,6 +822,7 @@
 		C98EEF56128BB16800B79B79 /* Spec */ = {
 			isa = PBXGroup;
 			children = (
+				C9407B1E1330F24F00AAFDF1 /* Spec-Info.plist */,
 				C9407B4E1331770800AAFDF1 /* main.m */,
 				C9407BB713317E2600AAFDF1 /* NSManagedObject+AdditionsSpec.m */,
 			);
@@ -1048,7 +1050,7 @@
 			);
 			name = Features;
 			productName = Lovers;
-			productReference = C938470D133546E400ED3C1E /* acani.app */;
+			productReference = C938470D133546E400ED3C1E /* Features.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C9407B1B1330F24F00AAFDF1 /* Spec */ = {
@@ -1418,7 +1420,7 @@
 					UIKit,
 					"-ObjC",
 				);
-				PRODUCT_NAME = acani;
+				PRODUCT_NAME = Features;
 			};
 			name = Debug;
 		};
@@ -1442,7 +1444,7 @@
 					UIKit,
 					"-ObjC",
 				);
-				PRODUCT_NAME = acani;
+				PRODUCT_NAME = Features;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
