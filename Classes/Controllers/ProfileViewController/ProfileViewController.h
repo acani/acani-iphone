@@ -7,7 +7,6 @@
 UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate,
 UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
 	User *myUser;
-	Facebook *fb;
 
 	UIBarButtonItem *saveButton;
 	UIBarButtonItem *doneButton; // appears only when the picker is open
@@ -29,7 +28,6 @@ UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
 }
 
 @property (nonatomic, retain) User *myUser;
-@property (nonatomic, retain) Facebook *fb;
 
 @property (nonatomic, retain) UIBarButtonItem *saveButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;

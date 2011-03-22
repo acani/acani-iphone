@@ -2,6 +2,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "ZTWebSocket.h"
+#import "FBConnect.h"
 #import "HTTPOperation.h"
 
 @class Account;
@@ -13,6 +14,7 @@
 
 	SystemSoundID receiveMessageSound;
 
+	Facebook *fb;
 	ZTWebSocket *webSocket;
 
 	CLLocationManager *locationManager;
@@ -35,6 +37,7 @@
 
 @property (nonatomic, retain) Account *myAccount;
 
+@property (nonatomic, retain) Facebook *fb;
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 
 @property (nonatomic, retain) UIWindow *window;

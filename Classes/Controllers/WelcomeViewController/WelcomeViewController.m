@@ -47,7 +47,14 @@
 
 - (void)connectWithFB {
 	// Connect to Facebook.
-
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	Facebook *fb = [appDelegate fb];
+	if ([fb isSessionValid]) {
+		[appDelegate getUserInfo:appDelegate];
+	} else {
+		[appDelegate fbLogin];
+	}
+	
 	// Find user by Facebook ID.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];

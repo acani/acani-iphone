@@ -13,6 +13,7 @@
 
 @implementation AppDelegate
 
+@synthesize fb;
 @synthesize myAccount;
 @synthesize window;
 @synthesize navigationController;
@@ -69,6 +70,8 @@
     [window addSubview:welcomeViewController.view];
     [window makeKeyAndVisible];
 
+	fb = [[Facebook alloc] initWithAppId:kAppId];
+	
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
 	[webSocket open];
 
@@ -396,6 +399,169 @@
 
 
 #pragma mark -
+#pragma mark Facebook functions
+
+- (void)fbLogin {
+	[fb authorize:[NSArray arrayWithObjects:@"read_stream", @"offline_access", nil] delegate:self];
+}
+
+- (void)fbLogout {
+	[fb logout:self]; 
+}
+
+- (void)getUserInfo:(id)sender {
+	// TODO: add ?fields=id,name,picture... to end of path
+	[fb requestWithGraphPath:@"me" andDelegate:self];
+}
+
+
+/**
+ * Example of REST API CAll
+ *
+ * This lets you make a REST API Call to get a user's public information with FQL.
+ */
+- (void)getPublicInfo:(id)sender {
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   @"SELECT oid,name FROM user WHERE oid=4", @"query",
+								   nil];
+	[fb requestWithMethodName: @"fql.query" 
+					andParams: params
+				andHttpMethod: @"POST" 
+				  andDelegate: self]; 
+}
+
+/**
+ * Example of display Facebook dialogs
+ *
+ * This lets you publish a story to the user's stream. It uses UIServer, which is a consistent 
+ * way of displaying user-facing dialogs
+ */
+- (void)publishStream:(id)sender {
+	
+	SBJSON *jsonWriter = [[SBJSON new] autorelease];
+	
+	NSDictionary* actionLinks = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys: 
+														   @"Always Running",@"text",@"http://itsti.me/",@"href", nil], nil];
+	
+	NSString *actionLinksStr = [jsonWriter stringWithObject:actionLinks];
+	NSDictionary* attachment = [NSDictionary dictionaryWithObjectsAndKeys:
+								@"a long run", @"name",
+								@"The Facebook Running app", @"caption",
+								@"it is fun", @"description",
+								@"http://itsti.me/", @"href", nil];
+	NSString *attachmentStr = [jsonWriter stringWithObject:attachment];
+	NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   kAppId, @"api_key",
+								   @"Share on Facebook",  @"user_message_prompt",
+								   actionLinksStr, @"action_links",
+								   attachmentStr, @"attachment",
+								   nil];
+	
+	[fb dialog: @"stream.publish"
+	 andParams: params
+   andDelegate:self];
+	
+}
+
+
+- (void)uploadPhoto:(id)sender {
+	NSString *path = @"http://www.facebook.com/images/devsite/iphone_connect_btn.jpg";
+	NSURL    *url  = [NSURL URLWithString:path];
+	NSData   *data = [NSData dataWithContentsOfURL:url];
+	UIImage  *img  = [[UIImage alloc] initWithData:data];
+	
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   img, @"picture",
+								   nil];
+	[fb requestWithMethodName: @"photos.upload" 
+					andParams: params
+				andHttpMethod: @"POST" 
+				  andDelegate: self]; 
+	[img release];  
+}
+
+/**
+ * Callback for facebook login
+ */ 
+- (void)fbDidLogin {
+	NSLog(@"logged in");
+	[self getUserInfo:self];
+}
+
+/**
+ * Callback for facebook did not login
+ */
+- (void)fbDidNotLogin:(BOOL)cancelled {
+	NSLog(@"did not login");
+}
+
+/**
+ * Callback for facebook logout
+ */ 
+- (void)fbDidLogout {
+	NSLog(@"logged out");
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FBRequestDelegate
+
+/**
+ * Callback when a request receives Response
+ */ 
+- (void)request:(FBRequest*)request didReceiveResponse:(NSURLResponse*)response{
+	NSLog(@"received response");
+};
+
+/**
+ * Called when an error prevents the request from completing successfully.
+ */
+- (void)request:(FBRequest*)request didFailWithError:(NSError*)error{
+	//	[self.label setText:[error localizedDescription]];
+	NSLog(@"error %@", [error localizedDescription]);
+};
+
+/**
+ * Called when a request returns and its response has been parsed into an object.
+ * The resulting object may be a dictionary, an array, a string, or a number, depending
+ * on thee format of the API response.
+ */
+- (void)request:(FBRequest*)request didLoad:(id)result {
+	if ([result isKindOfClass:[NSArray class]]) {
+		result = [result objectAtIndex:0]; 
+	} else if ([result objectForKey:@"owner"]) {
+		NSLog(@"Photo upload Success. Response: %@", result);
+		//		[self.label setText:@"Photo upload Success"];
+	} else {
+		NSLog(@"Result: %@", result);
+		User *myUser = [myAccount user];
+		NSLog(@"Me: %@", myUser);
+		// Set myUser's attributes according to Facebook's response.
+		[myUser setFbId:[NSNumber numberWithInteger:[[result valueForKey:@"id"] intValue]]];
+		[myUser setFbUsername:[[result valueForKey:@"link"] lastPathComponent]];
+		[myUser setName:[result valueForKey:@"name"]]; // full name
+		[myUser setAbout:[result valueForKey:@"about"]]; // should this be headline?
+		//	[myUser setHeadline:[result valueForKey:@"about"]];
+		NSString *sex = [[result valueForKey:@"gender"] capitalizedString];
+		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInteger:2] : [NSNumber numberWithInteger:1]];
+		//	[myUser setLikes:[result valueForKey:@"v"]];
+		//	[myUser setAge:[result valueForKey:@"y"]];		 
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FBDialogDelegate
+
+/** 
+ * Called when a UIServer Dialog successfully return
+ */
+- (void)dialogDidComplete:(FBDialog*)dialog{
+	//	[self.label setText:@"publish successfully"];
+	NSLog(@"publish successfully");
+}
+
+
+#pragma mark -
 #pragma mark Core Data stack
 
 /**
@@ -490,6 +656,7 @@
 	[Ethnicities release];
 	[Likes release];
 	
+	[fb release];
 	[webSocket release];
 
 	[managedObjectContext release];
