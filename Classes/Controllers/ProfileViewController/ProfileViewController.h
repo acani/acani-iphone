@@ -1,11 +1,10 @@
 #include "User.h"
-#include "FBConnect.h"
 
 #define BAR_BUTTON(TITLE, SELECTOR) [[UIBarButtonItem alloc] initWithTitle:TITLE style:UIBarButtonItemStylePlain target:self action:SELECTOR]
 
 @interface ProfileViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate,
 UIPickerViewDelegate, UIPickerViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-UIActionSheetDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate> {
+UIActionSheetDelegate> {
 	User *myUser;
 
 	UIBarButtonItem *saveButton;

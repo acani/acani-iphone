@@ -13,7 +13,7 @@
 
 @implementation AppDelegate
 
-@synthesize fb;
+@synthesize facebook;
 @synthesize myAccount;
 @synthesize window;
 @synthesize navigationController;
@@ -70,7 +70,7 @@
     [window addSubview:welcomeViewController.view];
     [window makeKeyAndVisible];
 
-	fb = [[Facebook alloc] initWithAppId:kAppId];
+	facebook = [[Facebook alloc] initWithAppId:kAppId];
 	
 	webSocket = [[ZTWebSocket alloc] initWithURLString:@"ws://localhost:8124/" delegate:self];
 	[webSocket open];
@@ -402,16 +402,17 @@
 #pragma mark Facebook functions
 
 - (void)fbLogin {
-	[fb authorize:[NSArray arrayWithObjects:@"read_stream", @"offline_access", nil] delegate:self];
+	[facebook authorize:[NSArray arrayWithObjects:@"read_stream", @"offline_access", nil]
+			   delegate:self];
 }
 
 - (void)fbLogout {
-	[fb logout:self]; 
+	[facebook logout:self]; 
 }
 
 - (void)getUserInfo:(id)sender {
 	// TODO: add ?fields=id,name,picture... to end of path
-	[fb requestWithGraphPath:@"me" andDelegate:self];
+	[facebook requestWithGraphPath:@"me" andDelegate:self];
 }
 
 
@@ -424,10 +425,10 @@
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								   @"SELECT oid,name FROM user WHERE oid=4", @"query",
 								   nil];
-	[fb requestWithMethodName: @"fql.query" 
-					andParams: params
-				andHttpMethod: @"POST" 
-				  andDelegate: self]; 
+	[facebook requestWithMethodName:@"fql.query" 
+						  andParams:params
+					  andHttpMethod:@"POST" 
+						andDelegate:self]; 
 }
 
 /**
@@ -457,9 +458,9 @@
 								   attachmentStr, @"attachment",
 								   nil];
 	
-	[fb dialog: @"stream.publish"
-	 andParams: params
-   andDelegate:self];
+	[facebook dialog:@"stream.publish"
+		   andParams:params
+		 andDelegate:self];
 	
 }
 
@@ -473,10 +474,10 @@
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								   img, @"picture",
 								   nil];
-	[fb requestWithMethodName: @"photos.upload" 
-					andParams: params
-				andHttpMethod: @"POST" 
-				  andDelegate: self]; 
+	[facebook requestWithMethodName:@"photos.upload" 
+						  andParams:params
+					  andHttpMethod:@"POST" 
+						andDelegate:self]; 
 	[img release];  
 }
 
@@ -534,20 +535,93 @@
 		//		[self.label setText:@"Photo upload Success"];
 	} else {
 		NSLog(@"Result: %@", result);
-		User *myUser = [myAccount user];
-		NSLog(@"Me: %@", myUser);
+		
+		// Find user by Facebook ID.
+		NSNumber *fbId = [NSNumber numberWithInteger:[[result valueForKey:@"id"] intValue]];
+//		NSNumber *fbId = [[NSNumber alloc] initWithInteger:514417];
+		User *myUser = (User *)[User findByAttribute:@"fbId" value:(id)fbId
+										  entityName:@"User"
+							  inManagedObjectContext:managedObjectContext];
+		
+		// Create myUser from Facebook info if not found.
+		NSDate *now = [[NSDate alloc] init];
+		if (!myUser) {
+			myUser = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User"
+														   inManagedObjectContext:managedObjectContext];
+			[myUser setFbId:fbId];
+			[myUser setUpdated:now];
+		}
+		[fbId release];
+		
+		// Create account for user if one doesn't already exist.
+		if (![myUser account]) {
+			Account *account = (Account *)[NSEntityDescription
+										   insertNewObjectForEntityForName:@"Account"
+										   inManagedObjectContext:managedObjectContext];
+			[account setUser:myUser];
+		}
+		
+		// Set user attributes: location, onlineStatus, lastOnline, etc.
+		[myUser setOnlineStatus:[NSNumber numberWithInteger:1]];
+		[myUser setLastOnline:now];
+		[now release];
+		
+		Location *location = (Location *)[NSEntityDescription
+										  insertNewObjectForEntityForName:@"Location"
+										  inManagedObjectContext:managedObjectContext];
+		// TODO: set location & update in background
+		//		[location setLatitude:myLocation];
+		//		[location setLongitude:myLocation];
+		[myUser setLocation:location];
+		
 		// Set myUser's attributes according to Facebook's response.
-		[myUser setFbId:[NSNumber numberWithInteger:[[result valueForKey:@"id"] intValue]]];
 		[myUser setFbUsername:[[result valueForKey:@"link"] lastPathComponent]];
 		[myUser setName:[result valueForKey:@"name"]]; // full name
 		[myUser setAbout:[result valueForKey:@"about"]]; // should this be headline?
 		//	[myUser setHeadline:[result valueForKey:@"about"]];
 		NSString *sex = [[result valueForKey:@"gender"] capitalizedString];
-		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInteger:2] : [NSNumber numberWithInteger:1]];
+		[myUser setSex:[sex isEqualToString:@"Male"] ? [NSNumber numberWithInteger:2] :
+		 [NSNumber numberWithInteger:1]];
 		//	[myUser setLikes:[result valueForKey:@"v"]];
 		//	[myUser setAge:[result valueForKey:@"y"]];		 
+		
+		
+		// Find top-level Interest, with name "acani."
+		NSString *tlInterestName = @"acani";
+		Interest *tlInterest = (Interest *)[Interest findByAttribute:@"name" value:(id)tlInterestName
+														  entityName:@"Interest"
+											  inManagedObjectContext:managedObjectContext];
+		
+		// Create top-level interest if not found
+		if (!tlInterest) {
+			tlInterest = (Interest *)[NSEntityDescription
+									  insertNewObjectForEntityForName:@"Interest"
+									  inManagedObjectContext:managedObjectContext];
+			[tlInterest setOid:@"0"];
+			[tlInterest setName:tlInterestName];
+		}
+		
+		// Save changes if any.
+		NSError *error;
+		if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+			// TODO: handle this error correctly.
+			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			abort();
+		}
+		
+		// Push interstsViewController with myUser & top-level Interest.
+		interestsViewController.myUser = myUser;
+		interestsViewController.theInterest = tlInterest;
+		interestsViewController.title = tlInterestName;
+		
+		navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		[welcomeViewController presentModalViewController:navigationController animated:YES];
 	}
 };
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {	
+    return [facebook handleOpenURL:url]; 
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // FBDialogDelegate
@@ -656,7 +730,7 @@
 	[Ethnicities release];
 	[Likes release];
 	
-	[fb release];
+	[facebook release];
 	[webSocket release];
 
 	[managedObjectContext release];

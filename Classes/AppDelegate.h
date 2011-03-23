@@ -9,12 +9,13 @@
 @class WelcomeViewController;
 @class InterestsViewController;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
+@interface AppDelegate : NSObject <FBSessionDelegate, FBRequestDelegate, FBDialogDelegate,
+UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
 	Account *myAccount;
 
 	SystemSoundID receiveMessageSound;
 
-	Facebook *fb;
+	Facebook *facebook;
 	ZTWebSocket *webSocket;
 
 	CLLocationManager *locationManager;
@@ -37,7 +38,7 @@
 
 @property (nonatomic, retain) Account *myAccount;
 
-@property (nonatomic, retain) Facebook *fb;
+@property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, retain) ZTWebSocket *webSocket;
 
 @property (nonatomic, retain) UIWindow *window;

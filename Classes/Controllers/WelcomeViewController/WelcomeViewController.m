@@ -48,72 +48,12 @@
 - (void)connectWithFB {
 	// Connect to Facebook.
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	Facebook *fb = [appDelegate fb];
-	if ([fb isSessionValid]) {
+	Facebook *facebook = [appDelegate facebook];
+	if ([facebook isSessionValid]) {
 		[appDelegate getUserInfo:appDelegate];
 	} else {
 		[appDelegate fbLogin];
 	}
-	
-	// Find user by Facebook ID.
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
-	[fetchRequest setEntity:entity];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbId == %@", @"1112"]; // use fbId
-	[fetchRequest setPredicate:predicate];
-	NSArray *results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
-//	NSLog(@"results = %@", results);
-	[fetchRequest release];
-	User *myUser;
-	if ([results count] == 1) {
-		myUser = [results objectAtIndex:0];
-//		NSLog(@"myUser = %@", myUser);
-	} else { // create myUser from Facebook info if not found
-		Account *account = (Account *)[NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:managedObjectContext];
-		myUser = (User *)[NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:managedObjectContext];
-		Location *location = (Location *)[NSEntityDescription insertNewObjectForEntityForName:@"Location" inManagedObjectContext:managedObjectContext];
-// TODO: set location & update in background
-//		[location setLatitude:myLocation];
-//		[location setLongitude:myLocation];
-		[myUser setLocation:location];
-		[account setUser:myUser];
-		[myUser setOnlineStatus:[NSNumber numberWithInteger:1]];
-	}
-
-	// Find top-level Interest, with name "Interests."
-	fetchRequest = [[NSFetchRequest alloc] init];
-	entity = [NSEntityDescription entityForName:@"Interest" inManagedObjectContext:managedObjectContext];
-	[fetchRequest setEntity:entity];
-	predicate = [NSPredicate predicateWithFormat:@"name == %@", @"Interests"];
-	[fetchRequest setPredicate:predicate];
-	results = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
-	[fetchRequest release];
-	Interest *tlInterest;
-	if ([results count] == 1) {
-		tlInterest = [results objectAtIndex:0];
-	} else { // create tlInterest if not found
-		tlInterest = (Interest *)[NSEntityDescription insertNewObjectForEntityForName:@"Interest" inManagedObjectContext:managedObjectContext];
-		[tlInterest setOid:@"0"];
-		[tlInterest setName:@"acani"];
-	}
-
-	// Save changes if any.
-	NSError *error;
-	if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-		// TODO: handle this error correctly.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}
-
-	// Push interstsViewController with myUser & top-level Interest.
-	UINavigationController *navController = [(AppDelegate *)[[UIApplication sharedApplication] delegate] navigationController];
-	InterestsViewController *interestsViewController = (InterestsViewController *)[navController topViewController];
-	interestsViewController.myUser = myUser;
-	interestsViewController.theInterest = tlInterest;
-	interestsViewController.title = [tlInterest name];
-
-	navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-	[self presentModalViewController:navController animated:YES];
 }
 
 /*
@@ -146,6 +86,7 @@
 
 
 - (void)dealloc {
+	[managedObjectContext release];
     [super dealloc];
 }
 
