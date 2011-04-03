@@ -1,4 +1,3 @@
-#import "UsersViewController.h"
 #import "ProfileViewController.h"
 #import "InterestsViewController.h"
 #import "AppDelegate.h"
@@ -282,9 +281,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Interest *interest = [fetchedResultsController objectAtIndexPath:indexPath];
 	if ([[interest children] count] == 0 || ([indexPath section] == 0 && [indexPath row] == 0)) { // TODO fix
-		UsersViewController *usersViewController = [[UsersViewController alloc] initWithMe:myUser interest:interest];
-		[self.navigationController pushViewController:usersViewController animated:YES];
-		[usersViewController release];		
+		[[self parentViewController] dismissModalViewControllerAnimated:YES];
 	} else {
 //		// The line below fixes error: "You have illegally mutated the NSFetchedResultsController's
 //		// fetch request, its predicate, or its sort descriptor without either disabling caching or

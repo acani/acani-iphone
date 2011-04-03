@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
 #import "WelcomeViewController.h"
-#import "InterestsViewController.h"
+#import "UsersViewController.h"
 #import "ChatViewController.h"
 #import "ProfileViewController.h"
 #import "Account.h"
@@ -18,7 +18,7 @@
 @synthesize window;
 @synthesize navigationController;
 @synthesize welcomeViewController;
-@synthesize interestsViewController;
+@synthesize usersViewController;
 @synthesize locationMeasurements;
 @synthesize bestEffortAtLocation;
 @synthesize locationManager;
@@ -52,15 +52,14 @@
 //		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 //	}
 //	abort();
-
-	interestsViewController = [[InterestsViewController alloc] init];
-	interestsViewController.managedObjectContext = managedObjectContext;
+	
+	// Initialize navigationController.
 	navigationController = [[UINavigationController alloc]
-								 initWithRootViewController:interestsViewController];
+							initWithRootViewController:usersViewController];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
 	navigationController.navigationBar.translucent = YES;
 
-	// Create window, navigationController & interestsViewController
+	// Create window, navigationController & usersViewController
 	welcomeViewController = [[WelcomeViewController alloc] init];
 	welcomeViewController.managedObjectContext = managedObjectContext;
 	//	ChatViewController *chatViewController = [[ChatViewController alloc] init]; // for testing chat
@@ -205,9 +204,9 @@
 //    if (locationAge > 5.0) return;
 //	if (newLocation.horizontalAccuracy < 0) return;
 //    if (bestEffortAtLocation == nil || bestEffortAtLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
-//        // store the location as the "best effort" as well as setting interestsViewController's CLlocation
+//        // store the location as the "best effort" as well as setting usersViewController's CLlocation
 //        self.bestEffortAtLocation = newLocation;
-//		interestsViewController.location = newLocation;
+//		usersViewController.location = newLocation;
 //                if (newLocation.horizontalAccuracy <= manager.desiredAccuracy) {
 //					[manager stopUpdatingLocation];
 //            // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
@@ -280,11 +279,11 @@
 }
 
 - (void)goToProfile {
-	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[interestsViewController myUser]];
+	ProfileViewController *profileVC = [[ProfileViewController alloc] initWithMe:[myAccount user]];
 	profileVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:profileVC];
 	[profileVC release];
-	[interestsViewController presentModalViewController:navController animated:YES];
+	[usersViewController presentModalViewController:navController animated:YES];
 	[navController release];
 }
 
@@ -294,18 +293,18 @@
 
 - (void)webSocketDidClose:(ZTWebSocket *)webSocket {
 	NSLog(@"Disconnected");
-	if (interestsViewController != nil) {
+	if (usersViewController != nil) {
 		UIBarButtonItem *logButton = BAR_BUTTON(@"Login", @selector(login));
-		interestsViewController.navigationItem.leftBarButtonItem = logButton;
+		usersViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 }
 
 - (void)webSocketDidOpen:(ZTWebSocket *)aWebSocket {
 	NSLog(@"Connected");
-	if (interestsViewController != nil) {
+	if (usersViewController != nil) {
 		UIBarButtonItem *logButton = BAR_BUTTON(@"Logout", @selector(logout));
-		interestsViewController.navigationItem.leftBarButtonItem = logButton;
+		usersViewController.navigationItem.leftBarButtonItem = logButton;
 		[logButton release];
 	}
 	// should be mongodb _id for user, not device id.
@@ -609,10 +608,10 @@
 			abort();
 		}
 		
-		// Push interstsViewController with myUser & top-level Interest.
-		interestsViewController.myUser = myUser;
-		interestsViewController.theInterest = tlInterest;
-		interestsViewController.title = tlInterestName;
+		// Push usersViewController with myUser & top-level Interest.
+		usersViewController.myUser = myUser;
+		usersViewController.theInterest = tlInterest;
+		usersViewController.title = tlInterestName;
 		
 		navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 		[welcomeViewController presentModalViewController:navigationController animated:YES];
@@ -741,7 +740,7 @@
 	[locationMeasurements release];
 	[bestEffortAtLocation release];
 
-	[interestsViewController release];
+	[usersViewController release];
 	[navigationController release];
 	[window release];
     [super dealloc];

@@ -1,5 +1,3 @@
-#import <UIKit/UIKit.h>
-
 #ifdef FRANK
 #include "FrankServer.h"
 static FrankServer *sFrankServer;

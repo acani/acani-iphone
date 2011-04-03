@@ -7,7 +7,7 @@
 
 @class Account;
 @class WelcomeViewController;
-@class InterestsViewController;
+@class UsersViewController;
 
 @interface AppDelegate : NSObject <FBSessionDelegate, FBRequestDelegate, FBDialogDelegate,
 UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOperationDelegate> {
@@ -29,7 +29,7 @@ UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOpera
 	UIWindow *window;
 	UINavigationController *navigationController;
 	WelcomeViewController *welcomeViewController;
-	InterestsViewController *interestsViewController;
+	UsersViewController *usersViewController;
 	
 	NSArray *Sexes;
 	NSArray *Ethnicities;
@@ -44,7 +44,7 @@ UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOpera
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
-@property (nonatomic, retain) InterestsViewController *interestsViewController;
+@property (nonatomic, retain) UsersViewController *usersViewController;
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
