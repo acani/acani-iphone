@@ -12,6 +12,7 @@
 
 #define CHAT_BAR_HEIGHT_1	40.0f
 #define CHAT_BAR_HEIGHT_4	94.0f
+
 #define VIEW_WIDTH	self.view.frame.size.width
 #define VIEW_HEIGHT	self.view.frame.size.height
 
@@ -47,8 +48,6 @@
 @synthesize chatInputHadText;
 @synthesize sendButton;
 
-
-#pragma mark -
 #pragma mark Text view delegate
 
 - (void)done:(id)sender {
@@ -57,7 +56,8 @@
 	self.navigationItem.rightBarButtonItem = nil;
 }
 
-// Reveal a Done button when editing starts
+
+// Reveal a Done button when editing starts.
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
 								   initWithTitle:@"Done" style:UIBarButtonItemStyleDone
@@ -65,6 +65,7 @@
 	self.navigationItem.rightBarButtonItem = doneButton;
 	[doneButton release];
 }
+
 
 - (void)textViewDidChange:(UITextView *)textView {
 	CGFloat contentHeight = textView.contentSize.height - 12.0f;
@@ -116,13 +117,15 @@
 	lastContentHeight = contentHeight;
 }
 
-// This fixes a scrolling quirk
+
+// Fix a scrolling quirk.
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	textView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 3.0f, 0.0f);
 	return YES;
 }
 
-// Prepare to resize for keyboard
+
+// Prepare to resize for keyboard.
 - (void)keyboardWillShow:(NSNotification *)notification {
 //	NSDictionary *userInfo = [notification userInfo];
 //	CGRect bounds;
@@ -140,6 +143,7 @@
 	//   animation movement, speed, duration, etc.
 }
 
+
 // Expand textview on keyboard dismissal
 - (void)keyboardWillHide:(NSNotification *)notification {
 //	NSDictionary *userInfo = [notification userInfo];
@@ -150,7 +154,6 @@
 }
 
 
-#pragma mark -
 #pragma mark View lifecycle
 
 - (void)loadView {
@@ -166,11 +169,9 @@
 	contentView.backgroundColor = CHAT_BACKGROUND_COLOR; // shown during rotation
 
 	// Create chatContent.
-	UITableView *tempChatContent = [[UITableView alloc] initWithFrame:
-					   CGRectMake(0.0f, 0.0f, contentView.frame.size.width,
-								  contentView.frame.size.height - CHAT_BAR_HEIGHT_1)];
-	self.chatContent = tempChatContent;
-	[tempChatContent release];
+	chatContent = [[UITableView alloc] initWithFrame:
+				   CGRectMake(0.0f, 0.0f, contentView.frame.size.width,
+							  contentView.frame.size.height - CHAT_BAR_HEIGHT_1)];
 	chatContent.clearsContextBeforeDrawing = NO;
 	chatContent.delegate = self;
 	chatContent.dataSource = self;
@@ -180,27 +181,23 @@
 	[contentView addSubview:chatContent];
 
 	// Create chatBar.
-	UIImageView *tempChatBar = [[UIImageView alloc] initWithFrame:
-				   CGRectMake(0.0f, contentView.frame.size.height - CHAT_BAR_HEIGHT_1,
-							  contentView.frame.size.width, CHAT_BAR_HEIGHT_1)];
-	self.chatBar = tempChatBar;
-	[tempChatBar release];
+	chatBar = [[UIImageView alloc] initWithFrame:
+			   CGRectMake(0.0f, contentView.frame.size.height - CHAT_BAR_HEIGHT_1,
+						  contentView.frame.size.width, CHAT_BAR_HEIGHT_1)];
 	chatBar.clearsContextBeforeDrawing = NO;
 	chatBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	chatBar.image = [[UIImage imageNamed:@"ChatBar.png"] stretchableImageWithLeftCapWidth:18 topCapHeight:20];
 	chatBar.userInteractionEnabled = YES;
 
 	// Create chatInput.
-	UITextView *tempChatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];
-	self.chatInput = tempChatInput;
-	[tempChatInput release];
+	chatInput = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 234.0f, 22.0f)];
 	chatInput.contentSize = CGSizeMake(234.0f, 22.0f);
 	chatInput.delegate = self;
 	chatInput.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	chatInput.scrollEnabled = NO; // not initially
 	chatInput.scrollIndicatorInsets = UIEdgeInsetsMake(5.0f, 0.0f, 4.0f, -2.0f);
 	chatInput.clearsContextBeforeDrawing = NO;
-	chatInput.font = [UIFont systemFontOfSize:14.0];
+	chatInput.font = [UIFont systemFontOfSize:14.0f];
 	chatInput.dataDetectorTypes = UIDataDetectorTypeAll;
 	chatInput.backgroundColor = [UIColor clearColor];
 	lastContentHeight = chatInput.contentSize.height;
@@ -208,17 +205,17 @@
 	[chatBar addSubview:chatInput];
 
 	// Create sendButton.
-	self.sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	sendButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 	sendButton.clearsContextBeforeDrawing = NO;
 	sendButton.frame = CGRectMake(chatBar.frame.size.width - 70.0f, 8.0f, 64.0f, 26.0f);  // multi-line input & landscape (below)
 	sendButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 	UIImage *sendButtonBackground = [UIImage imageNamed:@"SendButton.png"];
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateNormal];
 	[sendButton setBackgroundImage:sendButtonBackground forState:UIControlStateDisabled];	
-	sendButton.titleLabel.font = [UIFont boldSystemFontOfSize: 16];
+	sendButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
 	sendButton.backgroundColor = [UIColor clearColor];
 	[sendButton setTitle:@"Send" forState:UIControlStateNormal];
-	[sendButton addTarget:self action:@selector(sendMsg) forControlEvents:UIControlEventTouchUpInside];
+	[sendButton addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
 //	sendButton.layer.cornerRadius = 13; // not necessary now that we'are using background image
 //	sendButton.clipsToBounds = YES; // not necessary now that we'are using background image
 	DISABLE_SEND_BUTTON; // initially
@@ -314,7 +311,7 @@
 	return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)sendMsg {
+- (void)sendMessage {
 	//	// TODO: Show progress indicator like iPhone Message app does. (Icebox)
 	//	[activityIndicator startAnimating];
 
@@ -337,7 +334,7 @@
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
 		// TODO: Handle the error appropriately.
-		NSLog(@"SendMsg error %@, %@", error, [error userInfo]);
+		NSLog(@"sendMessage error %@, %@", error, [error userInfo]);
 	}
 
 	// Escape message and send via WebSocket connection.
@@ -383,16 +380,16 @@
 	CGFloat movementDistance;
 
 	UIInterfaceOrientation orientation =[[UIApplication sharedApplication] statusBarOrientation];
-    if (orientation == UIInterfaceOrientationPortrait ||
-        orientation == UIInterfaceOrientationPortraitUpsideDown) {
+	if (orientation == UIInterfaceOrientationPortrait ||
+		orientation == UIInterfaceOrientationPortraitUpsideDown) {
 		movementDistance = 216.0f;
-    } else {
+	} else {
 		movementDistance = 162.0f;
-    }
+	}
 	CGFloat movement = (up ? -movementDistance : movementDistance);
 
 	[UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];	
+	[UIView setAnimationDuration:0.3];	
 	CGRect viewFrame = self.view.frame;
 	viewFrame.size.height += movement;
 	self.view.frame = viewFrame;
@@ -411,7 +408,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -426,15 +423,17 @@
 CGFloat msgTimestampHeight;
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView
+		 cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UILabel *msgTimestamp;
 	UIImageView *msgBackground;
 	UILabel *msgText;
 
-    static NSString *CellIdentifier = @"MessageCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+	static NSString *CellIdentifier = @"MessageCell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+									   reuseIdentifier:CellIdentifier] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		
 		// Create message timestamp lable if appropriate
@@ -463,7 +462,7 @@ CGFloat msgTimestampHeight;
 		msgText.backgroundColor = [UIColor clearColor];
 		msgText.numberOfLines = 0;
 		msgText.lineBreakMode = UILineBreakModeWordWrap;
-		msgText.font = [UIFont systemFontOfSize:14.0];
+		msgText.font = [UIFont systemFontOfSize:14.0f];
 		[cell.contentView addSubview:msgText];
 	} else {
 		msgTimestamp = (UILabel *)[cell.contentView viewWithTag:TIMESTAMP_TAG];
@@ -473,22 +472,22 @@ CGFloat msgTimestampHeight;
 
 	// Configure the cell to show the message in a bubble.
 	Message *msg = [fetchedResultsController objectAtIndexPath:indexPath];
-		
-// TODO: Only show timestamps every 15 mins
-//	time_t now; time(&now);
-//	if (now < latestTimestamp+780) // show timestamp every 15 mins
-//		msg.timestamp = 0;
-
+	
+	// // TODO: Only show timestamps every 15 mins
+	// time_t now; time(&now);
+	// if (now < latestTimestamp+780) // show timestamp every 15 mins
+	//	 msg.timestamp = 0;
 	if (true) { // latestTimestamp > ([[msg timestamp] longValue]+780)) {
 		msgTimestampHeight = 20.0f;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle]; // Jan 1, 2010
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];  // 1:43 PM
 
-		NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]; // TODO: get locale from iPhone system prefs
+		// TODO: Get locale from iPhone system prefs.
+		NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
 		[dateFormatter setLocale:usLocale];
 		[usLocale release];
-		
+
 		msgTimestamp.text = [dateFormatter stringFromDate:[msg timestamp]];
 		[dateFormatter release];
 	} else {
@@ -497,21 +496,27 @@ CGFloat msgTimestampHeight;
 	}	
 
 	// Layout message cell & its subviews.
-	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0]
+	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0f]
 						 constrainedToSize:CGSizeMake(240.0f, CGFLOAT_MAX)
 							 lineBreakMode:UILineBreakModeWordWrap];
 	UIImage *balloon;
 	if ([[(User *)[msg sender] oid] isEqualToString:
-		 [(User *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user] oid]]) {
-		msgBackground.frame = CGRectMake(chatContent.frame.size.width - (size.width + 35.0f), msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:13];
+		 [(User *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] myAccount] user]
+		  oid]]) {
+		msgBackground.frame = CGRectMake(chatContent.frame.size.width - (size.width + 35.0f),
+										 msgTimestampHeight, size.width + 35.0f, size.height +
+										 13.0f);
+		balloon = [[UIImage imageNamed:@"ChatBubbleGreen.png"] stretchableImageWithLeftCapWidth:15
+																				   topCapHeight:13];
 		msgText.frame = CGRectMake(chatContent.frame.size.width - 22.0f - size.width,
 								   5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 		msgBackground.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		msgText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	} else {
-		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height + 13.0f);
-		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"] stretchableImageWithLeftCapWidth:23 topCapHeight:15];
+		msgBackground.frame = CGRectMake(0.0f, msgTimestampHeight, size.width + 35.0f, size.height +
+										 13.0f);
+		balloon = [[UIImage imageNamed:@"ChatBubbleGray.png"] stretchableImageWithLeftCapWidth:23
+																				  topCapHeight:15];
 		msgText.frame = CGRectMake(22.0f, 5.0f + msgTimestampHeight, size.width + 5.0f, size.height);
 	}
 	msgBackground.image = balloon;
@@ -530,18 +535,18 @@ CGFloat msgTimestampHeight;
 	return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {  
- 	Message *msg = [fetchedResultsController objectAtIndexPath:indexPath];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	Message *msg = [fetchedResultsController objectAtIndexPath:indexPath];
 	msgTimestampHeight = 20.0f; // [msg timestamp] ? 20.0f : 0.0f;
-	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+	CGSize size = [[msg text] sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:CGSizeMake(240.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
 	return size.height + 20.0f + msgTimestampHeight;
 } 
 
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+	// Return NO if you do not want the specified item to be editable.
+	return YES;
 }
 */
 
@@ -549,14 +554,14 @@ CGFloat msgTimestampHeight;
 /*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+	
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// Delete the row from the data source
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+	}   
+	else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+	}   
 }
 */
 
@@ -571,8 +576,8 @@ CGFloat msgTimestampHeight;
 /*
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+	// Return NO if you do not want the item to be re-orderable.
+	return YES;
 }
 */
 
@@ -581,18 +586,17 @@ CGFloat msgTimestampHeight;
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
+	// Navigation logic may go here. Create and push another view controller.
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
+	 // ...
+	 // Pass the selected object to the new view controller.
 	 [self.navigationController pushViewController:detailViewController animated:YES];
 	 [detailViewController release];
 	 */
 }
 
 
-#pragma mark -
 #pragma mark Fetched results controller
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
@@ -615,10 +619,10 @@ CGFloat msgTimestampHeight;
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
+	// Releases the view if it doesn't have a superview.
+	[super didReceiveMemoryWarning];
+	
+	// Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {

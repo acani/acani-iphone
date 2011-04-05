@@ -26,7 +26,7 @@
 @property (nonatomic, assign) Boolean chatInputHadText;
 @property (nonatomic, retain) UIButton *sendButton;
 
-- (void)sendMsg;
+- (void)sendMessage;
 - (void)scrollToBottomAnimated:(BOOL)animated;
 - (void)slideFrame:(BOOL)up;
 - (void)slideFrameUp;
