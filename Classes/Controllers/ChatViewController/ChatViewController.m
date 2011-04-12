@@ -359,7 +359,7 @@
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-	NSInteger bottomRow = [[fetchedResultsController_ fetchedObjects] count] - 1;
+	NSInteger bottomRow = [[fetchedResultsController fetchedObjects] count] - 1;
 	if (bottomRow >= 0) {
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:bottomRow inSection:0];
 		[chatContent scrollToRowAtIndexPath:indexPath

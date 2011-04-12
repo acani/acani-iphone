@@ -54,6 +54,7 @@
 //	abort();
 	
 	// Initialize navigationController.
+    usersViewController = [[UsersViewController alloc] init];
 	navigationController = [[UINavigationController alloc]
 							initWithRootViewController:usersViewController];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
@@ -587,10 +588,11 @@
 		
 		// Find top-level Interest, with name "acani."
 		NSString *tlInterestName = @"acani";
-		Interest *tlInterest = (Interest *)[Interest findByAttribute:@"name" value:(id)tlInterestName
-														  entityName:@"Interest"
-											  inManagedObjectContext:managedObjectContext];
-		
+		Interest *tlInterest = (Interest *)[Interest
+                                            findByAttribute:@"name" value:(id)tlInterestName
+                                            entityName:@"Interest"
+                                            inManagedObjectContext:managedObjectContext];
+
 		// Create top-level interest if not found
 		if (!tlInterest) {
 			tlInterest = (Interest *)[NSEntityDescription

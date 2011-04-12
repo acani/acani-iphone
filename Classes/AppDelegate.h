@@ -59,6 +59,11 @@ UIApplicationDelegate, CLLocationManagerDelegate, ZTWebSocketDelegate, HTTPOpera
 @property (nonatomic, retain) NSArray *Likes;
 
 - (NSString *)applicationDocumentsDirectory;
+
+- (void)fbLogin;
+- (void)fbLogout;
+- (void)getUserInfo:(id)sender;
+
 //- (void)findLocation;
 
 @end
