@@ -24,11 +24,13 @@ BOOL overlayHide = NO;
 }
 
 - (void)goToChat:(id)sender {
-	ChatViewController *chatView = [[ChatViewController alloc] init];
-	chatView.channel = [NSString stringWithFormat:@"%@_%@", @"myid", [targetUser oid]];
-	chatView.title = [targetUser name];
-	[self.navigationController pushViewController:chatView animated:YES];
-	[chatView release];
+	ChatViewController *chatViewController = [[ChatViewController alloc] init];
+	chatViewController.managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication]
+															   delegate] managedObjectContext];
+	chatViewController.channel = [NSString stringWithFormat:@"%@_%@", @"myid", [targetUser oid]];
+	chatViewController.title = [targetUser name];
+	[self.navigationController pushViewController:chatViewController animated:YES];
+	[chatViewController release];
 }
 
 - (void)loadView {

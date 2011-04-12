@@ -4,6 +4,6 @@ profile
 Thumbs.db
 
 build/*
-*/build/*
+xcuserdata
 *.mode1v3
 *.pbxuser

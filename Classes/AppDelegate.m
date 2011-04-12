@@ -375,7 +375,7 @@
 		// Play sound or buzz, depending on user settings.
 		NSString *sndpath = [[NSBundle mainBundle] pathForResource:@"basicsound" ofType:@"wav"];
 		CFURLRef baseURL = (CFURLRef)[NSURL fileURLWithPath:sndpath];
-		AudioServicesCreateSystemSoundID (baseURL, &receiveMessageSound);
+		AudioServicesCreateSystemSoundID(baseURL, &receiveMessageSound);
 		AudioServicesPlaySystemSound(receiveMessageSound);
 		//	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate); // explicit vibrate
 		

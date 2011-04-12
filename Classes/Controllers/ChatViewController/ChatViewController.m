@@ -237,8 +237,8 @@
 
 	// Create and configure a fetch request.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	managedObjectContext = [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message"
+											  inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
 	// Set the predicate to only fetch messages from this channel.
@@ -246,9 +246,9 @@
 	[fetchRequest setPredicate:predicate];
 	
 	// Create the sort descriptors array.
-	NSSortDescriptor *timestampDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:timestampDescriptor, nil];
-	[timestampDescriptor release];
+	NSSortDescriptor *tsDesc = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:tsDesc, nil];
+	[tsDesc release];
 	[fetchRequest setSortDescriptors:sortDescriptors];
 	[sortDescriptors release];
 
@@ -285,8 +285,7 @@
  }
  */
 
-//// This causes exception if there are no cells.
-//// Also, I want it to work like iPhone Messages.
+//// I want it to work like iPhone Messages.
 //- (void)viewDidAppear:(BOOL)animated {
 //	[super viewDidAppear:animated];
 //	[self scrollToBottomAnimated:YES]; 
@@ -360,10 +359,12 @@
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-	NSUInteger bottomRow = [[fetchedResultsController fetchedObjects] count] - 1;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:bottomRow inSection:0];
-	[chatContent scrollToRowAtIndexPath:indexPath
-					   atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+	NSInteger bottomRow = [[fetchedResultsController_ fetchedObjects] count] - 1;
+	if (bottomRow >= 0) {
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:bottomRow inSection:0];
+		[chatContent scrollToRowAtIndexPath:indexPath
+						   atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+	}
 }
 
 - (void)slideFrameUp {
