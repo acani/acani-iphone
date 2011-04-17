@@ -160,14 +160,8 @@
      */
 }
 
-/**
- applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
- */
+// Save changes in the managed object context before the application terminates.
 - (void)applicationWillTerminate:(UIApplication *)application {
-	/*
-	 Called when the application is about to terminate.
-	 See also applicationDidEnterBackground:.
-	 */	
     NSError *error = nil;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
