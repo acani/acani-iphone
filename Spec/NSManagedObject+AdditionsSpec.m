@@ -12,20 +12,12 @@ describe(@"NSManagedObject+Additions", ^{
 	
 	beforeEach(^{
 		NSManagedObjectModel *managedObjectModel =
-				[NSManagedObjectModel mergedModelFromBundles:nil];
+        [NSManagedObjectModel mergedModelFromBundles:nil];
 
-//		NSManagedObjectModel *managedObjectModel =
-//				[NSManagedObjectModel mergedModelFromBundles:
-//				 [NSArray arrayWithObject:bundleContainingXCDataModel]];
-//
-//		NSManagedObjectModel *managedObjectModel =
-//				[[NSManagedObjectModel alloc] initWithContentsOfURL:urlToModel];
-//
-//		NSLog(@"entities: %@", [managedObjectModel entities]);
+//		DLog(@"entities: %@", [managedObjectModel entities]);
 
 		NSPersistentStoreCoordinator *persistentStoreCoordinator =
-				[[NSPersistentStoreCoordinator alloc]
-				 initWithManagedObjectModel:managedObjectModel];
+        [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
 
 		[persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
 												 configuration:nil URL:nil options:nil error:NULL];
@@ -36,8 +28,11 @@ describe(@"NSManagedObject+Additions", ^{
 		[persistentStoreCoordinator release];
 	});
 	
-    it(@"finds first object by attribute value", ^{
+	afterEach(^{
+		[managedObjectContext release];
+	});	
 
+    it(@"finds first object by attribute value", ^{
 		// Create a user with an arbitrary Facebook user ID.
 		NSNumber *fbId = [[NSNumber alloc] initWithInteger:514417];
 		[[NSEntityDescription insertNewObjectForEntityForName:@"User"
@@ -52,10 +47,6 @@ describe(@"NSManagedObject+Additions", ^{
 
 		[fbId release];
     });
-	
-	afterEach(^{
-		[managedObjectContext release];
-	});	
 });
 
 SPEC_END

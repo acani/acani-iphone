@@ -1,0 +1,20 @@
+POST / HTTP/1.1
+Host: localhost:8000
+User-Agent: Venmo 3.7.7 (iPhone Simulator; iPhone OS 4.3.2; en_US)
+Content-Type: application/x-www-form-urlencoded; charset=utf-8
+Content-Length: 85
+Accept-Encoding: gzip
+Connection: close
+
+oauth_token=Bg2qBhavz6GJWzgM77WYKLRv38tz3YSJ&key1=value1&key%202%20dude=value2%20nice
+
+curl -d "phone_email_or_username=mattdipasquale&password=hello" http://localhost:8000
+
+POST / HTTP/1.1
+User-Agent: curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8r zlib/1.2.3
+Host: localhost:8000
+Accept: */*
+Content-Length: 53
+Content-Type: application/x-www-form-urlencoded
+
+phone_email_or_username=mattdipasquale&password=hello
